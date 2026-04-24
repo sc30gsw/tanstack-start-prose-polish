@@ -1,7 +1,11 @@
 /// <reference types="vite-plus/client" />
+import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
 import { HeadContent, Outlet, Scripts, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { useEffect } from "react";
+
+import { theme } from "~/lib/theme";
 
 import appCss from "../styles.css?url";
 
@@ -28,12 +32,18 @@ function RootComponent() {
   }, []);
 
   return (
-    <html lang="ja">
+    <html lang="ja" {...mantineHtmlProps}>
       <head>
+        <ColorSchemeScript defaultColorScheme="light" />
         <HeadContent />
       </head>
       <body>
         <Outlet />
+        <MantineProvider defaultColorScheme="light" theme={theme}>
+          <ModalsProvider>
+            <Outlet />
+          </ModalsProvider>
+        </MantineProvider>
         {import.meta.env.DEV && (
           <>
             <TanStackRouterDevtools position="bottom-right" />

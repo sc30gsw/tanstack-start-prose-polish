@@ -19,6 +19,11 @@
   },
   "dependencies": {
     "@lightsound/cn": "^2.0.2",
+    "@mantine/core": "^9.1.0",
+    "@mantine/hooks": "^9.1.0",
+    "@mantine/modals": "^9.1.0",
+    "@pierre/diffs": "^1.1.19",
+    "@tabler/icons-react": "^3.41.1",
     "@tanstack/react-router": "^1.168.23",
     "@tanstack/react-start": "^1.167.45",
     "@tanstack/valibot-adapter": "^1.166.9",
@@ -40,6 +45,7 @@
     "fallow": "^2.48.4",
     "react-doctor": "^0.0.39",
     "react-grab": "^0.1.32",
+    "tailwind-preset-mantine": "^4.0.2",
     "tailwindcss": "^4.2.2",
     "vite": "npm:@voidzero-dev/vite-plus-core@latest",
     "vite-plus": "latest"
