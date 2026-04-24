@@ -1,6 +1,7 @@
 /// <reference types="vite-plus/client" />
 import { HeadContent, Outlet, Scripts, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { useEffect } from "react";
 
 import appCss from "../styles.css?url";
 
@@ -20,6 +21,12 @@ export const Route = createRootRoute({
 });
 
 function RootComponent() {
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      void import("react-grab");
+    }
+  }, []);
+
   return (
     <html lang="ja">
       <head>
@@ -27,8 +34,12 @@ function RootComponent() {
       </head>
       <body>
         <Outlet />
-        <TanStackRouterDevtools position="bottom-right" />
-        <Scripts />
+        {import.meta.env.DEV && (
+          <>
+            <TanStackRouterDevtools position="bottom-right" />
+            <Scripts />
+          </>
+        )}
       </body>
     </html>
   );
