@@ -81,12 +81,14 @@ export const theme = createTheme({
       defaultProps: {
         color: primaryColor,
         radius: "md",
+        size: "md",
       },
     },
     Tabs: {
       defaultProps: {
         color: primaryColor,
         radius: "md",
+        size: "md",
       },
       styles: {
         tab: {

@@ -123,7 +123,7 @@ function EssayNewPage() {
           void form.handleSubmit();
         }}
       >
-        <Stack gap="lg">
+        <Stack gap="xl">
           <form.Field name="mode">{(field) => <ModePicker field={field} />}</form.Field>
 
           <form.Subscribe selector={(s) => s.values.mode}>

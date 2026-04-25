@@ -35,9 +35,9 @@ export function DiverseModePrompt({ onQuestionLoaded }: DiverseModePromptProps) 
 
   if (isLoading) {
     return (
-      <Stack align="center" py="md">
-        <Loader aria-label="質問を生成中" size="sm" />
-        <Text c="dimmed" size="sm">
+      <Stack align="center" gap="md" py="lg">
+        <Loader aria-label="質問を生成中" size="md" />
+        <Text c="dimmed" lh={1.65} size="md">
           AI が質問を生成中...
         </Text>
       </Stack>
@@ -47,8 +47,10 @@ export function DiverseModePrompt({ onQuestionLoaded }: DiverseModePromptProps) 
   if (question == null) return null;
 
   return (
-    <Alert icon={<IconBulb />} title="今日の問い" variant="light">
-      <Text size="sm">{question}</Text>
+    <Alert icon={<IconBulb />} p="md" title="今日の問い" variant="light">
+      <Text lh={1.7} size="md">
+        {question}
+      </Text>
     </Alert>
   );
 }

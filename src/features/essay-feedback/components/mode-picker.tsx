@@ -23,14 +23,14 @@ type ModePickerProps = {
 
 export function ModePicker({ field }: ModePickerProps) {
   return (
-    <Stack gap="xs">
+    <Stack gap="sm">
       <SegmentedControl
         aria-label="作文モード"
         data={MODE_OPTIONS}
         onChange={(value) => field.handleChange(value as EssayMode)}
         value={field.state.value}
       />
-      <Text c="dimmed" size="sm">
+      <Text lh={1.65} size="md">
         {MODE_DESCRIPTIONS[field.state.value as keyof typeof MODE_DESCRIPTIONS]}
       </Text>
     </Stack>

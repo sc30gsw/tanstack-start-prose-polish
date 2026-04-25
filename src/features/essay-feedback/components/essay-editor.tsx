@@ -27,6 +27,7 @@ export function EssayEditor({ bodyBeforeText, field }: EssayEditorProps) {
         onBlur={field.handleBlur}
         onChange={(e) => field.handleChange(e.currentTarget.value)}
         placeholder="Write your essay here..."
+        size="md"
         value={field.state.value}
       />
       <CharCounter value={bodyBeforeText} />

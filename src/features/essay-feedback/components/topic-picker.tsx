@@ -29,9 +29,9 @@ export function TopicPicker({ field }: TopicPickerProps) {
 
   if (isLoading) {
     return (
-      <Stack align="center" py="md">
-        <Loader aria-label="トピックを生成中" size="sm" />
-        <Text c="dimmed" size="sm">
+      <Stack align="center" gap="md" py="lg">
+        <Loader aria-label="トピックを生成中" size="md" />
+        <Text c="dimmed" lh={1.65} size="md">
           AI がトピックを生成中...
         </Text>
       </Stack>
@@ -42,12 +42,14 @@ export function TopicPicker({ field }: TopicPickerProps) {
     <Radio.Group
       aria-label="トピックを選択"
       label="以下のトピックから 1 つ選んでください"
+      labelProps={{ size: "md" }}
       onChange={(value) => field.handleChange(value)}
+      size="md"
       value={field.state.value ?? ""}
     >
-      <Stack gap="sm" mt="sm">
+      <Stack gap="md" mt="md">
         {topics.map((topic, idx) => (
-          <Radio key={idx} label={topic} value={topic} />
+          <Radio key={idx} label={topic} styles={{ label: { lineHeight: 1.65 } }} value={topic} />
         ))}
       </Stack>
     </Radio.Group>

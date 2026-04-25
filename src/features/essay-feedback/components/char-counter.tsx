@@ -11,10 +11,13 @@ export function CharCounter({ value }: CharCounterProps) {
   // `v.maxLength` と同じく `String#length`（Valibot 既定）
   const count = useMemo(() => value.length, [value]);
 
-  const color = count > 9500 ? "red" : count > 8000 ? "orange" : "green";
+  const isCritical = count > 9500;
+  const isWarning = count > 8000;
+  // 3 段階の意味色（.7 はライト背景でも十分なコントラストになりやすい）
+  const color = isCritical ? "red.7" : isWarning ? "orange.7" : "green.7";
 
   return (
-    <Text c={color} size="xs" ta="right">
+    <Text c={color} fw={500} size="sm" ta="right">
       {count.toLocaleString()} / {MAX_ESSAY_BODY_CHARS.toLocaleString()} 文字
     </Text>
   );
