@@ -52,7 +52,7 @@ export function ResultReader({ correctedBody }: ResultReaderProps) {
                 value={displayMode}
                 w="100%"
               />
-              <Box style={{ alignSelf: isSmUp ? "flex-start" : "stretch" }} w="100%">
+              <Box style={{ alignSelf: isSmUp ? "end" : "stretch" }} w="100%">
                 <TtsPlayControls
                   fullWidth={ttsFullWidth}
                   isSupported={isSupported}

@@ -2,14 +2,16 @@ import { Anchor, Group, Stack, Title } from "@mantine/core";
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
+import type { FileRoutesByTo } from "~/routeTree.gen";
+
 type PageHeaderProps = {
-  backHref?: string;
+  backHref?: keyof FileRoutesByTo;
   backLabel?: string;
-  endSection?: ReactNode;
+  children?: ReactNode;
   title: string;
 };
 
-export function PageHeader({ title, backHref, backLabel, endSection }: PageHeaderProps) {
+export function PageHeader({ title, backHref, backLabel, children }: PageHeaderProps) {
   return (
     <Stack gap="xs" mb="xl">
       {backHref != null && (
@@ -17,12 +19,12 @@ export function PageHeader({ title, backHref, backLabel, endSection }: PageHeade
           ← {backLabel ?? "戻る"}
         </Anchor>
       )}
-      {endSection != null ? (
+      {children ? (
         <Group align="center" justify="space-between" wrap="wrap">
           <Title m={0} order={1} size="h2" style={{ minWidth: 0 }}>
             {title}
           </Title>
-          {endSection}
+          {children}
         </Group>
       ) : (
         <Title order={1} size="h2">
