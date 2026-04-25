@@ -1,11 +1,9 @@
-import { Badge, Box, Grid, Progress, Stack, Text } from "@mantine/core";
+import { Badge, Box, Group, Progress, Stack, Text } from "@mantine/core";
+import type { ReactNode } from "react";
 
 import type { ScoringState } from "~/features/essay-feedback/types/essay";
 
 const STAGE_ORDER = ["idle", "score", "cefr", "toeic", "done"] as const;
-
-const labelSpan = { base: 12, md: 3, sm: 4 } as const;
-const valueSpan = { base: 12, md: 9, sm: 8 } as const;
 
 /** 英日混在でも自然に折り返し */
 const wrapTextStyle = {
@@ -23,20 +21,15 @@ export function ScoringProgress({ state }: ScoringProgressProps) {
   const progressValue = (stageIndex / (STAGE_ORDER.length - 1)) * 100;
 
   return (
-    <Stack gap="lg">
+    <Stack align="stretch" gap="lg">
       <Progress
         animated={state.stage !== "done"}
         aria-label="採点進捗"
         size="lg"
         value={progressValue}
       />
-      <Grid align="flex-start" columns={12} gutter={{ base: "sm", sm: "md" }}>
-        <Grid.Col span={labelSpan} style={{ minWidth: 0 }}>
-          <Text fw={700} size="md">
-            点数
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={valueSpan} style={{ minWidth: 0 }}>
+      <Stack align="stretch" gap="md">
+        <ScoringRow label="点数">
           {state.result.score != null ? (
             <Text fw={700} size="xl" ta="start" w="100%">
               {state.result.score}点
@@ -46,14 +39,8 @@ export function ScoringProgress({ state }: ScoringProgressProps) {
               採点中...
             </Text>
           )}
-        </Grid.Col>
-
-        <Grid.Col span={labelSpan} style={{ minWidth: 0 }}>
-          <Text fw={700} size="md">
-            総合評価
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={valueSpan} style={{ minWidth: 0 }}>
+        </ScoringRow>
+        <ScoringRow label="総合評価">
           {state.result.score == null ? (
             <Text c="dimmed" size="md" ta="start">
               採点中...
@@ -67,56 +54,64 @@ export function ScoringProgress({ state }: ScoringProgressProps) {
               —
             </Text>
           )}
-        </Grid.Col>
-
-        <Grid.Col span={labelSpan} style={{ minWidth: 0 }}>
-          <Text fw={700} size="md">
-            CEFR レベル
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={valueSpan} style={{ minWidth: 0 }}>
+        </ScoringRow>
+        <ScoringRow label="CEFR レベル">
           {state.result.cefr != null ? (
-            <Box style={{ textAlign: "start" as const, width: "100%" }}>
-              <Badge
-                color="teal"
-                size="lg"
-                styles={{ label: { fontSize: "var(--mantine-font-size-md)", fontWeight: 700 } }}
-                variant="light"
-              >
-                {state.result.cefr}
-              </Badge>
-            </Box>
+            <Badge
+              color="teal"
+              size="lg"
+              styles={{ label: { fontSize: "var(--mantine-font-size-md)", fontWeight: 700 } }}
+              variant="light"
+            >
+              {state.result.cefr}
+            </Badge>
           ) : (
             <Text c="dimmed" size="md" ta="start">
               採点中...
             </Text>
           )}
-        </Grid.Col>
-
-        <Grid.Col span={labelSpan} style={{ minWidth: 0 }}>
-          <Text fw={700} size="md">
-            TOEIC 推定スコア
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={valueSpan} style={{ minWidth: 0 }}>
+        </ScoringRow>
+        <ScoringRow label="TOEIC 推定スコア">
           {state.result.toeicMin != null && state.result.toeicMax != null ? (
-            <Box style={{ textAlign: "start" as const, width: "100%" }}>
-              <Badge
-                color="grape"
-                size="lg"
-                styles={{ label: { fontSize: "var(--mantine-font-size-md)", fontWeight: 700 } }}
-                variant="light"
-              >
-                {state.result.toeicMin} 〜 {state.result.toeicMax} 点
-              </Badge>
-            </Box>
+            <Badge
+              color="grape"
+              size="lg"
+              styles={{ label: { fontSize: "var(--mantine-font-size-md)", fontWeight: 700 } }}
+              variant="light"
+            >
+              {state.result.toeicMin} 〜 {state.result.toeicMax} 点
+            </Badge>
           ) : (
             <Text c="dimmed" size="md" ta="start">
               採点中...
             </Text>
           )}
-        </Grid.Col>
-      </Grid>
+        </ScoringRow>
+      </Stack>
     </Stack>
+  );
+}
+
+type ScoringRowProps = { children: ReactNode; label: string };
+
+/**
+ * ラベル列と値列の開始位置を揃え、左寄せ（`text-align: start`）で統一する。
+ */
+function ScoringRow({ children, label }: ScoringRowProps) {
+  return (
+    <Group align="flex-start" gap="md" justify="flex-start" w="100%" wrap="wrap">
+      <Text fw={700} maw="100%" miw="10rem" size="md" style={{ flex: "0 0 auto" }}>
+        {label}
+      </Text>
+      <Box
+        style={{
+          flex: "1 1 min(0, 100%)",
+          minWidth: 0,
+          textAlign: "left",
+        }}
+      >
+        {children}
+      </Box>
+    </Group>
   );
 }
