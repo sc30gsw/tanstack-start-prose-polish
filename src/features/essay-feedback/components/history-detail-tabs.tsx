@@ -3,13 +3,9 @@ import { ClientOnly, useNavigate } from "@tanstack/react-router";
 
 import { DiffView } from "~/features/essay-feedback/components/diff-view";
 import { ResultReader } from "~/features/essay-feedback/components/result-reader";
-import {
-  DIFF_VIEW_MODE_CONTROL_LABEL,
-  DIFF_VIEW_MODE_OPTIONS,
-} from "~/features/essay-feedback/constants/diff-view-ui";
+import { DIFF_VIEW_MODE_OPTIONS } from "~/features/essay-feedback/constants/diff-view-ui";
 import { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
 import { useResolvedDiffView } from "~/features/essay-feedback/hooks/use-resolved-diff-view";
-import type { DiffComment } from "~/features/essay-feedback/schemas/essay-schema";
 
 type HistoryDetailTabsProps = {
   bodyAfter?: null | string;
@@ -26,9 +22,7 @@ export function HistoryDetailTabs({
   tab: tabFromUrl,
   view: viewFromUrl,
 }: HistoryDetailTabsProps) {
-  const { addComment, comments, isLoading, removeUserComment, updateUserComment } =
-    useDiffComments(essayId);
-  const diffComments = (comments as unknown[]).map((c) => c as DiffComment);
+  const { isLoading } = useDiffComments(essayId);
   const navigate = useNavigate({ from: "/essays/$essayId/history" });
   const activeTab = tabFromUrl ?? "before";
   const diffView = useResolvedDiffView(viewFromUrl);
@@ -96,7 +90,7 @@ export function HistoryDetailTabs({
             <Stack gap="md" mt="md">
               <Group justify="center" w="100%" wrap="nowrap">
                 <SegmentedControl
-                  aria-label={DIFF_VIEW_MODE_CONTROL_LABEL}
+                  aria-label="見方を切り替え"
                   data={DIFF_VIEW_MODE_OPTIONS.map(({ label, value }) => ({ label, value }))}
                   fullWidth
                   maw={560}
@@ -123,11 +117,7 @@ export function HistoryDetailTabs({
                     key={`${bodyAfter.length}-${bodyBefore.length}-${diffView}`}
                     afterText={bodyAfter}
                     beforeText={bodyBefore}
-                    comments={diffComments}
                     diffStyle={diffView}
-                    onAddComment={addComment}
-                    onDeleteUserComment={removeUserComment}
-                    onUpdateUserComment={updateUserComment}
                     readonly
                     showAiModalCommentForm
                   />
