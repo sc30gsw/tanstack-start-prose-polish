@@ -1,6 +1,8 @@
 import {
   Button,
   Container,
+  Grid,
+  GridCol,
   Group,
   Loader,
   Pagination,
@@ -199,32 +201,36 @@ function EssaysPage() {
         <Text c="dimmed" size="sm">
           キーワードと作文モードで絞り込めます
         </Text>
-        <Group align="flex-end" gap="md" grow preventGrowOverflow={false} wrap="wrap">
-          <TextInput
-            aria-label="履歴をキーワード検索"
-            flex="1 1 16rem"
-            leftSection={<IconSearch size={18} />}
-            onChange={(e) => handleQueryChange(e.currentTarget.value)}
-            placeholder="タイトル・本文の内容で検索"
-            size="md"
-            value={query}
-          />
-          <Select
-            aria-label="作文モードで絞り込み"
-            data={[...MODE_FILTER_OPTIONS]}
-            leftSection={<IconFilter size={18} />}
-            maw={320}
-            miw={200}
-            onChange={(v) => {
-              setModeFilter((v ?? "all") as ModeFilter);
-              setPage(1);
-            }}
-            placeholder="モードを選択"
-            size="md"
-            value={modeFilter}
-            w={{ base: "100%", sm: "auto" }}
-          />
-        </Group>
+        <Grid align="flex-end" gap="md" w="100%">
+          <GridCol span={{ base: 12, md: 8 }}>
+            <TextInput
+              aria-label="履歴をキーワード検索"
+              leftSection={<IconSearch size={18} />}
+              onChange={(e) => handleQueryChange(e.currentTarget.value)}
+              placeholder="タイトル・本文の内容で検索"
+              size="md"
+              value={query}
+              w="100%"
+            />
+          </GridCol>
+          <GridCol span={{ base: 12, md: 4 }}>
+            <Select
+              aria-label="作文モードで絞り込み"
+              data={[...MODE_FILTER_OPTIONS]}
+              leftSection={<IconFilter size={18} />}
+              maw={{ base: "100%", md: 320 }}
+              miw={{ base: 0, md: 200 }}
+              onChange={(v) => {
+                setModeFilter((v ?? "all") as ModeFilter);
+                setPage(1);
+              }}
+              placeholder="モードを選択"
+              size="md"
+              value={modeFilter}
+              w="100%"
+            />
+          </GridCol>
+        </Grid>
       </Stack>
 
       <ClientOnly>

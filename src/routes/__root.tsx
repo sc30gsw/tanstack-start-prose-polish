@@ -6,7 +6,7 @@ import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { useEffect } from "react";
 
 import { AppShellLayout } from "~/components/app-shell-layout";
-import { theme } from "~/lib/theme";
+import { mantineCssVariablesResolver, theme } from "~/lib/theme";
 
 import appCss from "../styles.css?url";
 
@@ -39,7 +39,11 @@ function RootComponent() {
         <HeadContent />
       </head>
       <body>
-        <MantineProvider defaultColorScheme="auto" theme={theme}>
+        <MantineProvider
+          cssVariablesResolver={mantineCssVariablesResolver}
+          defaultColorScheme="auto"
+          theme={theme}
+        >
           <ModalsProvider>
             <AppShellLayout>
               <Outlet />

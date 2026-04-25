@@ -125,11 +125,11 @@ export function HistoryCard({
             to="/essays/$essayId/history"
           >
             <Group gap="sm" wrap="nowrap">
-              <ThemeIcon color={modeColor} radius="md" size="lg" variant="light">
+              <ThemeIcon autoContrast color={modeColor} radius="md" size="lg" variant="light">
                 <IconBook2 size={18} />
               </ThemeIcon>
               <Stack gap={2} style={{ minWidth: 0 }}>
-                <Text c="dark" fw={600} lineClamp={1} size="sm">
+                <Text c="var(--mantine-color-text)" fw={600} lineClamp={1} size="sm">
                   {title}
                 </Text>
                 {preview != null && preview.length > 0 && (
@@ -146,7 +146,8 @@ export function HistoryCard({
             onClick={handleDeleteRequest}
             size="lg"
             style={{ flexShrink: 0 }}
-            variant="subtle"
+            title="履歴を削除"
+            variant="light"
           >
             <IconTrash size={20} />
           </ActionIcon>
@@ -154,24 +155,24 @@ export function HistoryCard({
 
         <Group gap="sm" justify="space-between" wrap="wrap">
           <Group gap="sm" wrap="wrap">
-            <Badge color={modeColor} size="md" variant="light">
+            <Badge autoContrast color={modeColor} size="md" variant="light">
               {modeLabel}
             </Badge>
-            <Badge color={statusColor} size="md" variant="dot">
+            <Badge autoContrast color={statusColor} size="md" variant="dot">
               {statusLabel}
             </Badge>
             {score != null && (
-              <Badge color="blue" size="md" variant="outline">
+              <Badge autoContrast color="blue" size="md" variant="outline">
                 {score}点
               </Badge>
             )}
             {cefr != null && (
-              <Badge color="teal" size="md" variant="outline">
+              <Badge autoContrast color="teal" size="md" variant="outline">
                 CEFR {cefr}
               </Badge>
             )}
             {toeicMin != null && toeicMax != null && (
-              <Badge color="grape" size="md" variant="outline">
+              <Badge autoContrast color="grape" size="md" variant="outline">
                 TOEIC {toeicMin}〜{toeicMax}
               </Badge>
             )}

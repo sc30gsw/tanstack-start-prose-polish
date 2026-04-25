@@ -118,7 +118,8 @@ export function DiffCommentThread({
                             requestDelete(comment.id);
                           }}
                           size="sm"
-                          variant="subtle"
+                          title="コメントを削除"
+                          variant="light"
                         >
                           <IconTrash size={14} />
                         </ActionIcon>

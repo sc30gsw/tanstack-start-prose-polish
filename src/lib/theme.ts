@@ -1,4 +1,13 @@
-import { createTheme, rem } from "@mantine/core";
+import { createTheme, rem, type CSSVariablesResolver } from "@mantine/core";
+
+/** デフォルトの dimmed（gray-6）はライト背景で薄く感じやすいため、本文に近いトーンに寄せる */
+export const mantineCssVariablesResolver: CSSVariablesResolver = () => ({
+  variables: {},
+  light: {
+    "--mantine-color-dimmed": "var(--mantine-color-gray-7)",
+  },
+  dark: {},
+});
 
 const primaryColor = "indigo" as const;
 
