@@ -94,7 +94,7 @@ export function DiffCommentThread({
                     {comment.updatedAt != null && isUser ? "（編集あり）" : null}
                   </Text>
                   {showMutate && !isEditing && (
-                    <Group gap={6} wrap="nowrap">
+                    <Group gap={4} wrap="nowrap">
                       {onUpdateUserComment != null && (
                         <ActionIcon
                           aria-label="コメントを編集"
@@ -103,10 +103,10 @@ export function DiffCommentThread({
                           onClick={() => {
                             startEdit(comment);
                           }}
-                          size="md"
-                          variant="light"
+                          size="sm"
+                          variant="subtle"
                         >
-                          <IconPencil size={18} />
+                          <IconPencil size={14} />
                         </ActionIcon>
                       )}
                       {onDeleteUserComment != null && (
@@ -117,10 +117,10 @@ export function DiffCommentThread({
                           onClick={() => {
                             requestDelete(comment.id);
                           }}
-                          size="md"
-                          variant="light"
+                          size="sm"
+                          variant="subtle"
                         >
-                          <IconTrash size={18} />
+                          <IconTrash size={14} />
                         </ActionIcon>
                       )}
                     </Group>
