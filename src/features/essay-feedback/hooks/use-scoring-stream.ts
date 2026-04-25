@@ -33,6 +33,10 @@ export function useScoringStream() {
         setState((prev) => ({ ...prev, result: { ...accumulated }, stage: "done" }));
       }
     }
+
+    if (signal.aborted) return;
+    // 最終チャンクの stage 更新が取りこぼされても採点完了扱いにする
+    setState((prev) => ({ ...prev, result: { ...prev.result, ...accumulated }, stage: "done" }));
   }, []);
 
   const markFeedbackReady = useCallback(() => {

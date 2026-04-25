@@ -1,4 +1,4 @@
-import { Anchor, Stack, Text, Title } from "@mantine/core";
+import { Anchor, Stack, Title } from "@mantine/core";
 import { Link } from "@tanstack/react-router";
 
 type PageHeaderProps = {
@@ -11,10 +11,8 @@ export function PageHeader({ title, backHref, backLabel }: PageHeaderProps) {
   return (
     <Stack gap="xs" mb="xl">
       {backHref != null && (
-        <Anchor component={Link} to={backHref}>
-          <Text c="dimmed" size="sm">
-            ← {backLabel ?? "戻る"}
-          </Text>
+        <Anchor component={Link} fw={600} size="md" to={backHref} underline="hover">
+          ← {backLabel ?? "戻る"}
         </Anchor>
       )}
       <Title order={1} size="h2">

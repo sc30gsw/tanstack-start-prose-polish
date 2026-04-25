@@ -66,7 +66,11 @@ function ScoringPage() {
 
   return (
     <Container py="xl" size="md">
-      <PageHeader backHref="/" backLabel="履歴一覧" title="採点中..." />
+      <PageHeader
+        backHref="/"
+        backLabel="履歴一覧"
+        title={state.stage === "done" ? "採点結果" : "採点中..."}
+      />
       <Stack gap="xl">
         <ScoringProgress state={state} />
         <Button
