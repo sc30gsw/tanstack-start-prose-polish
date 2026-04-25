@@ -18,12 +18,14 @@
     "test": "vp test"
   },
   "dependencies": {
+    "@instantdb/react": "^1.0.17",
     "@lightsound/cn": "^2.0.2",
     "@mantine/core": "^9.1.0",
     "@mantine/hooks": "^9.1.0",
     "@mantine/modals": "^9.1.0",
     "@pierre/diffs": "^1.1.19",
     "@tabler/icons-react": "^3.41.1",
+    "@tanstack/react-form": "^1.29.1",
     "@tanstack/react-router": "^1.168.23",
     "@tanstack/react-start": "^1.167.45",
     "@tanstack/valibot-adapter": "^1.166.9",

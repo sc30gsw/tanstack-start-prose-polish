@@ -38,18 +38,13 @@ function RootComponent() {
         <HeadContent />
       </head>
       <body>
-        <Outlet />
         <MantineProvider defaultColorScheme="light" theme={theme}>
           <ModalsProvider>
             <Outlet />
           </ModalsProvider>
         </MantineProvider>
-        {import.meta.env.DEV && (
-          <>
-            <TanStackRouterDevtools position="bottom-right" />
-            <Scripts />
-          </>
-        )}
+        <Scripts />
+        {import.meta.env.DEV && <TanStackRouterDevtools position="bottom-right" />}
       </body>
     </html>
   );

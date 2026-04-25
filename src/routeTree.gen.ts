@@ -10,33 +10,102 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EssaysNewRouteImport } from './routes/essays/new'
+import { Route as EssaysEssayIdScoringRouteImport } from './routes/essays/$essayId/scoring'
+import { Route as EssaysEssayIdResultRouteImport } from './routes/essays/$essayId/result'
+import { Route as EssaysEssayIdHistoryRouteImport } from './routes/essays/$essayId/history'
+import { Route as EssaysEssayIdDiffRouteImport } from './routes/essays/$essayId/diff'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EssaysNewRoute = EssaysNewRouteImport.update({
+  id: '/essays/new',
+  path: '/essays/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EssaysEssayIdScoringRoute = EssaysEssayIdScoringRouteImport.update({
+  id: '/essays/$essayId/scoring',
+  path: '/essays/$essayId/scoring',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EssaysEssayIdResultRoute = EssaysEssayIdResultRouteImport.update({
+  id: '/essays/$essayId/result',
+  path: '/essays/$essayId/result',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EssaysEssayIdHistoryRoute = EssaysEssayIdHistoryRouteImport.update({
+  id: '/essays/$essayId/history',
+  path: '/essays/$essayId/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EssaysEssayIdDiffRoute = EssaysEssayIdDiffRouteImport.update({
+  id: '/essays/$essayId/diff',
+  path: '/essays/$essayId/diff',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/essays/new': typeof EssaysNewRoute
+  '/essays/$essayId/diff': typeof EssaysEssayIdDiffRoute
+  '/essays/$essayId/history': typeof EssaysEssayIdHistoryRoute
+  '/essays/$essayId/result': typeof EssaysEssayIdResultRoute
+  '/essays/$essayId/scoring': typeof EssaysEssayIdScoringRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/essays/new': typeof EssaysNewRoute
+  '/essays/$essayId/diff': typeof EssaysEssayIdDiffRoute
+  '/essays/$essayId/history': typeof EssaysEssayIdHistoryRoute
+  '/essays/$essayId/result': typeof EssaysEssayIdResultRoute
+  '/essays/$essayId/scoring': typeof EssaysEssayIdScoringRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/essays/new': typeof EssaysNewRoute
+  '/essays/$essayId/diff': typeof EssaysEssayIdDiffRoute
+  '/essays/$essayId/history': typeof EssaysEssayIdHistoryRoute
+  '/essays/$essayId/result': typeof EssaysEssayIdResultRoute
+  '/essays/$essayId/scoring': typeof EssaysEssayIdScoringRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/essays/new'
+    | '/essays/$essayId/diff'
+    | '/essays/$essayId/history'
+    | '/essays/$essayId/result'
+    | '/essays/$essayId/scoring'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/essays/new'
+    | '/essays/$essayId/diff'
+    | '/essays/$essayId/history'
+    | '/essays/$essayId/result'
+    | '/essays/$essayId/scoring'
+  id:
+    | '__root__'
+    | '/'
+    | '/essays/new'
+    | '/essays/$essayId/diff'
+    | '/essays/$essayId/history'
+    | '/essays/$essayId/result'
+    | '/essays/$essayId/scoring'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EssaysNewRoute: typeof EssaysNewRoute
+  EssaysEssayIdDiffRoute: typeof EssaysEssayIdDiffRoute
+  EssaysEssayIdHistoryRoute: typeof EssaysEssayIdHistoryRoute
+  EssaysEssayIdResultRoute: typeof EssaysEssayIdResultRoute
+  EssaysEssayIdScoringRoute: typeof EssaysEssayIdScoringRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +117,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/essays/new': {
+      id: '/essays/new'
+      path: '/essays/new'
+      fullPath: '/essays/new'
+      preLoaderRoute: typeof EssaysNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/essays/$essayId/scoring': {
+      id: '/essays/$essayId/scoring'
+      path: '/essays/$essayId/scoring'
+      fullPath: '/essays/$essayId/scoring'
+      preLoaderRoute: typeof EssaysEssayIdScoringRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/essays/$essayId/result': {
+      id: '/essays/$essayId/result'
+      path: '/essays/$essayId/result'
+      fullPath: '/essays/$essayId/result'
+      preLoaderRoute: typeof EssaysEssayIdResultRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/essays/$essayId/history': {
+      id: '/essays/$essayId/history'
+      path: '/essays/$essayId/history'
+      fullPath: '/essays/$essayId/history'
+      preLoaderRoute: typeof EssaysEssayIdHistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/essays/$essayId/diff': {
+      id: '/essays/$essayId/diff'
+      path: '/essays/$essayId/diff'
+      fullPath: '/essays/$essayId/diff'
+      preLoaderRoute: typeof EssaysEssayIdDiffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EssaysNewRoute: EssaysNewRoute,
+  EssaysEssayIdDiffRoute: EssaysEssayIdDiffRoute,
+  EssaysEssayIdHistoryRoute: EssaysEssayIdHistoryRoute,
+  EssaysEssayIdResultRoute: EssaysEssayIdResultRoute,
+  EssaysEssayIdScoringRoute: EssaysEssayIdScoringRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
