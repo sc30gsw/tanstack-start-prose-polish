@@ -121,7 +121,8 @@ export function DiffView({
       onLineClick: handleDiffLineClick,
       onLineEnter: handleDiffLineEnter,
       onLineLeave: handleDiffLineLeave,
-      overflow: "scroll" as const,
+      /** 長文1行でも列幅に収まるよう折り返し（既定の scroll は横スクロールになりがち） */
+      overflow: "wrap" as const,
       /** Shiki の GitHub 系テーマ（pierre 既定より GitHub.com に近い配色） */
       theme: { dark: "github-dark" as const, light: "github-light" as const },
       themeType: "light" as const,
