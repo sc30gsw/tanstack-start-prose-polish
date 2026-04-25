@@ -8,19 +8,29 @@ import {
 } from "~/features/essay-feedback/schemas/essay-schema";
 
 type DiffCommentFormProps = {
+  /** false のとき送信成功後は onClose を呼ばない（モーダル内など）。既定は true。 */
+  closeAfterSubmit?: boolean;
   lineNumber: number;
   onClose: () => void;
   onSubmit: (input: DiffCommentInput) => Promise<void>;
   side: "additions" | "deletions";
 };
 
-export function DiffCommentForm({ side, lineNumber, onSubmit, onClose }: DiffCommentFormProps) {
+export function DiffCommentForm({
+  closeAfterSubmit = true,
+  side,
+  lineNumber,
+  onSubmit,
+  onClose,
+}: DiffCommentFormProps) {
   const form = useForm({
     defaultValues: { body: "", lineNumber, side, suggestion: undefined as string | undefined },
     onSubmit: async ({ value }) => {
       await onSubmit(value);
       form.reset();
-      onClose();
+      if (closeAfterSubmit) {
+        onClose();
+      }
     },
     validators: {
       onChange: ({ value }) => {

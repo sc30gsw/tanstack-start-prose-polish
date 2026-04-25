@@ -23,6 +23,7 @@ export const schema = i.schema({
       lineNumber: i.number(),
       side: i.string(),
       suggestion: i.string().optional(),
+      updatedAt: i.date().optional(),
     }),
   },
   links: {

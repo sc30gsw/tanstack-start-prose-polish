@@ -48,6 +48,7 @@ const diffCommentSchema = v.object({
   author: v.picklist(DIFF_COMMENT_AUTHOR),
   createdAt: v.date(),
   id: v.string(),
+  updatedAt: v.optional(v.date()),
 });
 
 const essaySchema = v.object({

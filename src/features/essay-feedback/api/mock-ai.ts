@@ -18,7 +18,7 @@ const DIVERSE_MODE_SAMPLE_QUESTIONS = [
 const MOCK_CORRECTIONS: Array<{ body: string; suggestion: string }> = [
   {
     body: "Passive voice weakens the impact here. Consider using an active construction.",
-    suggestion: "Rewrite using an active subject to make the sentence more direct.",
+    suggestion: "Put the doer of the action before the verb so the sentence reads more directly.",
   },
   {
     body: "This transition is abrupt. The reader needs a bridge between these ideas.",

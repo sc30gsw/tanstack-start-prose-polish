@@ -3,12 +3,17 @@ import { ClientOnly, useNavigate } from "@tanstack/react-router";
 
 import { DiffView } from "~/features/essay-feedback/components/diff-view";
 import { ResultReader } from "~/features/essay-feedback/components/result-reader";
+import {
+  DIFF_VIEW_MODE_CONTROL_LABEL,
+  DIFF_VIEW_MODE_OPTIONS,
+} from "~/features/essay-feedback/constants/diff-view-ui";
+import { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
+import { useResolvedDiffView } from "~/features/essay-feedback/hooks/use-resolved-diff-view";
 import type { DiffComment } from "~/features/essay-feedback/schemas/essay-schema";
 
 type HistoryDetailTabsProps = {
   bodyAfter?: null | string;
   bodyBefore: string;
-  comments: DiffComment[];
   essayId: string;
   tab: "after" | "before" | "diff" | undefined;
   view: "split" | "unified" | undefined;
@@ -17,14 +22,16 @@ type HistoryDetailTabsProps = {
 export function HistoryDetailTabs({
   bodyBefore,
   bodyAfter,
-  comments,
-  essayId: _essayId,
+  essayId,
   tab: tabFromUrl,
   view: viewFromUrl,
 }: HistoryDetailTabsProps) {
+  const { addComment, comments, isLoading, removeUserComment, updateUserComment } =
+    useDiffComments(essayId);
+  const diffComments = (comments as unknown[]).map((c) => c as DiffComment);
   const navigate = useNavigate({ from: "/essays/$essayId/history" });
   const activeTab = tabFromUrl ?? "before";
-  const diffView = viewFromUrl ?? "split";
+  const diffView = useResolvedDiffView(viewFromUrl);
 
   const handleDiffViewChange = (value: string) => {
     void navigate({
@@ -76,36 +83,40 @@ export function HistoryDetailTabs({
           <Stack gap="md">
             <Group justify="flex-end">
               <SegmentedControl
-                aria-label="Diff 表示モード"
-                data={[
-                  { label: "Split", value: "split" },
-                  { label: "Unified", value: "unified" },
-                ]}
+                aria-label={DIFF_VIEW_MODE_CONTROL_LABEL}
+                data={DIFF_VIEW_MODE_OPTIONS.map(({ label, value }) => ({ label, value }))}
                 onChange={handleDiffViewChange}
                 size="xs"
                 value={diffView}
               />
             </Group>
-            <ClientOnly
-              fallback={
-                <Skeleton
-                  aria-busy="true"
-                  aria-label="Diff を読み込み中"
-                  height={400}
-                  radius="md"
+            {isLoading ? (
+              <Skeleton aria-busy="true" aria-label="指摘を読み込み中" height={400} radius="md" />
+            ) : (
+              <ClientOnly
+                fallback={
+                  <Skeleton
+                    aria-busy="true"
+                    aria-label="Diff を読み込み中"
+                    height={400}
+                    radius="md"
+                  />
+                }
+              >
+                <DiffView
+                  key={`${bodyAfter.length}-${bodyBefore.length}-${diffView}`}
+                  afterText={bodyAfter}
+                  beforeText={bodyBefore}
+                  comments={diffComments}
+                  diffStyle={diffView}
+                  onAddComment={addComment}
+                  onDeleteUserComment={removeUserComment}
+                  onUpdateUserComment={updateUserComment}
+                  readonly
+                  showAiModalCommentForm
                 />
-              }
-            >
-              <DiffView
-                key={`${bodyAfter.length}-${bodyBefore.length}-${diffView}`}
-                afterText={bodyAfter}
-                beforeText={bodyBefore}
-                comments={comments}
-                diffStyle={diffView}
-                onAddComment={async () => {}}
-                readonly
-              />
-            </ClientOnly>
+              </ClientOnly>
+            )}
           </Stack>
         ) : (
           <Text c="dimmed">添削後の文章がまだありません</Text>

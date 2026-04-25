@@ -1,4 +1,5 @@
 import { id } from "@instantdb/react";
+import * as v from "valibot";
 
 import type { DiffCommentInput } from "~/features/essay-feedback/schemas/essay-schema";
 import { db } from "~/lib/instant";
@@ -30,10 +31,35 @@ export function useDiffComments(essayId: string) {
     );
   };
 
+  const bodySchema = v.pipe(v.string(), v.minLength(1, "コメントを入力してください"));
+
+  const removeUserComment = async (commentId: string) => {
+    const txChunk = db.tx.diffComments[commentId];
+    if (txChunk == null) return;
+    await db.transact(txChunk.delete());
+  };
+
+  const updateUserComment = async (commentId: string, newBody: string) => {
+    const parsed = v.safeParse(bodySchema, newBody);
+    if (!parsed.success) {
+      return;
+    }
+    const txChunk = db.tx.diffComments[commentId];
+    if (txChunk == null) return;
+    await db.transact(
+      txChunk.update({
+        body: parsed.output,
+        updatedAt: new Date(),
+      }),
+    );
+  };
+
   return {
     addComment,
     comments: data?.diffComments ?? [],
     error: error as Error | null,
     isLoading,
+    removeUserComment,
+    updateUserComment,
   };
 }

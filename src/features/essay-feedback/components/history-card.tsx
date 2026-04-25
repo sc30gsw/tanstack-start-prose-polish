@@ -120,7 +120,7 @@ export function HistoryCard({
         <Group justify="space-between" wrap="nowrap">
           <Link
             params={{ essayId: id }}
-            search={{ tab: "before", view: "split" }}
+            search={{ tab: "before" }}
             style={{ flex: 1, minWidth: 0, textDecoration: "none" }}
             to="/essays/$essayId/history"
           >

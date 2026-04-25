@@ -77,7 +77,6 @@ function ScoringPage() {
           aria-label="添削結果を確認"
           disabled={!state.feedbackReady}
           onClick={() => {
-            // @ts-expect-error TanStack Start augments @tanstack/react-start.Register but useNavigate reads @tanstack/router-core.Register; navigate works at runtime
             void navigate({ params: { essayId }, to: "/essays/$essayId/diff" });
           }}
           size="md"

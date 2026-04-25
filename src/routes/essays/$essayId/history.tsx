@@ -5,11 +5,10 @@ import * as v from "valibot";
 import { PageHeader } from "~/components/page-header";
 import { HistoryDetailTabs } from "~/features/essay-feedback/components/history-detail-tabs";
 import { useEssayDetail } from "~/features/essay-feedback/hooks/use-essay-detail";
-import type { DiffComment } from "~/features/essay-feedback/schemas/essay-schema";
 
 const HistorySearchSchema = v.object({
   tab: v.optional(v.picklist(["before", "diff", "after"]), "before"),
-  view: v.optional(v.picklist(["split", "unified"]), "split"),
+  view: v.optional(v.picklist(["split", "unified"])),
 });
 
 export const Route = createFileRoute("/essays/$essayId/history")({
@@ -33,7 +32,6 @@ function HistoryPage() {
   const essayData = essay as {
     bodyAfter?: null | string;
     bodyBefore?: string;
-    comments?: unknown[];
   } | null;
 
   if (essayData == null || essayData.bodyBefore == null) {
@@ -44,15 +42,12 @@ function HistoryPage() {
     );
   }
 
-  const comments = (essayData.comments ?? []).map((c) => c as DiffComment);
-
   return (
     <Container py="xl" size="xl">
       <PageHeader backHref="/" backLabel="履歴一覧" title="学習履歴詳細" />
       <HistoryDetailTabs
         bodyAfter={essayData.bodyAfter}
         bodyBefore={essayData.bodyBefore}
-        comments={comments}
         essayId={essayId}
         tab={tab}
         view={view}

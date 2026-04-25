@@ -1,13 +1,15 @@
-import { Anchor, Stack, Title } from "@mantine/core";
+import { Anchor, Group, Stack, Title } from "@mantine/core";
 import { Link } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 
 type PageHeaderProps = {
   backHref?: string;
   backLabel?: string;
+  endSection?: ReactNode;
   title: string;
 };
 
-export function PageHeader({ title, backHref, backLabel }: PageHeaderProps) {
+export function PageHeader({ title, backHref, backLabel, endSection }: PageHeaderProps) {
   return (
     <Stack gap="xs" mb="xl">
       {backHref != null && (
@@ -15,9 +17,18 @@ export function PageHeader({ title, backHref, backLabel }: PageHeaderProps) {
           ← {backLabel ?? "戻る"}
         </Anchor>
       )}
-      <Title order={1} size="h2">
-        {title}
-      </Title>
+      {endSection != null ? (
+        <Group align="center" justify="space-between" wrap="wrap">
+          <Title m={0} order={1} size="h2" style={{ minWidth: 0 }}>
+            {title}
+          </Title>
+          {endSection}
+        </Group>
+      ) : (
+        <Title order={1} size="h2">
+          {title}
+        </Title>
+      )}
     </Stack>
   );
 }
