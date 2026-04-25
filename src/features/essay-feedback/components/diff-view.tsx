@@ -1,3 +1,4 @@
+import type { InstaQLEntity } from "@instantdb/react";
 import {
   ActionIcon,
   Box,
@@ -17,6 +18,7 @@ import type {
 import { parseDiffFromFile } from "@pierre/diffs";
 import { FileDiff } from "@pierre/diffs/react";
 import { IconPlus } from "@tabler/icons-react";
+import { getRouteApi } from "@tanstack/react-router";
 import { useCallback, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -24,7 +26,11 @@ import { AiCommentBadge } from "~/features/essay-feedback/components/ai-comment-
 import { AiLineCommentModalBody } from "~/features/essay-feedback/components/ai-line-comment-modal";
 import { DiffCommentForm } from "~/features/essay-feedback/components/diff-comment-form";
 import { DiffCommentThread } from "~/features/essay-feedback/components/diff-comment-thread";
-import type { DiffComment, DiffCommentInput } from "~/features/essay-feedback/schemas/essay-schema";
+import { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
+import type { DiffComment } from "~/features/essay-feedback/schemas/essay-schema";
+import type { AppSchema } from "~/lib/instant-schema";
+
+const routeApi = getRouteApi("/essays/$essayId/diff");
 
 type CommentAnnotationMeta =
   | { aiComments: DiffComment[]; type: "thread"; userComments: DiffComment[] }
@@ -36,32 +42,23 @@ type PendingComment = {
 };
 
 type DiffViewProps = {
-  afterText: string;
-  beforeText: string;
-  comments: DiffComment[];
+  afterText: InstaQLEntity<AppSchema, "essays">["bodyAfter"];
+  beforeText: InstaQLEntity<AppSchema, "essays">["bodyBefore"];
   diffStyle?: "split" | "unified";
-  onAddComment: (input: DiffCommentInput) => Promise<void>;
-  onDeleteUserComment?: (commentId: string) => Promise<void>;
-  onUpdateUserComment?: (commentId: string, body: string) => Promise<void>;
-  /** 差分上の＋・行クリック・インライン。既定 false。 */
   readonly?: boolean;
-  /**
-   * AI 指摘モーダル内の新規コメント。未指定は `!readonly`（履歴は readonly でも `true` にできる）。
-   */
   showAiModalCommentForm?: boolean;
 };
 
 export function DiffView({
   beforeText,
   afterText,
-  comments,
   diffStyle = "split",
-  onAddComment,
-  onDeleteUserComment,
-  onUpdateUserComment,
   readonly = false,
   showAiModalCommentForm: showAiModalCommentFormProp,
 }: DiffViewProps) {
+  const { essayId } = routeApi.useParams();
+  const { addComment, comments, removeUserComment, updateUserComment } = useDiffComments(essayId);
+
   const showAiModalCommentForm = showAiModalCommentFormProp ?? !readonly;
   const resolvedColorScheme = useComputedColorScheme("light", { getInitialValueInEffect: true });
   const diffThemeType = resolvedColorScheme === "dark" ? ("dark" as const) : ("light" as const);
@@ -81,7 +78,7 @@ export function DiffView({
     () =>
       parseDiffFromFile(
         { contents: beforeText, name: "添削前" },
-        { contents: afterText, name: "添削後" },
+        { contents: afterText ?? "", name: "添削後" },
       ),
     [afterText, beforeText],
   );
@@ -225,7 +222,7 @@ export function DiffView({
           <DiffCommentForm
             lineNumber={annotation.lineNumber}
             onClose={() => setPendingComment(null)}
-            onSubmit={onAddComment}
+            onSubmit={addComment}
             side={annotation.side as "additions" | "deletions"}
           />
         </Paper>
@@ -249,15 +246,15 @@ export function DiffView({
         ))}
         <DiffCommentThread
           comments={metadata.userComments}
-          onDeleteUserComment={onDeleteUserComment}
-          onUpdateUserComment={onUpdateUserComment}
+          onDeleteUserComment={removeUserComment}
+          onUpdateUserComment={updateUserComment}
         />
         {!readonly && pendingComment?.lineNumber === annotation.lineNumber && (
           <Paper shadow="xs" withBorder>
             <DiffCommentForm
               lineNumber={annotation.lineNumber}
               onClose={() => setPendingComment(null)}
-              onSubmit={onAddComment}
+              onSubmit={addComment}
               side={annotation.side as "additions" | "deletions"}
             />
           </Paper>
@@ -320,12 +317,12 @@ export function DiffView({
         <AiLineCommentModalBody
           comments={comments}
           lineNumber={aiLineModal.lineNumber}
-          onAddComment={onAddComment}
+          onAddComment={addComment}
           onCloseModal={() => {
             setAiLineModal(null);
           }}
-          onDeleteUserComment={onDeleteUserComment}
-          onUpdateUserComment={onUpdateUserComment}
+          onDeleteUserComment={removeUserComment}
+          onUpdateUserComment={updateUserComment}
           showCommentForm={showAiModalCommentForm}
           side={aiLineModal.side}
         />
@@ -392,15 +389,18 @@ export function DiffView({
                       key={c.id}
                       body={c.body}
                       onOpenDetail={() => {
-                        setAiLineModal({ lineNumber: c.lineNumber, side: c.side });
+                        setAiLineModal({
+                          lineNumber: c.lineNumber,
+                          side: c.side as "additions" | "deletions",
+                        });
                       }}
                       suggestion={c.suggestion}
                     />
                   ))}
                 <DiffCommentThread
                   comments={comments.filter((c) => c.author === "user")}
-                  onDeleteUserComment={onDeleteUserComment}
-                  onUpdateUserComment={onUpdateUserComment}
+                  onDeleteUserComment={removeUserComment}
+                  onUpdateUserComment={updateUserComment}
                 />
               </Stack>
             ) : null}
