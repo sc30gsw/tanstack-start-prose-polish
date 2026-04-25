@@ -118,6 +118,7 @@ export function HistoryDetailTabs({
                     afterText={bodyAfter}
                     beforeText={bodyBefore}
                     diffStyle={diffView}
+                    essayId={essayId}
                     readonly
                     showAiModalCommentForm
                   />

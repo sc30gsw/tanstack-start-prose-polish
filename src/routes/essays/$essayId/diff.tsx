@@ -139,6 +139,7 @@ function DiffViewCOntainer() {
       afterText={essay.bodyAfter}
       beforeText={essay.bodyBefore}
       diffStyle={view}
+      essayId={essayId}
     />
   );
 }

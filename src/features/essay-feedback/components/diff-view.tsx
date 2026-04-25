@@ -18,7 +18,6 @@ import type {
 import { parseDiffFromFile } from "@pierre/diffs";
 import { FileDiff } from "@pierre/diffs/react";
 import { IconPlus } from "@tabler/icons-react";
-import { getRouteApi } from "@tanstack/react-router";
 import { useCallback, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -29,8 +28,6 @@ import { DiffCommentThread } from "~/features/essay-feedback/components/diff-com
 import { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
 import type { DiffComment } from "~/features/essay-feedback/schemas/essay-schema";
 import type { AppSchema } from "~/lib/instant-schema";
-
-const routeApi = getRouteApi("/essays/$essayId/diff");
 
 type CommentAnnotationMeta =
   | { aiComments: DiffComment[]; type: "thread"; userComments: DiffComment[] }
@@ -45,6 +42,7 @@ type DiffViewProps = {
   afterText: InstaQLEntity<AppSchema, "essays">["bodyAfter"];
   beforeText: InstaQLEntity<AppSchema, "essays">["bodyBefore"];
   diffStyle?: "split" | "unified";
+  essayId: InstaQLEntity<AppSchema, "essays">["id"];
   readonly?: boolean;
   showAiModalCommentForm?: boolean;
 };
@@ -53,10 +51,10 @@ export function DiffView({
   beforeText,
   afterText,
   diffStyle = "split",
+  essayId,
   readonly = false,
   showAiModalCommentForm: showAiModalCommentFormProp,
 }: DiffViewProps) {
-  const { essayId } = routeApi.useParams();
   const { addComment, comments, removeUserComment, updateUserComment } = useDiffComments(essayId);
 
   const showAiModalCommentForm = showAiModalCommentFormProp ?? !readonly;

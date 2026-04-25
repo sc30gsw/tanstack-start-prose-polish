@@ -5,7 +5,6 @@ import { ClientOnly, createFileRoute, Link } from "@tanstack/react-router";
 import { PageHeader } from "~/components/page-header";
 import { ResultReader } from "~/features/essay-feedback/components/result-reader";
 import { useEssayDetail } from "~/features/essay-feedback/hooks/use-essay-detail";
-import type { FileRoutesByTo } from "~/routeTree.gen";
 
 export const Route = createFileRoute("/essays/$essayId/result")({
   component: ResultPage,
@@ -48,7 +47,7 @@ function ResultPage() {
     <Container py="xl" size="md">
       <Stack gap="xl">
         <PageHeader
-          backHref={`/essays/${essayId}/diff` as keyof FileRoutesByTo}
+          backHref={`/essays/${essayId}/diff`}
           backLabel="前後の文章を比較"
           title="添削後の文章"
         >

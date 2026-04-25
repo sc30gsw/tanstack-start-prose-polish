@@ -1,11 +1,11 @@
 import { Anchor, Group, Stack, Title } from "@mantine/core";
 import { Link } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 
 import type { FileRoutesByTo } from "~/routeTree.gen";
 
 type PageHeaderProps = {
-  backHref?: keyof FileRoutesByTo;
+  backHref?: keyof FileRoutesByTo | ComponentProps<typeof Link>["to"];
   backLabel?: string;
   children?: ReactNode;
   title: string;
