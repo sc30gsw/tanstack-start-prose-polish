@@ -50,88 +50,111 @@ export function HistoryDetailTabs({
   };
 
   return (
-    <Tabs onChange={handleTabChange} value={activeTab}>
-      <Tabs.List mb="md">
-        <Tabs.Tab aria-label="添削前タブ" value="before">
-          添削前
-        </Tabs.Tab>
-        <Tabs.Tab aria-label="Diff 指摘タブ" disabled={bodyAfter == null} value="diff">
-          Diff 指摘
-        </Tabs.Tab>
-        <Tabs.Tab aria-label="添削後タブ" disabled={bodyAfter == null} value="after">
-          添削後
-        </Tabs.Tab>
-      </Tabs.List>
+    <Stack gap="lg">
+      <Tabs
+        onChange={handleTabChange}
+        styles={{
+          list: {
+            justifyContent: "center",
+            width: "100%",
+          },
+          tab: {
+            fontSize: "var(--mantine-font-size-lg)",
+            padding: "var(--mantine-spacing-sm) var(--mantine-spacing-lg)",
+          },
+        }}
+        value={activeTab}
+        variant="outline"
+      >
+        <Tabs.List>
+          <Tabs.Tab value="before">添削前</Tabs.Tab>
+          <Tabs.Tab disabled={bodyAfter == null} value="diff">
+            前後比較
+          </Tabs.Tab>
+          <Tabs.Tab disabled={bodyAfter == null} value="after">
+            添削後
+          </Tabs.Tab>
+        </Tabs.List>
 
-      <Tabs.Panel value="before">
-        <Paper p="xl" radius="md" withBorder>
-          <Text
-            size="md"
-            style={{
-              fontFamily: "Georgia, 'Times New Roman', serif",
-              lineHeight: 2,
-              whiteSpace: "pre-wrap",
-            }}
-          >
-            {bodyBefore}
-          </Text>
-        </Paper>
-      </Tabs.Panel>
+        <Tabs.Panel value="before">
+          <Paper mt="md" p="xl" radius="md" withBorder>
+            <Text
+              size="md"
+              style={{
+                fontFamily: "Georgia, 'Times New Roman', serif",
+                lineHeight: 2,
+                whiteSpace: "pre-wrap",
+              }}
+            >
+              {bodyBefore}
+            </Text>
+          </Paper>
+        </Tabs.Panel>
 
-      <Tabs.Panel value="diff">
-        {bodyAfter != null ? (
-          <Stack gap="md">
-            <Group justify="flex-end">
-              <SegmentedControl
-                aria-label={DIFF_VIEW_MODE_CONTROL_LABEL}
-                data={DIFF_VIEW_MODE_OPTIONS.map(({ label, value }) => ({ label, value }))}
-                onChange={handleDiffViewChange}
-                size="xs"
-                value={diffView}
-              />
-            </Group>
-            {isLoading ? (
-              <Skeleton aria-busy="true" aria-label="指摘を読み込み中" height={400} radius="md" />
-            ) : (
-              <ClientOnly
-                fallback={
-                  <Skeleton
-                    aria-busy="true"
-                    aria-label="Diff を読み込み中"
-                    height={400}
-                    radius="md"
-                  />
-                }
-              >
-                <DiffView
-                  key={`${bodyAfter.length}-${bodyBefore.length}-${diffView}`}
-                  afterText={bodyAfter}
-                  beforeText={bodyBefore}
-                  comments={diffComments}
-                  diffStyle={diffView}
-                  onAddComment={addComment}
-                  onDeleteUserComment={removeUserComment}
-                  onUpdateUserComment={updateUserComment}
-                  readonly
-                  showAiModalCommentForm
+        <Tabs.Panel value="diff">
+          {bodyAfter != null ? (
+            <Stack gap="md" mt="md">
+              <Group justify="center" w="100%" wrap="nowrap">
+                <SegmentedControl
+                  aria-label={DIFF_VIEW_MODE_CONTROL_LABEL}
+                  data={DIFF_VIEW_MODE_OPTIONS.map(({ label, value }) => ({ label, value }))}
+                  fullWidth
+                  maw={560}
+                  onChange={handleDiffViewChange}
+                  size="sm"
+                  value={diffView}
+                  w="100%"
                 />
-              </ClientOnly>
-            )}
-          </Stack>
-        ) : (
-          <Text c="dimmed">添削後の文章がまだありません</Text>
-        )}
-      </Tabs.Panel>
+              </Group>
+              {isLoading ? (
+                <Skeleton aria-busy="true" aria-label="指摘を読み込み中" height={400} radius="md" />
+              ) : (
+                <ClientOnly
+                  fallback={
+                    <Skeleton
+                      aria-busy="true"
+                      aria-label="差分を読み込み中"
+                      height={400}
+                      radius="md"
+                    />
+                  }
+                >
+                  <DiffView
+                    key={`${bodyAfter.length}-${bodyBefore.length}-${diffView}`}
+                    afterText={bodyAfter}
+                    beforeText={bodyBefore}
+                    comments={diffComments}
+                    diffStyle={diffView}
+                    onAddComment={addComment}
+                    onDeleteUserComment={removeUserComment}
+                    onUpdateUserComment={updateUserComment}
+                    readonly
+                    showAiModalCommentForm
+                  />
+                </ClientOnly>
+              )}
+            </Stack>
+          ) : (
+            <Text c="dimmed" mt="md">
+              添削後の文章がまだありません
+            </Text>
+          )}
+        </Tabs.Panel>
 
-      <Tabs.Panel value="after">
-        {bodyAfter != null ? (
-          <ClientOnly>
-            <ResultReader correctedBody={bodyAfter} />
-          </ClientOnly>
-        ) : (
-          <Text c="dimmed">添削後の文章がまだありません</Text>
-        )}
-      </Tabs.Panel>
-    </Tabs>
+        <Tabs.Panel value="after">
+          {bodyAfter != null ? (
+            <ClientOnly>
+              <Stack mt="md">
+                <ResultReader correctedBody={bodyAfter} />
+              </Stack>
+            </ClientOnly>
+          ) : (
+            <Text c="dimmed" mt="md">
+              添削後の文章がまだありません
+            </Text>
+          )}
+        </Tabs.Panel>
+      </Tabs>
+    </Stack>
   );
 }
