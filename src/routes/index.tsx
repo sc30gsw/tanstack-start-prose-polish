@@ -11,6 +11,7 @@ import {
   Text,
   ThemeIcon,
   Title,
+  type MantineColor,
 } from "@mantine/core";
 import {
   IconChevronRight,
@@ -28,14 +29,7 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-type Feature = {
-  color: string;
-  description: string;
-  Icon: React.FC<{ size?: number }>;
-  title: string;
-};
-
-const FEATURES: Feature[] = [
+const FEATURES = [
   {
     color: "indigo",
     description: "書いた英文を AI が自動添削。変更箇所を Diff で確認しながら学習できます。",
@@ -60,7 +54,12 @@ const FEATURES: Feature[] = [
     Icon: IconHeadphones,
     title: "TTS & AI コメント",
   },
-];
+] as const satisfies readonly {
+  color: MantineColor;
+  description: string;
+  Icon: React.FC<{ size?: number }>;
+  title: string;
+}[];
 
 function HomePage() {
   return (
@@ -74,10 +73,10 @@ function HomePage() {
         pt="md"
         ta="center"
       >
-        <Title order={1} style={{ fontSize: "clamp(1.9rem, 4.5vw, 2.75rem)", lineHeight: 1.25 }}>
+        <Title order={1} className="text-[clamp(1.9rem,4.5vw,2.75rem)] leading-1.25">
           あなたの英文を、磨き上げる。
         </Title>
-        <Text c="dimmed" maw={560} size="lg" style={{ lineHeight: 1.65 }}>
+        <Text c="dimmed" maw={560} size="lg" className="leading-1.65">
           書いた英文を AI が添削し、CEFR・TOEIC 相当のスコアを即時に推定。Diff 上で AI
           コメントに返信したり、ネイティブ読み上げで発音も確認できます。
         </Text>
@@ -104,7 +103,7 @@ function HomePage() {
             <Text fw={600} mb="xs" size="md">
               {title}
             </Text>
-            <Text c="dimmed" size="sm" style={{ lineHeight: 1.6 }}>
+            <Text c="dimmed" size="sm" className="leading-1.6">
               {description}
             </Text>
           </Card>

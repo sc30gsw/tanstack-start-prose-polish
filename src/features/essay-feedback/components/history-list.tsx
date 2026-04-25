@@ -3,16 +3,9 @@ import { Link } from "@tanstack/react-router";
 
 import { HistoryCard } from "~/features/essay-feedback/components/history-card";
 import { useEssayHistory } from "~/features/essay-feedback/hooks/use-essay-history";
-import { db } from "~/lib/instant";
 
 export function HistoryList() {
   const { essays, isLoading, error } = useEssayHistory();
-
-  const handleDelete = async (id: string) => {
-    const tx = db.tx.essays[id];
-    if (tx == null) return;
-    await db.transact(tx.delete());
-  };
 
   if (isLoading) {
     return (
@@ -50,20 +43,7 @@ export function HistoryList() {
   return (
     <Stack gap="sm">
       {essays.map((essay) => (
-        <HistoryCard
-          key={essay.id}
-          bodyBefore={essay.bodyBefore as string}
-          cefr={essay.cefr}
-          createdAt={new Date(essay.createdAt as string | number | Date)}
-          id={essay.id}
-          mode={essay.mode}
-          onDelete={(id) => void handleDelete(id)}
-          prompt={essay.prompt as string | null | undefined}
-          score={essay.score}
-          status={essay.status}
-          toeicMax={essay.toeicMax}
-          toeicMin={essay.toeicMin}
-        />
+        <HistoryCard key={essay.id} essay={essay} />
       ))}
     </Stack>
   );

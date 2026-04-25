@@ -19,7 +19,6 @@ import { useState } from "react";
 
 import { HistoryCard } from "~/features/essay-feedback/components/history-card";
 import { useEssayHistory } from "~/features/essay-feedback/hooks/use-essay-history";
-import { db } from "~/lib/instant";
 
 const MODE_FILTER_OPTIONS = [
   { label: "すべて", value: "all" },
@@ -60,12 +59,11 @@ function matchesModeFilter(mode: string, modeFilter: ModeFilter): boolean {
 type EssaysListProps = {
   debouncedQuery: string;
   modeFilter: ModeFilter;
-  onDelete: (id: string) => void;
   onPageChange: (page: number) => void;
   page: number;
 };
 
-function EssaysList({ debouncedQuery, modeFilter, onDelete, onPageChange, page }: EssaysListProps) {
+function EssaysList({ debouncedQuery, modeFilter, onPageChange, page }: EssaysListProps) {
   const { essays, isLoading, error } = useEssayHistory();
 
   const filtered = essays.filter((essay) => {
@@ -140,20 +138,7 @@ function EssaysList({ debouncedQuery, modeFilter, onDelete, onPageChange, page }
         {filtered.length} 件{narrowLabel}
       </Text>
       {paged.map((essay) => (
-        <HistoryCard
-          key={essay.id}
-          bodyBefore={essay.bodyBefore as string}
-          cefr={essay.cefr}
-          createdAt={new Date(essay.createdAt as string | number | Date)}
-          id={essay.id}
-          mode={essay.mode}
-          onDelete={(id) => onDelete(id)}
-          prompt={essay.prompt as string | null | undefined}
-          score={essay.score}
-          status={essay.status}
-          toeicMax={essay.toeicMax}
-          toeicMin={essay.toeicMin}
-        />
+        <HistoryCard key={essay.id} essay={essay} />
       ))}
       {totalPages > 1 && (
         <Group justify="center" mt="lg">
@@ -176,12 +161,6 @@ function EssaysPage() {
   const [debouncedQuery] = useDebouncedValue(query, 200);
   const [page, setPage] = useState(1);
   const [modeFilter, setModeFilter] = useState<ModeFilter>("all");
-
-  const handleDelete = async (id: string) => {
-    const tx = db.tx.essays[id];
-    if (tx == null) return;
-    await db.transact(tx.delete());
-  };
 
   const handleQueryChange = (value: string) => {
     setQuery(value);
@@ -237,7 +216,6 @@ function EssaysPage() {
         <EssaysList
           debouncedQuery={debouncedQuery}
           modeFilter={modeFilter}
-          onDelete={(id) => void handleDelete(id)}
           onPageChange={setPage}
           page={page}
         />

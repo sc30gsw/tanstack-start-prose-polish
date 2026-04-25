@@ -3,7 +3,6 @@ import { Link } from "@tanstack/react-router";
 
 import { HistoryCard } from "~/features/essay-feedback/components/history-card";
 import { useEssayHistory } from "~/features/essay-feedback/hooks/use-essay-history";
-import { db } from "~/lib/instant";
 
 const HOME_RECENT_LIMIT = 5;
 
@@ -11,12 +10,6 @@ export function HomeRecentHistory() {
   const { essays, isLoading, error } = useEssayHistory();
   const recent = essays.slice(0, HOME_RECENT_LIMIT);
   const restCount = Math.max(0, essays.length - HOME_RECENT_LIMIT);
-
-  const handleDelete = async (id: string) => {
-    const tx = db.tx.essays[id];
-    if (tx == null) return;
-    await db.transact(tx.delete());
-  };
 
   if (isLoading) {
     return (
@@ -26,7 +19,7 @@ export function HomeRecentHistory() {
     );
   }
 
-  if (error != null) {
+  if (error) {
     return (
       <Text c="red" size="sm">
         履歴の読み込みに失敗しました: {error.message}
@@ -50,20 +43,7 @@ export function HomeRecentHistory() {
   return (
     <Stack gap="sm">
       {recent.map((essay) => (
-        <HistoryCard
-          key={essay.id}
-          bodyBefore={essay.bodyBefore as string}
-          cefr={essay.cefr}
-          createdAt={new Date(essay.createdAt as string | number | Date)}
-          id={essay.id}
-          mode={essay.mode}
-          onDelete={(id) => void handleDelete(id)}
-          prompt={essay.prompt as string | null | undefined}
-          score={essay.score}
-          status={essay.status}
-          toeicMax={essay.toeicMax}
-          toeicMin={essay.toeicMin}
-        />
+        <HistoryCard key={essay.id} essay={essay} />
       ))}
       {restCount > 0 && (
         <Text c="dimmed" mt="xs" size="sm" ta="center">

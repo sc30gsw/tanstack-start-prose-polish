@@ -8,7 +8,7 @@ export function useEssayHistory() {
   });
 
   return {
-    error: error as Error | null,
+    error,
     essays: data?.essays ?? [],
     isLoading,
   };
