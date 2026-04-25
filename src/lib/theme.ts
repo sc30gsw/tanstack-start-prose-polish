@@ -1,5 +1,7 @@
 import { createTheme, rem } from "@mantine/core";
 
+const primaryColor = "indigo" as const;
+
 export const theme = createTheme({
   defaultRadius: "md",
   fontFamily:
@@ -28,7 +30,7 @@ export const theme = createTheme({
     xl: "2",
     xs: "1.4",
   },
-  primaryColor: "indigo",
+  primaryColor,
   radius: {
     lg: rem(12),
     md: rem(8),
@@ -77,11 +79,13 @@ export const theme = createTheme({
     },
     SegmentedControl: {
       defaultProps: {
+        color: primaryColor,
         radius: "md",
       },
     },
     Tabs: {
       defaultProps: {
+        color: primaryColor,
         radius: "md",
       },
       styles: {

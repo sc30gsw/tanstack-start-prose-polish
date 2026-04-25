@@ -2,7 +2,7 @@ import { AppShell, Button, Divider, NavLink, ScrollArea, Text } from "@mantine/c
 import { IconClockHour3, IconHome, IconPencilPlus } from "@tabler/icons-react";
 import { Link, useRouterState } from "@tanstack/react-router";
 
-export function AppSidebar() {
+export function AppSidebar({ onClose }: Partial<Record<"onClose", () => void>>) {
   const { location } = useRouterState();
   const pathname = location.pathname;
 
@@ -12,6 +12,7 @@ export function AppSidebar() {
         fullWidth
         leftSection={<IconPencilPlus size={16} />}
         mb="md"
+        onClick={onClose}
         renderRoot={(props) => <Link to="/essays/new" {...props} />}
         size="md"
       >
@@ -23,12 +24,14 @@ export function AppSidebar() {
           active={pathname === "/"}
           label="ホーム"
           leftSection={<IconHome size={16} />}
+          onClick={onClose}
           renderRoot={(props) => <Link to="/" {...props} />}
         />
         <NavLink
           active={pathname === "/essays"}
           label="履歴一覧"
           leftSection={<IconClockHour3 size={16} />}
+          onClick={onClose}
           renderRoot={(props) => <Link to="/essays" {...props} />}
         />
       </AppShell.Section>

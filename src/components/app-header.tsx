@@ -1,9 +1,21 @@
 import { ActionIcon, AppShell, Group, Text, ThemeIcon, Tooltip } from "@mantine/core";
 import { useMantineColorScheme } from "@mantine/core";
-import { IconMenu2, IconMoon, IconSparkles, IconSun } from "@tabler/icons-react";
+import {
+  IconLayoutSidebarLeftCollapse,
+  IconLayoutSidebarLeftExpand,
+  IconMoon,
+  IconSparkles,
+  IconSun,
+} from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 
-export function AppHeader({ onToggleMobile }: Record<"onToggleMobile", () => void>) {
+export function AppHeader({
+  mobileOpened,
+  onToggleMobile,
+}: {
+  mobileOpened: boolean;
+  onToggleMobile: () => void;
+}) {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const isDark = colorScheme === "dark";
 
@@ -12,14 +24,18 @@ export function AppHeader({ onToggleMobile }: Record<"onToggleMobile", () => voi
       <Group h="100%" justify="space-between" px="md">
         <Group gap="sm">
           <ActionIcon
-            aria-label="メニューを開く"
+            aria-label={mobileOpened ? "メニューを閉じる" : "メニューを開く"}
             color="gray"
             hiddenFrom="sm"
             onClick={onToggleMobile}
             size="md"
             variant="subtle"
           >
-            <IconMenu2 size={20} />
+            {mobileOpened ? (
+              <IconLayoutSidebarLeftCollapse size={20} />
+            ) : (
+              <IconLayoutSidebarLeftExpand size={20} />
+            )}
           </ActionIcon>
           <Link style={{ color: "inherit", textDecoration: "none" }} to="/">
             <Group gap={8}>

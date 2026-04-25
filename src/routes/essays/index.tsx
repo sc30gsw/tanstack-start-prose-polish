@@ -4,19 +4,29 @@ import {
   Group,
   Loader,
   Pagination,
+  Select,
   Stack,
   Text,
   TextInput,
   Title,
 } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
-import { IconSearch } from "@tabler/icons-react";
+import { IconFilter, IconSearch } from "@tabler/icons-react";
 import { ClientOnly, Link, createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { HistoryCard } from "~/features/essay-feedback/components/history-card";
 import { useEssayHistory } from "~/features/essay-feedback/hooks/use-essay-history";
 import { db } from "~/lib/instant";
+
+const MODE_FILTER_OPTIONS = [
+  { label: "すべて", value: "all" },
+  { label: "自由作文", value: "free" },
+  { label: "トピック選択", value: "topic" },
+  { label: "多様なお題", value: "diverse" },
+] as const;
+
+type ModeFilter = (typeof MODE_FILTER_OPTIONS)[number]["value"];
 
 export const Route = createFileRoute("/essays/")({
   component: EssaysPage,
@@ -35,18 +45,34 @@ function deriveSearchText(mode: string, bodyBefore: string, prompt?: null | stri
   return bodyBefore;
 }
 
+function matchesModeFilter(mode: string, modeFilter: ModeFilter): boolean {
+  if (modeFilter === "all") {
+    return true;
+  }
+  if (modeFilter === "diverse") {
+    return mode === "diverse" || mode === "philosophy";
+  }
+  return mode === modeFilter;
+}
+
 type EssaysListProps = {
   debouncedQuery: string;
+  modeFilter: ModeFilter;
   onDelete: (id: string) => void;
   onPageChange: (page: number) => void;
   page: number;
 };
 
-function EssaysList({ debouncedQuery, onDelete, onPageChange, page }: EssaysListProps) {
+function EssaysList({ debouncedQuery, modeFilter, onDelete, onPageChange, page }: EssaysListProps) {
   const { essays, isLoading, error } = useEssayHistory();
 
   const filtered = essays.filter((essay) => {
-    if (debouncedQuery.trim() === "") return true;
+    if (!matchesModeFilter(essay.mode, modeFilter)) {
+      return false;
+    }
+    if (debouncedQuery.trim() === "") {
+      return true;
+    }
     const text = deriveSearchText(
       essay.mode,
       essay.bodyBefore as string,
@@ -76,12 +102,14 @@ function EssaysList({ debouncedQuery, onDelete, onPageChange, page }: EssaysList
   }
 
   if (filtered.length === 0) {
-    return (
-      <Stack align="center" gap="md" mt="xl">
-        <Text c="dimmed" ta="center">
-          {debouncedQuery ? "検索結果がありません" : "まだ作文がありません"}
-        </Text>
-        {!debouncedQuery && (
+    const hasNoEssays = essays.length === 0;
+
+    if (hasNoEssays) {
+      return (
+        <Stack align="center" gap="md" mt="xl">
+          <Text c="dimmed" ta="center">
+            まだ作文がありません
+          </Text>
           <Button
             renderRoot={(props) => <Link to="/essays/new" {...props} />}
             size="sm"
@@ -89,15 +117,25 @@ function EssaysList({ debouncedQuery, onDelete, onPageChange, page }: EssaysList
           >
             最初の作文を書く
           </Button>
-        )}
+        </Stack>
+      );
+    }
+
+    return (
+      <Stack align="center" gap="md" mt="xl">
+        <Text c="dimmed" ta="center">
+          検索・絞り込み条件に合う履歴はありません
+        </Text>
       </Stack>
     );
   }
 
+  const narrowLabel = debouncedQuery.trim() !== "" || modeFilter !== "all" ? " (絞り込み)" : "";
+
   return (
     <Stack gap="sm">
       <Text c="dimmed" size="sm">
-        {filtered.length} 件{debouncedQuery && " (検索結果)"}
+        {filtered.length} 件{narrowLabel}
       </Text>
       {paged.map((essay) => (
         <HistoryCard
@@ -135,6 +173,7 @@ function EssaysPage() {
   const [query, setQuery] = useState("");
   const [debouncedQuery] = useDebouncedValue(query, 200);
   const [page, setPage] = useState(1);
+  const [modeFilter, setModeFilter] = useState<ModeFilter>("all");
 
   const handleDelete = async (id: string) => {
     const tx = db.tx.essays[id];
@@ -156,19 +195,42 @@ function EssaysPage() {
         </Button>
       </Group>
 
-      <TextInput
-        aria-label="履歴を検索"
-        leftSection={<IconSearch size={16} />}
-        mb="lg"
-        onChange={(e) => handleQueryChange(e.currentTarget.value)}
-        placeholder="タイトル・内容で検索..."
-        size="md"
-        value={query}
-      />
+      <Stack gap="xs" mb="lg">
+        <Text c="dimmed" size="sm">
+          キーワードと作文モードで絞り込めます
+        </Text>
+        <Group align="flex-end" gap="md" grow preventGrowOverflow={false} wrap="wrap">
+          <TextInput
+            aria-label="履歴をキーワード検索"
+            flex="1 1 16rem"
+            leftSection={<IconSearch size={18} />}
+            onChange={(e) => handleQueryChange(e.currentTarget.value)}
+            placeholder="タイトル・本文の内容で検索"
+            size="md"
+            value={query}
+          />
+          <Select
+            aria-label="作文モードで絞り込み"
+            data={[...MODE_FILTER_OPTIONS]}
+            leftSection={<IconFilter size={18} />}
+            maw={320}
+            miw={200}
+            onChange={(v) => {
+              setModeFilter((v ?? "all") as ModeFilter);
+              setPage(1);
+            }}
+            placeholder="モードを選択"
+            size="md"
+            value={modeFilter}
+            w={{ base: "100%", sm: "auto" }}
+          />
+        </Group>
+      </Stack>
 
       <ClientOnly>
         <EssaysList
           debouncedQuery={debouncedQuery}
+          modeFilter={modeFilter}
           onDelete={(id) => void handleDelete(id)}
           onPageChange={setPage}
           page={page}

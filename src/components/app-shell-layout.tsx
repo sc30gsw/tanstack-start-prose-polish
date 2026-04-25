@@ -6,7 +6,7 @@ import { AppHeader } from "~/components/app-header";
 import { AppSidebar } from "~/components/app-sidebar";
 
 export function AppShellLayout({ children }: Record<"children", ReactNode>) {
-  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
+  const [mobileOpened, { toggle: toggleMobile, close: closeMobile }] = useDisclosure();
 
   return (
     <AppShell
@@ -18,9 +18,9 @@ export function AppShellLayout({ children }: Record<"children", ReactNode>) {
       }}
       padding="md"
     >
-      <AppHeader onToggleMobile={toggleMobile} />
+      <AppHeader mobileOpened={mobileOpened} onToggleMobile={toggleMobile} />
       <AppShell.Navbar p="md">
-        <AppSidebar />
+        <AppSidebar onClose={closeMobile} />
       </AppShell.Navbar>
       <AppShell.Main>{children}</AppShell.Main>
     </AppShell>
