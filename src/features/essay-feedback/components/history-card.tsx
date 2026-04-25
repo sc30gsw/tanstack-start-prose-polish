@@ -12,6 +12,7 @@ import {
 import { modals } from "@mantine/modals";
 import { IconBook2, IconCalendar, IconTrash } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
+import dayjs from "dayjs";
 import { useTransition } from "react";
 
 import { MODE_LABELS } from "~/constants";
@@ -110,15 +111,7 @@ export function HistoryCard({ essay }: Record<"essay", InstaQLEntity<AppSchema, 
           </Group>
           <Group c="dimmed" gap={6}>
             <IconCalendar size={16} />
-            <Text size="sm">
-              {new Date(essay.createdAt).toLocaleString("ja-JP", {
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-                month: "numeric",
-                year: "numeric",
-              })}
-            </Text>
+            <Text size="sm">{dayjs(essay.createdAt).format("YYYY/M/D HH:mm")}</Text>
           </Group>
         </Group>
       </Stack>
