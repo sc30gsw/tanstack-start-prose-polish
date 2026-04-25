@@ -4,15 +4,14 @@ import type {
 } from "~/features/essay-feedback/schemas/search-params/essays-search-params";
 import { db } from "~/lib/instant";
 
+const ESSAYS_ORDER_DESC = { order: { createdAt: "desc" as const } };
 export const ESSAY_LIST_PAGE_SIZE = 10;
 
-const orderDesc = { order: { createdAt: "desc" as const } };
-
-function escapeIlikeUserInput(input: string) {
+function escapeIlikeUserInput(input: EssaysSearchParams["q"]) {
   return input.replaceAll("\\", "\\\\").replaceAll("%", "\\%").replaceAll("_", "\\_");
 }
 
-function buildEssaysListWhere(mode: EssaysModeFilter, q: string) {
+function buildEssaysListWhere(mode: EssaysModeFilter, q: EssaysSearchParams["q"]) {
   const parts: Record<string, unknown>[] = [];
 
   if (mode === "free" || mode === "topic") {
@@ -22,6 +21,7 @@ function buildEssaysListWhere(mode: EssaysModeFilter, q: string) {
   }
 
   const trimmed = q.trim();
+
   if (trimmed.length > 0) {
     const p = `%${escapeIlikeUserInput(trimmed)}%`;
 
@@ -41,32 +41,23 @@ function buildEssaysListWhere(mode: EssaysModeFilter, q: string) {
   return { and: parts };
 }
 
-function essaysQuery(query: EssaysSearchParams | undefined) {
-  if (!query) {
-    return { essays: { $: orderDesc } };
-  }
+export function useEssaysList(search: EssaysSearchParams) {
+  const where = buildEssaysListWhere(search.mode ?? "all", search.q ?? "");
 
-  const where = buildEssaysListWhere(query.mode ?? "all", query.q ?? "");
-
-  return {
-    essays: {
-      $: {
-        ...orderDesc,
-        limit: ESSAY_LIST_PAGE_SIZE,
-        offset: (query.page - 1) * ESSAY_LIST_PAGE_SIZE,
-        ...(where ? { where } : {}),
-      },
-    },
+  const page$ = {
+    ...ESSAYS_ORDER_DESC,
+    limit: ESSAY_LIST_PAGE_SIZE,
+    offset: (search.page - 1) * ESSAY_LIST_PAGE_SIZE,
   };
-}
 
-export function useEssayHistory(query?: EssaysSearchParams) {
-  const { data, error, isLoading, pageInfo } = db.useQuery(essaysQuery(query));
+  const { data, error, isLoading, pageInfo } = db.useQuery(
+    where ? { essays: { $: page$ } } : { essays: { $: { ...page$, where: where } } },
+  );
 
   return {
     error: error,
     essays: data?.essays ?? [],
-    hasNextPage: query != null && (pageInfo?.essays?.hasNextPage ?? false),
+    hasNextPage: pageInfo?.essays?.hasNextPage ?? false,
     isLoading,
   };
 }

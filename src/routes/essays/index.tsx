@@ -13,8 +13,8 @@ import { EssaysPagination } from "~/features/essay-feedback/components/essays-pa
 import { HistoryCard } from "~/features/essay-feedback/components/history-card";
 import {
   ESSAY_LIST_PAGE_SIZE,
-  useEssayHistory,
-} from "~/features/essay-feedback/hooks/use-essay-history";
+  useEssaysList,
+} from "~/features/essay-feedback/hooks/use-essays-list";
 import {
   defaultEssaysSearchParams,
   essaysSearchSchema,
@@ -33,7 +33,7 @@ const routeApi = getRouteApi("/essays/");
 function EssaysList() {
   const { q, mode: modeFilter, page } = routeApi.useSearch();
 
-  const { error, essays, hasNextPage, isLoading } = useEssayHistory({
+  const { error, essays, hasNextPage, isLoading } = useEssaysList({
     mode: modeFilter,
     page,
     q,

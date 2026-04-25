@@ -2,10 +2,10 @@ import { Button, Loader, Stack, Text } from "@mantine/core";
 import { Link } from "@tanstack/react-router";
 
 import { HistoryCard } from "~/features/essay-feedback/components/history-card";
-import { useEssayHistory } from "~/features/essay-feedback/hooks/use-essay-history";
+import { useRecentEssays } from "~/features/essay-feedback/hooks/use-recent-essays";
 
 export function HistoryList() {
-  const { essays, isLoading, error } = useEssayHistory();
+  const { essays, isLoading, error } = useRecentEssays();
 
   if (isLoading) {
     return (
