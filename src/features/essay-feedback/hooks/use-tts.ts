@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 
+/** 音読＝前後の単語を区別、シャドーイング＝未発音だけ隠し発音済みは残す */
+export type TtsDisplayMode = "aloud" | "shadowing";
+
 const PREFERRED_VOICE_NAMES = [
   "Google US English",
   "Microsoft Zira - English (United States)",
@@ -67,6 +70,11 @@ export function useTts(text: string) {
       const voice = getBestEnglishVoice();
       if (voice) utterance.voice = voice;
     }
+
+    utterance.onstart = () => {
+      // boundary 発火前に先頭単語を示す（対応引擎のみ）
+      setCurrentWordIndex(0);
+    };
 
     utterance.onboundary = (event) => {
       if (event.name === "word") {

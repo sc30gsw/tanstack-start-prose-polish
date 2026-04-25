@@ -88,7 +88,12 @@ export function HistoryDetailTabs({
             </Group>
             <ClientOnly
               fallback={
-                <Skeleton aria-busy="true" aria-label="Diff を読み込み中" height={400} radius="md" />
+                <Skeleton
+                  aria-busy="true"
+                  aria-label="Diff を読み込み中"
+                  height={400}
+                  radius="md"
+                />
               }
             >
               <DiffView

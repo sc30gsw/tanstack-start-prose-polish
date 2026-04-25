@@ -1,36 +1,41 @@
-import { Paper, Stack, Text } from "@mantine/core";
-import { ClientOnly } from "@tanstack/react-router";
+import { Group, SegmentedControl, Stack } from "@mantine/core";
+import { useState } from "react";
 
-import { TtsButton } from "~/features/essay-feedback/components/tts-button";
+import { TtsPlayControls } from "~/features/essay-feedback/components/tts-button";
+import { TtsSyncedText } from "~/features/essay-feedback/components/tts-synced-text";
+import { type TtsDisplayMode, useTts } from "~/features/essay-feedback/hooks/use-tts";
 
 type ResultReaderProps = {
   correctedBody: string;
 };
 
 export function ResultReader({ correctedBody }: ResultReaderProps) {
-  const paragraphs = correctedBody.split(/\n\n+/).filter(Boolean);
+  const { currentWordIndex, isPlaying, isSupported, play, stop } = useTts(correctedBody);
+  const [displayMode, setDisplayMode] = useState<TtsDisplayMode>("aloud");
 
   return (
     <Stack gap="lg">
-      <ClientOnly>
-        <TtsButton text={correctedBody} />
-      </ClientOnly>
-      <Paper p="xl" radius="md" withBorder>
-        <Stack gap="lg">
-          {paragraphs.map((para, idx) => (
-            <Text
-              key={idx}
-              size="md"
-              style={{
-                fontFamily: "Georgia, 'Times New Roman', serif",
-                lineHeight: 2,
-              }}
-            >
-              {para}
-            </Text>
-          ))}
-        </Stack>
-      </Paper>
+      <Group align="center" wrap="wrap">
+        <TtsPlayControls isPlaying={isPlaying} isSupported={isSupported} play={play} stop={stop} />
+        <SegmentedControl
+          aria-label="音声とあわせた表示（音読は発話中を強調、シャドーイングは未発音だけ非表示）"
+          data={[
+            { label: "音読", value: "aloud" },
+            { label: "シャドーイング", value: "shadowing" },
+          ]}
+          onChange={(v) => {
+            setDisplayMode(v as TtsDisplayMode);
+          }}
+          size="sm"
+          value={displayMode}
+        />
+      </Group>
+      <TtsSyncedText
+        currentWordIndex={currentWordIndex}
+        displayMode={displayMode}
+        isPlaying={isPlaying}
+        text={correctedBody}
+      />
     </Stack>
   );
 }

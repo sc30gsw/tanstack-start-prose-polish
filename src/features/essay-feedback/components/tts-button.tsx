@@ -3,13 +3,14 @@ import { IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react";
 
 import { useTts } from "~/features/essay-feedback/hooks/use-tts";
 
-type TtsButtonProps = {
-  text: string;
+type TtsPlayControlsProps = {
+  isPlaying: boolean;
+  isSupported: boolean;
+  play: () => void;
+  stop: () => void;
 };
 
-export function TtsButton({ text }: TtsButtonProps) {
-  const { isSupported, isPlaying, play, stop } = useTts(text);
-
+export function TtsPlayControls({ isSupported, isPlaying, play, stop }: TtsPlayControlsProps) {
   if (!isSupported) {
     return (
       <Tooltip label="このブラウザは TTS に対応していません">
@@ -47,5 +48,16 @@ export function TtsButton({ text }: TtsButtonProps) {
         </Text>
       )}
     </Group>
+  );
+}
+
+type TtsButtonProps = {
+  text: string;
+};
+
+export function TtsButton({ text }: TtsButtonProps) {
+  const { isSupported, isPlaying, play, stop } = useTts(text);
+  return (
+    <TtsPlayControls isPlaying={isPlaying} isSupported={isSupported} play={play} stop={stop} />
   );
 }

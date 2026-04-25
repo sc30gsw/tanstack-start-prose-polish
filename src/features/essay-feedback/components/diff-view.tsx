@@ -13,8 +13,8 @@ import { createPortal } from "react-dom";
 
 import { AiCommentBadge } from "~/features/essay-feedback/components/ai-comment-badge";
 import { DiffCommentForm } from "~/features/essay-feedback/components/diff-comment-form";
-import { openDiffLineDetailModal } from "~/features/essay-feedback/components/diff-line-detail-modal";
 import { DiffCommentThread } from "~/features/essay-feedback/components/diff-comment-thread";
+import { openDiffLineDetailModal } from "~/features/essay-feedback/components/diff-line-detail-modal";
 import type { DiffComment, DiffCommentInput } from "~/features/essay-feedback/schemas/essay-schema";
 
 type CommentAnnotationMeta =
@@ -44,9 +44,11 @@ export function DiffView({
   readonly = false,
 }: DiffViewProps) {
   const [pendingComment, setPendingComment] = useState<null | PendingComment>(null);
-  const [lineHoverPreview, setLineHoverPreview] = useState<null | { left: number; text: string; top: number }>(
-    null,
-  );
+  const [lineHoverPreview, setLineHoverPreview] = useState<null | {
+    left: number;
+    text: string;
+    top: number;
+  }>(null);
 
   const fileDiff = useMemo(
     () =>
