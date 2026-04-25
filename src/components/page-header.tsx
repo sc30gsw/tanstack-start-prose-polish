@@ -14,7 +14,7 @@ type PageHeaderProps = {
 export function PageHeader({ title, backHref, backLabel, children }: PageHeaderProps) {
   return (
     <Stack gap="xs" mb="xl">
-      {backHref != null && (
+      {backHref && (
         <Anchor component={Link} fw={600} size="md" to={backHref} underline="hover">
           ← {backLabel ?? "戻る"}
         </Anchor>
