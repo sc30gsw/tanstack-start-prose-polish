@@ -1,5 +1,6 @@
-import { ActionIcon, AppShell, Group, Text, ThemeIcon, Tooltip } from "@mantine/core";
+import { ActionIcon, AppShell, Group, Text, ThemeIcon, Tooltip, em } from "@mantine/core";
 import { useMantineColorScheme } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import {
   IconLayoutSidebarLeftCollapse,
   IconLayoutSidebarLeftExpand,
@@ -9,29 +10,37 @@ import {
 } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 
-export function AppHeader({
-  mobileOpened,
-  onToggleMobile,
-}: {
+type AppHeaderProps = {
+  desktopOpened: boolean;
   mobileOpened: boolean;
+  onToggleDesktop: () => void;
   onToggleMobile: () => void;
-}) {
+};
+
+export function AppHeader({
+  desktopOpened,
+  mobileOpened,
+  onToggleDesktop,
+  onToggleMobile,
+}: AppHeaderProps) {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const isDark = colorScheme === "dark";
+  const isMobile = useMediaQuery(`(max-width: ${em(767)})`);
+  const sidebarOpen = isMobile ? mobileOpened : desktopOpened;
+  const handleToggleSidebar = isMobile ? onToggleMobile : onToggleDesktop;
 
   return (
     <AppShell.Header>
       <Group h="100%" justify="space-between" px="md">
         <Group gap="sm">
           <ActionIcon
-            aria-label={mobileOpened ? "メニューを閉じる" : "メニューを開く"}
+            aria-label={sidebarOpen ? "メニューを閉じる" : "メニューを開く"}
             color="gray"
-            hiddenFrom="sm"
-            onClick={onToggleMobile}
+            onClick={handleToggleSidebar}
             size="md"
             variant="subtle"
           >
-            {mobileOpened ? (
+            {sidebarOpen ? (
               <IconLayoutSidebarLeftCollapse size={20} />
             ) : (
               <IconLayoutSidebarLeftExpand size={20} />

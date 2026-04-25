@@ -33,3 +33,5 @@ export const schema = i.schema({
     },
   },
 });
+
+export type AppSchema = typeof schema;

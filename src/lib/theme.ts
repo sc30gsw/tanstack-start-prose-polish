@@ -1,6 +1,5 @@
 import { createTheme, rem, type CSSVariablesResolver } from "@mantine/core";
 
-/** デフォルトの dimmed（gray-6）はライト背景で薄く感じやすいため、本文に近いトーンに寄せる */
 export const mantineCssVariablesResolver: CSSVariablesResolver = () => ({
   variables: {},
   light: {
@@ -9,7 +8,7 @@ export const mantineCssVariablesResolver: CSSVariablesResolver = () => ({
   dark: {},
 });
 
-const primaryColor = "indigo" as const;
+const PRIMARY_COLOR = "indigo";
 
 export const theme = createTheme({
   defaultRadius: "md",
@@ -39,7 +38,7 @@ export const theme = createTheme({
     xl: "2",
     xs: "1.4",
   },
-  primaryColor,
+  primaryColor: PRIMARY_COLOR,
   radius: {
     lg: rem(12),
     md: rem(8),
@@ -88,14 +87,14 @@ export const theme = createTheme({
     },
     SegmentedControl: {
       defaultProps: {
-        color: primaryColor,
+        color: PRIMARY_COLOR,
         radius: "md",
         size: "md",
       },
     },
     Tabs: {
       defaultProps: {
-        color: primaryColor,
+        color: PRIMARY_COLOR,
         radius: "md",
         size: "md",
       },

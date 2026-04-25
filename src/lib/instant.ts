@@ -9,4 +9,4 @@ export const db = init({
   schema,
 });
 
-export const isInstantConfigured = Boolean(appId && appId !== "demo-app-id");
+export const isInstantConfigured = Boolean(appId);

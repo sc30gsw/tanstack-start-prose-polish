@@ -7,18 +7,24 @@ import { AppSidebar } from "~/components/app-sidebar";
 
 export function AppShellLayout({ children }: Record<"children", ReactNode>) {
   const [mobileOpened, { toggle: toggleMobile, close: closeMobile }] = useDisclosure();
+  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
 
   return (
     <AppShell
       header={{ height: 60 }}
       navbar={{
         breakpoint: "sm",
-        collapsed: { mobile: !mobileOpened },
+        collapsed: { desktop: !desktopOpened, mobile: !mobileOpened },
         width: 280,
       }}
       padding="md"
     >
-      <AppHeader mobileOpened={mobileOpened} onToggleMobile={toggleMobile} />
+      <AppHeader
+        desktopOpened={desktopOpened}
+        mobileOpened={mobileOpened}
+        onToggleDesktop={toggleDesktop}
+        onToggleMobile={toggleMobile}
+      />
       <AppShell.Navbar p="md">
         <AppSidebar onClose={closeMobile} />
       </AppShell.Navbar>
