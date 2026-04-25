@@ -1,13 +1,16 @@
 import type { InstaQLEntity } from "@instantdb/react";
 import { ActionIcon, Box, Group, Modal, Paper, Text, useComputedColorScheme } from "@mantine/core";
-import type { GetHoveredLineResult } from "@pierre/diffs";
+import type { FileDiffOptions, GetHoveredLineResult } from "@pierre/diffs";
 import { parseDiffFromFile } from "@pierre/diffs";
 import { FileDiff } from "@pierre/diffs/react";
 import { IconPlus } from "@tabler/icons-react";
 import { createPortal } from "react-dom";
 
 import { AiLineCommentModalBody } from "~/features/essay-feedback/components/ai-line-comment-modal";
-import { DiffAnnotationRow } from "~/features/essay-feedback/components/diff-annotation-row";
+import {
+  DiffAnnotationRow,
+  type CommentAnnotationMeta,
+} from "~/features/essay-feedback/components/diff-annotation-row";
 import { DiffNoHunksView } from "~/features/essay-feedback/components/diff-no-hunks-view";
 import { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
 import { useDiffViewState } from "~/features/essay-feedback/hooks/use-diff-view-state";
@@ -34,7 +37,7 @@ export function DiffView({
 
   const showAiModalCommentForm = showAiModalCommentFormProp ?? !readonly;
   const resolvedColorScheme = useComputedColorScheme("light", { getInitialValueInEffect: true });
-  const diffThemeType = resolvedColorScheme === "dark" ? ("dark" as const) : ("light" as const);
+  const diffThemeType = resolvedColorScheme === "dark" ? "dark" : "light";
 
   const {
     aiLineModal,
@@ -54,18 +57,18 @@ export function DiffView({
   );
 
   const diffOptions = {
-    diffIndicators: "classic" as const,
+    diffIndicators: "classic",
     diffStyle,
     enableGutterUtility: !readonly,
-    lineDiffType: "word-alt" as const,
-    lineHoverHighlight: "line" as const,
+    lineDiffType: "word-alt",
+    lineHoverHighlight: "line",
     onLineClick: handleDiffLineClick,
     onLineEnter: handleDiffLineEnter,
     onLineLeave: handleDiffLineLeave,
-    overflow: "wrap" as const,
-    theme: { dark: "github-dark" as const, light: "github-light" as const },
+    overflow: "wrap",
+    theme: { dark: "github-dark", light: "github-light" },
     themeType: diffThemeType,
-  };
+  } as const satisfies FileDiffOptions<CommentAnnotationMeta>;
 
   const hasRenderableHunks = fileDiff.hunks.length > 0;
 
