@@ -1,4 +1,5 @@
-import { Group, SegmentedControl, Stack } from "@mantine/core";
+import { Box, Paper, Select, SimpleGrid, Stack, Text, useMantineTheme } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { useState } from "react";
 
 import { TtsPlayControls } from "~/features/essay-feedback/components/tts-button";
@@ -10,32 +11,77 @@ type ResultReaderProps = {
 };
 
 export function ResultReader({ correctedBody }: ResultReaderProps) {
-  const { currentWordIndex, isPlaying, isSupported, play, stop } = useTts(correctedBody);
+  const theme = useMantineTheme();
+  const isSmUp = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`);
+  const ttsFullWidth = isSmUp === false;
+  const {
+    currentWordIndex,
+    isPlaybackActive,
+    isSupported,
+    pause: pauseTts,
+    play: playTts,
+    playFromStart,
+    playbackState,
+    resetPlayback,
+  } = useTts(correctedBody);
   const [displayMode, setDisplayMode] = useState<TtsDisplayMode>("aloud");
 
   return (
-    <Stack gap="lg">
-      <Group align="center" wrap="wrap">
-        <TtsPlayControls isPlaying={isPlaying} isSupported={isSupported} play={play} stop={stop} />
-        <SegmentedControl
-          aria-label="音声とあわせた表示（音読は発話中を強調、シャドーイングは未発音だけ非表示）"
-          data={[
-            { label: "音読", value: "aloud" },
-            { label: "シャドーイング", value: "shadowing" },
-          ]}
-          onChange={(v) => {
-            setDisplayMode(v as TtsDisplayMode);
-          }}
-          size="sm"
-          value={displayMode}
-        />
-      </Group>
-      <TtsSyncedText
-        currentWordIndex={currentWordIndex}
-        displayMode={displayMode}
-        isPlaying={isPlaying}
-        text={correctedBody}
-      />
-    </Stack>
+    <Paper p={0} radius="md" withBorder>
+      <Stack gap={0}>
+        <Box
+          bg="var(--mantine-color-default-hover)"
+          p="md"
+          style={{ borderBottom: "1px solid var(--mantine-color-default-border)" }}
+        >
+          <Stack gap="md">
+            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md" verticalSpacing="md">
+              <Select
+                aria-describedby="result-reader-mode-hint"
+                data={[
+                  { value: "aloud", label: "音読" },
+                  { value: "shadowing", label: "シャドーイング" },
+                ]}
+                label="表示モード"
+                onChange={(v) => {
+                  if (v == null) return;
+                  setDisplayMode(v as TtsDisplayMode);
+                  resetPlayback();
+                }}
+                size="sm"
+                value={displayMode}
+                w="100%"
+              />
+              <Box style={{ alignSelf: isSmUp ? "flex-start" : "stretch" }} w="100%">
+                <TtsPlayControls
+                  fullWidth={ttsFullWidth}
+                  isSupported={isSupported}
+                  onPause={pauseTts}
+                  onPlay={playTts}
+                  onPlayFromStart={playFromStart}
+                  playbackState={playbackState}
+                />
+              </Box>
+            </SimpleGrid>
+            <Text
+              c="var(--mantine-color-text)"
+              id="result-reader-mode-hint"
+              size="sm"
+              style={{ lineHeight: 1.5, maxWidth: "42em", opacity: 0.78 }}
+            >
+              音読は再生中の語を強調します。シャドーイングは、まだ読んでいない箇所を隠して練習できます
+            </Text>
+          </Stack>
+        </Box>
+        <Box p="xl">
+          <TtsSyncedText
+            currentWordIndex={currentWordIndex}
+            displayMode={displayMode}
+            isPlaying={isPlaybackActive}
+            text={correctedBody}
+          />
+        </Box>
+      </Stack>
+    </Paper>
   );
 }

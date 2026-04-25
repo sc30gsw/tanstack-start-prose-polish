@@ -1,4 +1,5 @@
-import { Button, Container, Group, Stack, Text } from "@mantine/core";
+import { Button, Container, Stack, Text } from "@mantine/core";
+import { IconListDetails } from "@tabler/icons-react";
 import { ClientOnly, createFileRoute, useNavigate } from "@tanstack/react-router";
 
 import { PageHeader } from "~/components/page-header";
@@ -45,29 +46,25 @@ function ResultPage() {
 
   return (
     <Container py="xl" size="md">
-      <PageHeader backHref="/" backLabel="履歴一覧" title="添削後の文章" />
-      <Stack gap="lg">
-        <Group gap="sm">
-          <Button
-            onClick={() => {
-              void navigate({ params: { essayId }, to: "/essays/$essayId/diff" });
-            }}
-            size="sm"
-            variant="light"
-          >
-            ← Diff を確認する
-          </Button>
-          <Button
-            onClick={() => {
-              // @ts-expect-error TanStack Start route register vs router-core navigate types
-              void navigate({ params: { essayId }, to: "/essays/$essayId/history" });
-            }}
-            size="sm"
-            variant="light"
-          >
-            履歴詳細を見る
-          </Button>
-        </Group>
+      <Stack gap="xl">
+        <PageHeader
+          backHref={`/essays/${essayId}/diff`}
+          backLabel="前後の文章を比較"
+          endSection={
+            <Button
+              leftSection={<IconListDetails size={18} stroke={1.75} />}
+              onClick={() => {
+                // @ts-expect-error TanStack Start route register vs router-core navigate types
+                void navigate({ params: { essayId }, to: "/essays/$essayId/history" });
+              }}
+              size="sm"
+              variant="filled"
+            >
+              履歴の詳細
+            </Button>
+          }
+          title="添削後の文章"
+        />
         <ClientOnly>
           <ResultReader correctedBody={essayData.bodyAfter} />
         </ClientOnly>

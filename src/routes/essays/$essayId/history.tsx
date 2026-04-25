@@ -44,7 +44,7 @@ function HistoryPage() {
 
   return (
     <Container py="xl" size="xl">
-      <PageHeader backHref="/" backLabel="履歴一覧" title="学習履歴詳細" />
+      <PageHeader backHref="/essays" backLabel="履歴一覧" title="学習履歴詳細" />
       <HistoryDetailTabs
         bodyAfter={essayData.bodyAfter}
         bodyBefore={essayData.bodyBefore}

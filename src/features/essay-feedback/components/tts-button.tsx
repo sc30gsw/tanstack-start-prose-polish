@@ -1,52 +1,101 @@
-import { Button, Group, Text, Tooltip } from "@mantine/core";
-import { IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react";
+import { ActionIcon, Box, Button, Group, Tooltip } from "@mantine/core";
+import { IconPlayerPause, IconPlayerPlay, IconRefresh } from "@tabler/icons-react";
 
-import { useTts } from "~/features/essay-feedback/hooks/use-tts";
+import { type TtsPlaybackState, useTts } from "~/features/essay-feedback/hooks/use-tts";
 
 type TtsPlayControlsProps = {
-  isPlaying: boolean;
+  fullWidth?: boolean;
   isSupported: boolean;
-  play: () => void;
-  stop: () => void;
+  onPause: () => void;
+  onPlay: () => void;
+  onPlayFromStart: () => void;
+  playbackState: TtsPlaybackState;
 };
 
-export function TtsPlayControls({ isSupported, isPlaying, play, stop }: TtsPlayControlsProps) {
+export function TtsPlayControls({
+  fullWidth = false,
+  isSupported,
+  onPause,
+  onPlay,
+  onPlayFromStart,
+  playbackState,
+}: TtsPlayControlsProps) {
   if (!isSupported) {
     return (
-      <Tooltip label="このブラウザは TTS に対応していません">
-        <Button disabled leftSection={<IconPlayerPlay size={16} />} variant="light">
-          音声を再生
-        </Button>
-      </Tooltip>
+      <Box style={{ display: "block", width: fullWidth ? "100%" : "auto" }}>
+        <Tooltip label="このブラウザは TTS に対応していません">
+          <span style={{ display: "block", width: fullWidth ? "100%" : "auto" }}>
+            <Button
+              color="teal"
+              disabled
+              fullWidth={fullWidth}
+              leftSection={<IconPlayerPlay size={16} />}
+              variant="light"
+            >
+              音声を再生
+            </Button>
+          </span>
+        </Tooltip>
+      </Box>
+    );
+  }
+
+  const playLabel = playbackState === "paused" ? "再開" : "音声を再生";
+  const isPlaying = playbackState === "playing";
+
+  const refreshButton = (
+    <Tooltip label="先頭から再生">
+      <ActionIcon
+        aria-label="先頭から再生"
+        color="gray"
+        onClick={onPlayFromStart}
+        size="input-sm"
+        variant="default"
+      >
+        <IconRefresh size={18} />
+      </ActionIcon>
+    </Tooltip>
+  );
+
+  const mainButton = isPlaying ? (
+    <Button
+      aria-label="音声を一時停止"
+      color="gray"
+      fullWidth={fullWidth}
+      leftSection={<IconPlayerPause size={16} />}
+      onClick={onPause}
+      style={fullWidth ? { flex: 1, minWidth: 0 } : undefined}
+      variant="default"
+    >
+      一時停止
+    </Button>
+  ) : (
+    <Button
+      aria-label={playbackState === "paused" ? "音声を再開" : "音声を再生"}
+      color="teal"
+      fullWidth={fullWidth}
+      leftSection={<IconPlayerPlay size={16} />}
+      onClick={onPlay}
+      style={fullWidth ? { flex: 1, minWidth: 0 } : undefined}
+      variant="filled"
+    >
+      {playLabel}
+    </Button>
+  );
+
+  if (fullWidth) {
+    return (
+      <Group align="center" gap="sm" w="100%" wrap="nowrap">
+        {mainButton}
+        {refreshButton}
+      </Group>
     );
   }
 
   return (
-    <Group gap="xs">
-      {isPlaying ? (
-        <Button
-          aria-label="音声を停止"
-          leftSection={<IconPlayerPause size={16} />}
-          onClick={stop}
-          variant="light"
-        >
-          停止
-        </Button>
-      ) : (
-        <Button
-          aria-label="音声を再生"
-          leftSection={<IconPlayerPlay size={16} />}
-          onClick={play}
-          variant="light"
-        >
-          音声を再生
-        </Button>
-      )}
-      {isPlaying && (
-        <Text c="dimmed" size="sm">
-          再生中...
-        </Text>
-      )}
+    <Group gap="sm" wrap="wrap">
+      {mainButton}
+      {refreshButton}
     </Group>
   );
 }
@@ -56,8 +105,14 @@ type TtsButtonProps = {
 };
 
 export function TtsButton({ text }: TtsButtonProps) {
-  const { isSupported, isPlaying, play, stop } = useTts(text);
+  const { isSupported, pause, play, playFromStart, playbackState } = useTts(text);
   return (
-    <TtsPlayControls isPlaying={isPlaying} isSupported={isSupported} play={play} stop={stop} />
+    <TtsPlayControls
+      isSupported={isSupported}
+      onPause={pause}
+      onPlay={play}
+      onPlayFromStart={playFromStart}
+      playbackState={playbackState}
+    />
   );
 }

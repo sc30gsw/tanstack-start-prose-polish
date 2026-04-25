@@ -1,4 +1,4 @@
-import { Paper, Stack, Text } from "@mantine/core";
+import { Stack, Text } from "@mantine/core";
 import type { CSSProperties } from "react";
 
 import type { TtsDisplayMode } from "~/features/essay-feedback/hooks/use-tts";
@@ -32,40 +32,38 @@ export function TtsSyncedText({
   const paragraphs = text.split(/\n\n+/).filter(Boolean);
 
   return (
-    <Paper p="xl" radius="md" withBorder>
-      <Stack gap="lg">
-        {paragraphs.map((para, pIdx) => {
-          const words = para.split(/\s+/).filter((w) => w.length > 0);
-          const wordOffset = paragraphs
-            .slice(0, pIdx)
-            .reduce((sum, block) => sum + countWordsInBlock(block), 0);
+    <Stack gap="lg">
+      {paragraphs.map((para, pIdx) => {
+        const words = para.split(/\s+/).filter((w) => w.length > 0);
+        const wordOffset = paragraphs
+          .slice(0, pIdx)
+          .reduce((sum, block) => sum + countWordsInBlock(block), 0);
 
-          return (
-            <Text key={pIdx} component="p" size="md" style={BODY_STYLE}>
-              {words.map((word, wIdx) => {
-                const globalIndex = wordOffset + wIdx;
+        return (
+          <Text key={pIdx} component="p" size="md" style={BODY_STYLE}>
+            {words.map((word, wIdx) => {
+              const globalIndex = wordOffset + wIdx;
 
-                return (
-                  <span key={`${pIdx}-${wIdx}`}>
-                    {wIdx > 0 ? " " : null}
-                    <span
-                      style={getWordStyle({
-                        currentWordIndex,
-                        displayMode,
-                        globalIndex,
-                        isPlaying,
-                      })}
-                    >
-                      {word}
-                    </span>
+              return (
+                <span key={`${pIdx}-${wIdx}`}>
+                  {wIdx > 0 ? " " : null}
+                  <span
+                    style={getWordStyle({
+                      currentWordIndex,
+                      displayMode,
+                      globalIndex,
+                      isPlaying,
+                    })}
+                  >
+                    {word}
                   </span>
-                );
-              })}
-            </Text>
-          );
-        })}
-      </Stack>
-    </Paper>
+                </span>
+              );
+            })}
+          </Text>
+        );
+      })}
+    </Stack>
   );
 }
 

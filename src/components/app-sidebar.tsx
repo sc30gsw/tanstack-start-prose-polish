@@ -3,8 +3,9 @@ import { IconClockHour3, IconHome, IconPencilPlus } from "@tabler/icons-react";
 import { Link, useRouterState } from "@tanstack/react-router";
 
 export function AppSidebar({ onClose }: Partial<Record<"onClose", () => void>>) {
-  const { location } = useRouterState();
-  const pathname = location.pathname;
+  const { matches } = useRouterState();
+  const isHomeActive = matches.some((m) => m.routeId === "/");
+  const isEssaysActive = matches.some((m) => m.routeId === "/essays/");
 
   return (
     <>
@@ -21,14 +22,14 @@ export function AppSidebar({ onClose }: Partial<Record<"onClose", () => void>>) 
 
       <AppShell.Section component={ScrollArea} grow>
         <NavLink
-          active={pathname === "/"}
+          active={isHomeActive}
           label="ホーム"
           leftSection={<IconHome size={16} />}
           onClick={onClose}
           renderRoot={(props) => <Link to="/" {...props} />}
         />
         <NavLink
-          active={pathname === "/essays"}
+          active={isEssaysActive}
           label="履歴一覧"
           leftSection={<IconClockHour3 size={16} />}
           onClick={onClose}

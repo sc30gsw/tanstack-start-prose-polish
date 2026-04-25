@@ -76,7 +76,7 @@ function DiffPage() {
   return (
     <Container py="xl" size="xl">
       <PageHeader
-        backHref="/"
+        backHref="/essays"
         backLabel="履歴一覧"
         endSection={
           <Button onClick={goToResult} size="sm" variant="filled">
