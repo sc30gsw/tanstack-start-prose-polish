@@ -1,33 +1,36 @@
 import type { InstaQLEntity } from "@instantdb/react";
-import { ActionIcon, Badge, Card, Group, Stack, Text, ThemeIcon } from "@mantine/core";
+import {
+  ActionIcon,
+  Badge,
+  Card,
+  Group,
+  Stack,
+  Text,
+  ThemeIcon,
+  type MantineColor,
+} from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconBook2, IconCalendar, IconTrash } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { useTransition } from "react";
 
+import { MODE_LABELS } from "~/constants";
 import { derivePreview, deriveTitle } from "~/features/essay-feedback/utils/histories";
 import { db } from "~/lib/instant";
 import type { AppSchema } from "~/lib/instant-schema";
-
-const MODE_LABELS = {
-  diverse: "多様なお題",
-  free: "自由作文",
-  philosophy: "多様なお題",
-  topic: "トピック選択",
-} as const satisfies Record<string, string>;
 
 const MODE_COLORS = {
   diverse: "orange",
   free: "violet",
   philosophy: "orange",
   topic: "blue",
-} as const satisfies Record<string, string>;
+} as const satisfies Record<string, MantineColor>;
 
 const STATUS_COLORS = {
   draft: "gray",
   reviewed: "green",
   scoring: "yellow",
-} as const satisfies Record<string, string>;
+} as const satisfies Record<string, MantineColor>;
 
 const STATUS_LABELS = {
   draft: "下書き",

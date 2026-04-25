@@ -3,12 +3,12 @@ import { i } from "@instantdb/react";
 export const schema = i.schema({
   entities: {
     essays: i.entity({
-      bodyAfter: i.string().optional(),
-      bodyBefore: i.string(),
+      bodyAfter: i.string().optional().indexed(),
+      bodyBefore: i.string().indexed(),
       cefr: i.string().optional(),
-      createdAt: i.date(),
-      mode: i.string(),
-      prompt: i.string().optional(),
+      createdAt: i.date().indexed(),
+      mode: i.string().indexed(),
+      prompt: i.string().optional().indexed(),
       score: i.number().optional(),
       scoreFeedback: i.string().optional(),
       status: i.string(),
@@ -35,3 +35,5 @@ export const schema = i.schema({
 });
 
 export type AppSchema = typeof schema;
+
+export default schema;
