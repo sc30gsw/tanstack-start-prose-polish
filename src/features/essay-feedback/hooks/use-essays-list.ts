@@ -51,7 +51,7 @@ export function useEssaysList(search: EssaysSearchParams) {
   };
 
   const { data, error, isLoading, pageInfo } = db.useQuery(
-    where ? { essays: { $: page$ } } : { essays: { $: { ...page$, where: where } } },
+    where ? { essays: { $: { ...page$, where } } } : { essays: { $: page$ } },
   );
 
   return {
