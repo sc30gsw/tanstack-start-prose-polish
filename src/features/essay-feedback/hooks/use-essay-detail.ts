@@ -12,8 +12,8 @@ export function useEssayDetail(essayId: string) {
 
   return {
     comments: essay?.comments ?? [],
-    error: error as Error | null,
+    error: error,
     essay,
     isLoading,
-  };
+  } as const;
 }

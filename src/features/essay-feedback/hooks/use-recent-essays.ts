@@ -9,5 +9,5 @@ export function useRecentEssays() {
     error: error,
     essays: data?.essays ?? [],
     isLoading,
-  };
+  } as const;
 }

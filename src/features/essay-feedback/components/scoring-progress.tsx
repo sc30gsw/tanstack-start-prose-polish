@@ -3,20 +3,9 @@ import type { ReactNode } from "react";
 
 import type { ScoringState } from "~/features/essay-feedback/types/essay";
 
-const STAGE_ORDER = ["idle", "score", "cefr", "toeic", "done"] as const;
+const STAGE_ORDER = ["idle", "score", "cefr", "toeic", "done"] as const satisfies readonly string[];
 
-/** 英日混在でも自然に折り返し */
-const wrapTextStyle = {
-  minWidth: 0,
-  overflowWrap: "break-word" as const,
-  wordBreak: "break-word" as const,
-};
-
-type ScoringProgressProps = {
-  state: ScoringState;
-};
-
-export function ScoringProgress({ state }: ScoringProgressProps) {
+export function ScoringProgress({ state }: Record<"state", ScoringState>) {
   const stageIndex = STAGE_ORDER.indexOf(state.stage);
   const progressValue = (stageIndex / (STAGE_ORDER.length - 1)) * 100;
 
@@ -46,7 +35,15 @@ export function ScoringProgress({ state }: ScoringProgressProps) {
               採点中...
             </Text>
           ) : state.result.scoreFeedback != null ? (
-            <Text component="p" lh={1.65} m={0} size="md" style={wrapTextStyle} ta="start" w="100%">
+            <Text
+              component="p"
+              lh={1.65}
+              m={0}
+              size="md"
+              ta="start"
+              w="100%"
+              className="wrap-break-words min-w-0"
+            >
               {state.result.scoreFeedback}
             </Text>
           ) : (
@@ -94,9 +91,6 @@ export function ScoringProgress({ state }: ScoringProgressProps) {
 
 type ScoringRowProps = { children: ReactNode; label: string };
 
-/**
- * ラベル列と値列の開始位置を揃え、左寄せ（`text-align: start`）で統一する。
- */
 function ScoringRow({ children, label }: ScoringRowProps) {
   return (
     <Group align="flex-start" gap="md" justify="flex-start" w="100%" wrap="wrap">

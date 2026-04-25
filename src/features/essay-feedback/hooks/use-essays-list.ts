@@ -59,5 +59,5 @@ export function useEssaysList(search: EssaysSearchParams) {
     essays: data?.essays ?? [],
     hasNextPage: pageInfo?.essays?.hasNextPage ?? false,
     isLoading,
-  };
+  } as const;
 }
