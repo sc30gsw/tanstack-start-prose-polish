@@ -1,4 +1,5 @@
 import { ActionIcon, Badge, Card, Group, Stack, Text, ThemeIcon } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { IconBook2, IconCalendar, IconTrash } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 
@@ -43,28 +44,42 @@ const STATUS_LABELS = {
   scoring: "採点中",
 } as const satisfies Record<string, string>;
 
-function deriveTitle(mode: string, bodyBefore: string, prompt?: null | string): string {
-  if (
-    (mode === "topic" || mode === "diverse" || mode === "philosophy") &&
-    prompt != null &&
-    prompt.trim().length > 0
-  ) {
-    return prompt.length > 60 ? `${prompt.slice(0, 60)}…` : prompt;
-  }
-  const first = bodyBefore.trim();
-  return first.length > 50 ? `${first.slice(0, 50)}…` : first || "（無題）";
+function trimPrompt(prompt: string, max: number): string {
+  return prompt.length > max ? `${prompt.slice(0, max)}…` : prompt;
 }
 
-function derivePreview(mode: string, bodyBefore: string, prompt?: null | string): string | null {
-  if (
-    (mode === "topic" || mode === "diverse" || mode === "philosophy") &&
-    prompt != null &&
-    prompt.trim().length > 0
-  ) {
-    const firstLine = bodyBefore.trim().split("\n")[0] ?? "";
-    return firstLine.length > 80 ? `${firstLine.slice(0, 80)}…` : firstLine || null;
+function deriveTitle(mode: string, bodyBefore: string, prompt?: null | string): string {
+  const first = bodyBefore.trim();
+  const bodyTitle = first.length > 50 ? `${first.slice(0, 50)}…` : first || "（無題）";
+  const p = prompt?.trim() ?? "";
+
+  if (mode === "free") {
+    return bodyTitle;
   }
-  return null;
+
+  if (mode === "diverse" || mode === "philosophy" || mode === "topic") {
+    if (p.length > 0) {
+      return trimPrompt(p, 60);
+    }
+    return bodyTitle;
+  }
+
+  return bodyTitle;
+}
+
+/** トピック選択モードのみ: 2 行目に文章の冒頭を表示。多様なお題はタイトルにお題のみ。 */
+function derivePreview(mode: string, bodyBefore: string, prompt?: null | string): string | null {
+  if (mode !== "topic") {
+    return null;
+  }
+  if (prompt == null || prompt.trim().length === 0) {
+    return null;
+  }
+  const firstLine = bodyBefore.trim().split("\n")[0] ?? "";
+  if (firstLine.length === 0) {
+    return null;
+  }
+  return firstLine.length > 80 ? `${firstLine.slice(0, 80)}…` : firstLine;
 }
 
 export function HistoryCard({
@@ -86,6 +101,18 @@ export function HistoryCard({
   const statusColor = STATUS_COLORS[status as keyof typeof STATUS_COLORS] ?? "gray";
   const title = deriveTitle(mode, bodyBefore, prompt);
   const preview = derivePreview(mode, bodyBefore, prompt);
+
+  function handleDeleteRequest() {
+    modals.openConfirmModal({
+      children: <Text size="sm">この作文を履歴から削除しますか？この操作は取り消せません。</Text>,
+      confirmProps: { color: "red" },
+      labels: { cancel: "キャンセル", confirm: "削除する" },
+      onConfirm: () => {
+        onDelete(id);
+      },
+      title: "履歴を削除",
+    });
+  }
 
   return (
     <Card padding="lg" radius="md" shadow="sm" withBorder>
@@ -116,42 +143,42 @@ export function HistoryCard({
           <ActionIcon
             aria-label="履歴を削除"
             color="red"
-            onClick={() => onDelete(id)}
-            size="sm"
+            onClick={handleDeleteRequest}
+            size="lg"
             style={{ flexShrink: 0 }}
             variant="subtle"
           >
-            <IconTrash size={14} />
+            <IconTrash size={20} />
           </ActionIcon>
         </Group>
 
-        <Group gap="xs" justify="space-between" wrap="wrap">
-          <Group gap="xs">
-            <Badge color={modeColor} size="sm" variant="light">
+        <Group gap="sm" justify="space-between" wrap="wrap">
+          <Group gap="sm" wrap="wrap">
+            <Badge color={modeColor} size="md" variant="light">
               {modeLabel}
             </Badge>
-            <Badge color={statusColor} size="sm" variant="dot">
+            <Badge color={statusColor} size="md" variant="dot">
               {statusLabel}
             </Badge>
             {score != null && (
-              <Badge color="blue" size="sm" variant="outline">
+              <Badge color="blue" size="md" variant="outline">
                 {score}点
               </Badge>
             )}
             {cefr != null && (
-              <Badge color="teal" size="sm" variant="outline">
+              <Badge color="teal" size="md" variant="outline">
                 CEFR {cefr}
               </Badge>
             )}
             {toeicMin != null && toeicMax != null && (
-              <Badge color="grape" size="sm" variant="outline">
+              <Badge color="grape" size="md" variant="outline">
                 TOEIC {toeicMin}〜{toeicMax}
               </Badge>
             )}
           </Group>
-          <Group c="dimmed" gap={4}>
-            <IconCalendar size={12} />
-            <Text size="xs">
+          <Group c="dimmed" gap={6}>
+            <IconCalendar size={16} />
+            <Text size="sm">
               {new Date(createdAt).toLocaleString("ja-JP", {
                 day: "numeric",
                 hour: "2-digit",

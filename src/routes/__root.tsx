@@ -5,6 +5,7 @@ import { HeadContent, Outlet, Scripts, createRootRoute } from "@tanstack/react-r
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { useEffect } from "react";
 
+import { AppShellLayout } from "~/components/app-shell-layout";
 import { theme } from "~/lib/theme";
 
 import appCss from "../styles.css?url";
@@ -17,7 +18,7 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf8" },
       { content: "width=device-width, initial-scale=1", name: "viewport" },
-      { title: "TanStack Start Start" },
+      { title: "ProsePolish — AI で磨く英作文" },
     ],
   }),
   notFoundComponent: NotFoundComponent,
@@ -34,13 +35,15 @@ function RootComponent() {
   return (
     <html lang="ja" {...mantineHtmlProps}>
       <head>
-        <ColorSchemeScript defaultColorScheme="light" />
+        <ColorSchemeScript defaultColorScheme="auto" />
         <HeadContent />
       </head>
       <body>
-        <MantineProvider defaultColorScheme="light" theme={theme}>
+        <MantineProvider defaultColorScheme="auto" theme={theme}>
           <ModalsProvider>
-            <Outlet />
+            <AppShellLayout>
+              <Outlet />
+            </AppShellLayout>
           </ModalsProvider>
         </MantineProvider>
         <Scripts />

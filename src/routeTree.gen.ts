@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EssaysIndexRouteImport } from './routes/essays/index'
 import { Route as EssaysNewRouteImport } from './routes/essays/new'
 import { Route as EssaysEssayIdScoringRouteImport } from './routes/essays/$essayId/scoring'
 import { Route as EssaysEssayIdResultRouteImport } from './routes/essays/$essayId/result'
@@ -19,6 +20,11 @@ import { Route as EssaysEssayIdDiffRouteImport } from './routes/essays/$essayId/
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EssaysIndexRoute = EssaysIndexRouteImport.update({
+  id: '/essays/',
+  path: '/essays/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EssaysNewRoute = EssaysNewRouteImport.update({
@@ -50,6 +56,7 @@ const EssaysEssayIdDiffRoute = EssaysEssayIdDiffRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/essays/new': typeof EssaysNewRoute
+  '/essays/': typeof EssaysIndexRoute
   '/essays/$essayId/diff': typeof EssaysEssayIdDiffRoute
   '/essays/$essayId/history': typeof EssaysEssayIdHistoryRoute
   '/essays/$essayId/result': typeof EssaysEssayIdResultRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/essays/new': typeof EssaysNewRoute
+  '/essays': typeof EssaysIndexRoute
   '/essays/$essayId/diff': typeof EssaysEssayIdDiffRoute
   '/essays/$essayId/history': typeof EssaysEssayIdHistoryRoute
   '/essays/$essayId/result': typeof EssaysEssayIdResultRoute
@@ -67,6 +75,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/essays/new': typeof EssaysNewRoute
+  '/essays/': typeof EssaysIndexRoute
   '/essays/$essayId/diff': typeof EssaysEssayIdDiffRoute
   '/essays/$essayId/history': typeof EssaysEssayIdHistoryRoute
   '/essays/$essayId/result': typeof EssaysEssayIdResultRoute
@@ -77,6 +86,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/essays/new'
+    | '/essays/'
     | '/essays/$essayId/diff'
     | '/essays/$essayId/history'
     | '/essays/$essayId/result'
@@ -85,6 +95,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/essays/new'
+    | '/essays'
     | '/essays/$essayId/diff'
     | '/essays/$essayId/history'
     | '/essays/$essayId/result'
@@ -93,6 +104,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/essays/new'
+    | '/essays/'
     | '/essays/$essayId/diff'
     | '/essays/$essayId/history'
     | '/essays/$essayId/result'
@@ -102,6 +114,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   EssaysNewRoute: typeof EssaysNewRoute
+  EssaysIndexRoute: typeof EssaysIndexRoute
   EssaysEssayIdDiffRoute: typeof EssaysEssayIdDiffRoute
   EssaysEssayIdHistoryRoute: typeof EssaysEssayIdHistoryRoute
   EssaysEssayIdResultRoute: typeof EssaysEssayIdResultRoute
@@ -115,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/essays/': {
+      id: '/essays/'
+      path: '/essays'
+      fullPath: '/essays/'
+      preLoaderRoute: typeof EssaysIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/essays/new': {
@@ -158,6 +178,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   EssaysNewRoute: EssaysNewRoute,
+  EssaysIndexRoute: EssaysIndexRoute,
   EssaysEssayIdDiffRoute: EssaysEssayIdDiffRoute,
   EssaysEssayIdHistoryRoute: EssaysEssayIdHistoryRoute,
   EssaysEssayIdResultRoute: EssaysEssayIdResultRoute,
