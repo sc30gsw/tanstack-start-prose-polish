@@ -1,6 +1,6 @@
 import { Alert, Anchor, Paper, Stack, Text } from "@mantine/core";
 import { IconAlertCircle } from "@tabler/icons-react";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 
 import { sendMagicCode, signInWithMagicCode } from "~/features/auth/api/auth-client";
 import { checkEmailRegistered } from "~/features/auth/api/check-email-registered";
@@ -17,63 +17,64 @@ export function LoginForm() {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
 
-  const [isPending, startTransition] = useTransition();
-  const [isResending, startResendTransition] = useTransition();
+  const [isResending, setIsResending] = useState(false);
 
   const form = useAppForm({
     canSubmitWhenInvalid: true,
     defaultValues: loginFormEmptyValues,
-    onSubmit: ({ value }) => {
-      startTransition(async () => {
-        if (step === "email") {
-          setErrorMessage(null);
+    onSubmit: async ({ value }) => {
+      if (step === "email") {
+        setErrorMessage(null);
 
-          if (mode === "signin") {
-            const checkResult = await checkEmailRegistered(value.email);
-            let shouldProceed = true;
-            checkResult.match({
-              err: () => {
-                setErrorMessage("メールアドレスの確認中にエラーが発生しました。");
-                shouldProceed = false;
-              },
-              ok: ({ registered }) => {
-                if (!registered) {
-                  setErrorMessage(
-                    "このメールアドレスは登録されていません。サインアップしてください。",
-                  );
-                  shouldProceed = false;
-                }
-              },
-            });
-            if (!shouldProceed) return;
-          }
+        if (mode === "signin") {
+          const checkResult = await checkEmailRegistered(value.email);
+          let shouldProceed = true;
 
-          const result = await sendMagicCode(value.email);
-
-          result.match({
-            err: (e) => {
-              setErrorMessage(e.message || "コードの送信に失敗しました。");
+          checkResult.match({
+            err: () => {
+              setErrorMessage("メールアドレスの確認中にエラーが発生しました。");
+              shouldProceed = false;
             },
-            ok: () => {
-              setStep("code");
+            ok: ({ registered }) => {
+              if (!registered) {
+                setErrorMessage(
+                  "このメールアドレスは登録されていません。サインアップしてください。",
+                );
+                shouldProceed = false;
+              }
             },
           });
 
-          return;
+          if (!shouldProceed) {
+            return;
+          }
         }
 
-        setErrorMessage(null);
-
-        const username = mode === "signup" ? value.username : "";
-        const result = await signInWithMagicCode(value.email, value.code, username);
+        const result = await sendMagicCode(value.email);
 
         result.match({
           err: (e) => {
-            setErrorMessage(e.message || "サインインに失敗しました。コードを確認してください。");
+            setErrorMessage(e.message || "コードの送信に失敗しました。");
           },
-          // db.useAuth() state update → login.tsx <db.SignedIn><SignedInRedirect> handles redirect
-          ok: () => {},
+          ok: () => {
+            setStep("code");
+          },
         });
+
+        return;
+      }
+
+      setErrorMessage(null);
+
+      const username = mode === "signup" ? value.username : "";
+      const result = await signInWithMagicCode(value.email, value.code, username);
+
+      return result.match({
+        err: (e) => {
+          setErrorMessage(e.message || "サインインに失敗しました。コードを確認してください。");
+        },
+        //? db.useAuth() state update → login.tsx <db.SignedIn><SignedInRedirect> handles redirect
+        ok: () => {},
       });
     },
     validators: {
@@ -113,7 +114,7 @@ export function LoginForm() {
           )}
           {step === "email" ? (
             <>
-              <LoginEmailStep form={form} isLoading={isPending} isSignUp={mode === "signup"} />
+              <LoginEmailStep form={form} isSignUp={mode === "signup"} />
               <Text c="dimmed" size="sm" ta="center">
                 {mode === "signin" ? (
                   <>
@@ -135,25 +136,24 @@ export function LoginForm() {
           ) : (
             <LoginMagicCodeStep
               form={form}
-              isLoading={isPending}
               isResending={isResending}
               onBack={() => {
                 setStep("email");
                 setErrorMessage(null);
                 form.setFieldValue("code", "");
               }}
-              onResend={() => {
-                startResendTransition(async () => {
-                  setErrorMessage(null);
+              onResend={async () => {
+                setErrorMessage(null);
+                setIsResending(true);
+                const result = await sendMagicCode(form.getFieldValue("email"));
 
-                  const result = await sendMagicCode(form.getFieldValue("email"));
-
-                  result.match({
-                    err: (e) => {
-                      setErrorMessage(e.message || "コードの再送に失敗しました。");
-                    },
-                    ok: () => {},
-                  });
+                result.match({
+                  err: (e) => {
+                    setErrorMessage(e.message || "コードの再送に失敗しました。");
+                  },
+                  ok: () => {
+                    setIsResending(false);
+                  },
                 });
               }}
             />

@@ -5,8 +5,8 @@ import { loginFormEmptyValues } from "~/features/auth/schemas/login-schema";
 
 export const LoginEmailStep = withForm({
   defaultValues: loginFormEmptyValues,
-  props: { isLoading: false, isSignUp: false },
-  render: function LoginEmailStepRender({ form, isLoading, isSignUp }) {
+  props: { isSignUp: false },
+  render: function LoginEmailStepRender({ form, isSignUp }) {
     return (
       <Stack gap="md">
         <div>
@@ -17,8 +17,10 @@ export const LoginEmailStep = withForm({
             メールアドレスを入力すると、ログインコードをお送りします。
           </Text>
         </div>
-        <form.Subscribe selector={(s) => s.submissionAttempts}>
-          {(submissionAttempts) => (
+        <form.Subscribe
+          selector={(s) => [s.submissionAttempts, s.isSubmitting, s.canSubmit] as const}
+        >
+          {([submissionAttempts, isSubmitting, canSubmit]) => (
             <>
               {isSignUp && (
                 <form.Field name="username">
@@ -32,7 +34,7 @@ export const LoginEmailStep = withForm({
                           ? field.state.meta.errors[0]
                           : undefined
                       }
-                      disabled={isLoading}
+                      disabled={isSubmitting}
                       label="ユーザー名"
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.currentTarget.value)}
@@ -55,7 +57,7 @@ export const LoginEmailStep = withForm({
                     }
                     inputMode="email"
                     label="メールアドレス"
-                    disabled={isLoading}
+                    disabled={isSubmitting}
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.currentTarget.value)}
                     placeholder="you@example.com"
@@ -64,12 +66,18 @@ export const LoginEmailStep = withForm({
                   />
                 )}
               </form.Field>
+              <Button
+                disabled={!canSubmit || isSubmitting}
+                loading={isSubmitting}
+                size="md"
+                type="submit"
+                fullWidth
+              >
+                コードを送信
+              </Button>
             </>
           )}
         </form.Subscribe>
-        <Button disabled={isLoading} loading={isLoading} size="md" type="submit" fullWidth>
-          コードを送信
-        </Button>
       </Stack>
     );
   },

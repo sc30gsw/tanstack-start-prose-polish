@@ -9,8 +9,8 @@ const RESEND_COOLDOWN_SECONDS = 30;
 
 export const LoginMagicCodeStep = withForm({
   defaultValues: loginFormEmptyValues,
-  props: { isLoading: false, isResending: false, onBack: () => {}, onResend: () => {} },
-  render: function LoginMagicCodeStepRender({ form, isLoading, isResending, onBack, onResend }) {
+  props: { isResending: false, onBack: () => {}, onResend: () => {} },
+  render: function LoginMagicCodeStepRender({ form, isResending, onBack, onResend }) {
     const [cooldown, setCooldown] = useState(RESEND_COOLDOWN_SECONDS);
 
     useEffect(() => {
@@ -45,8 +45,8 @@ export const LoginMagicCodeStep = withForm({
             </div>
           )}
         </form.Subscribe>
-        <form.Subscribe selector={(s) => s.submissionAttempts}>
-          {(submissionAttempts) => (
+        <form.Subscribe selector={(s) => [s.submissionAttempts, s.isSubmitting] as const}>
+          {([submissionAttempts, isSubmitting]) => (
             <form.Field name="code">
               {(field) => {
                 const showError =
@@ -65,7 +65,7 @@ export const LoginMagicCodeStep = withForm({
                       size="lg"
                       type="number"
                       value={field.state.value}
-                      disabled={isLoading || isResending}
+                      disabled={isSubmitting || isResending}
                     />
                     {showError && field.state.meta.errors[0] && (
                       <Text c="red" size="xs">
@@ -78,31 +78,40 @@ export const LoginMagicCodeStep = withForm({
             </form.Field>
           )}
         </form.Subscribe>
-        <Stack gap="xs">
-          <Button
-            disabled={isLoading || isResending}
-            loading={isLoading}
-            size="md"
-            type="submit"
-            fullWidth
-          >
-            サインイン
-          </Button>
-          <Group justify="space-between">
-            <Button disabled={isLoading || isResending} onClick={onBack} size="xs" variant="subtle">
-              メールアドレス入力に戻る
-            </Button>
-            <Button
-              disabled={cooldown > 0 || isLoading || isResending}
-              loading={isResending}
-              onClick={handleResend}
-              size="xs"
-              variant="subtle"
-            >
-              {cooldown > 0 ? `再送（${cooldown}秒）` : "コードを再送"}
-            </Button>
-          </Group>
-        </Stack>
+        <form.Subscribe selector={(s) => [s.isSubmitting, s.canSubmit] as const}>
+          {([isSubmitting, canSubmit]) => (
+            <Stack gap="xs">
+              <Button
+                disabled={!canSubmit || isSubmitting || isResending}
+                loading={isSubmitting}
+                size="md"
+                type="submit"
+                fullWidth
+              >
+                サインイン
+              </Button>
+              <Group justify="space-between">
+                <Button
+                  disabled={isSubmitting || isResending}
+                  onClick={onBack}
+                  size="xs"
+                  variant="subtle"
+                >
+                  メールアドレス入力に戻る
+                </Button>
+                <Button
+                  disabled={cooldown > 0 || isSubmitting || isResending}
+                  loading={isResending}
+                  onClick={handleResend}
+                  size="xs"
+                  variant="subtle"
+                >
+                  {cooldown > 0 ? `再送（${cooldown}秒）` : "コードを再送"}
+                </Button>
+              </Group>
+            </Stack>
+          )}
+        </form.Subscribe>
       </Stack>
     );
   },
