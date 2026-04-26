@@ -12,6 +12,9 @@ importers:
 
   .:
     dependencies:
+      '@instantdb/admin':
+        specifier: ^1.0.17
+        version: 1.0.17
       '@instantdb/react':
         specifier: ^1.0.17
         version: 1.0.17(react@19.2.5)
@@ -570,8 +573,15 @@ packages:
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
 
+  '@instantdb/admin@1.0.17':
+    resolution: {integrity: sha512-r0P/4yG+uajcLjvHD8M9OBlR49LpnbQvuUKKnooTMKfCTD4kOid7sNH4Dr0QFnWIysjG9hqq36qokeHPTKduDw==}
+
   '@instantdb/core@1.0.17':
     resolution: {integrity: sha512-merdcc4g91ZLTIRH6juI2jWODRlZuLbGssba6Xv+L3Xxg9tR9dtabr+nXEgUbPNZPORe6L0cEP5pKEGzU/FYuQ==}
+
+  '@instantdb/eventsource@4.1.0-2':
+    resolution: {integrity: sha512-k2uzhsRzdD7hzV3fv+eoCRNeluZcj4pDfUKKAhvIS6xshc7zHkaM9/m3vxBgaYoNVmvOyaGp84TcHG0/Bp7k4g==}
+    engines: {node: '>=20.0.0'}
 
   '@instantdb/react-common@1.0.17':
     resolution: {integrity: sha512-knB7jq8YV7YQv84FFeuUmayXTFB0e0aJdYPCYsUZFfsEhGKMWEKDr9XwZ59DoHbzZXRb+Nqfpln00tb7l6pHOA==}
@@ -2079,6 +2089,10 @@ packages:
   cookie-es@3.1.1:
     resolution: {integrity: sha512-UaXxwISYJPTr9hwQxMFYZ7kNhSXboMXP+Z3TRX6f1/NyaGPfuNUZOWP1pUEb75B2HjfklIYLVRfWiFZJyC6Npg==}
 
+  cookie@1.1.1:
+    resolution: {integrity: sha512-ei8Aos7ja0weRpFzJnEA9UHJ/7XQmqglbRwnf2ATjcB9Wq874VKH9kfjjirM6UhU2/E5fFYadylyhFldcqSidQ==}
+    engines: {node: '>=18'}
+
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
@@ -3552,11 +3566,23 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
+  '@instantdb/admin@1.0.17':
+    dependencies:
+      '@instantdb/core': 1.0.17
+      '@instantdb/eventsource': 4.1.0-2
+      '@instantdb/version': 1.0.17
+      cookie: 1.1.1
+      uuid: 11.1.0
+
   '@instantdb/core@1.0.17':
     dependencies:
       '@instantdb/version': 1.0.17
       mutative: 1.3.0
       uuid: 11.1.0
+
+  '@instantdb/eventsource@4.1.0-2':
+    dependencies:
+      eventsource-parser: 3.0.8
 
   '@instantdb/react-common@1.0.17(react@19.2.5)':
     dependencies:
@@ -4696,6 +4722,8 @@ snapshots:
   convert-source-map@2.0.0: {}
 
   cookie-es@3.1.1: {}
+
+  cookie@1.1.1: {}
 
   cross-spawn@7.0.6:
     dependencies:

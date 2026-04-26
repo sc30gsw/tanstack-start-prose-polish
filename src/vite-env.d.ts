@@ -6,6 +6,7 @@ interface ViteTypeOptions {
 
 interface ImportMetaEnv {
   readonly VITE_INSTANT_APP_ID: string;
+  readonly VITE_INSTANT_APP_ADMIN_TOKEN: string;
   // その他の環境変数...
 }
 

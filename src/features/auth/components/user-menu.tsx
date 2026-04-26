@@ -5,17 +5,17 @@ import { IconLogout, IconUser } from "@tabler/icons-react";
 import { db } from "~/lib/instant";
 import type { AppSchema } from "~/lib/instant-schema";
 
-function getUserDisplayName(user: {
-  email: InstaQLEntity<AppSchema, "$users">["email"] | null | undefined;
-  username: InstaQLEntity<AppSchema, "$users">["username"];
-}) {
-  const u = user.username?.trim();
+function getUserDisplayName(
+  username: InstaQLEntity<AppSchema, "$users">["username"],
+  email: NonNullable<InstaQLEntity<AppSchema, "$users">["email"]>,
+) {
+  const u = username?.trim();
 
   if (u) {
     return u;
   }
 
-  return user.email?.split("@")[0] ?? "ユーザー";
+  return email.split("@")[0] ?? "ユーザー";
 }
 
 function getUserInitials(displayName: string) {
@@ -30,42 +30,34 @@ function getUserInitials(displayName: string) {
 
 export function UserSidebarFooter() {
   const { user } = db.useAuth();
+  const { data } = db.useQuery({ $users: { $: { where: { email: user?.email ?? "" } } } });
 
-  if (!user) {
+  if (!data?.$users?.[0]) {
     return null;
   }
 
-  const appUser = user as InstaQLEntity<AppSchema, "$users">;
-  const displayName = getUserDisplayName({
-    email: user.email,
-    username: appUser.username,
-  });
-  const email = user.email ?? null;
+  const profile = data?.$users?.[0];
+  const displayName = getUserDisplayName(profile?.username, profile.email!);
+  const email = profile.email;
 
   return (
     <Stack gap="md" w="100%">
-      <Group align="center" gap="sm" px={4} style={{ minWidth: 0 }} w="100%" wrap="nowrap">
+      <Group align="center" gap="sm" px={4} className="min-w-0" w="100%" wrap="nowrap">
         <Avatar
           color="indigo"
           size="lg"
-          style={{
-            borderRadius: "50%",
-            boxShadow: "0 0 0 1px var(--mantine-color-default-border)",
-            flexShrink: 0,
-          }}
+          className="shrink-0 rounded-full shadow-sm"
           variant="gradient"
         >
           {getUserInitials(displayName)}
         </Avatar>
-        <Stack flex={1} gap={0} maw="100%" style={{ minWidth: 0 }}>
+        <Stack flex={1} gap={0} maw="100%" className="min-w-0">
           <Text component="p" fw={600} lineClamp={1} m={0} size="sm" title={displayName}>
             {displayName}
           </Text>
-          {email ? (
-            <Text c="dimmed" component="p" lineClamp={1} m={0} mt="2px" size="xs" title={email}>
-              {email}
-            </Text>
-          ) : null}
+          <Text c="dimmed" component="p" lineClamp={1} m={0} mt="2px" size="xs" title={email}>
+            {email}
+          </Text>
         </Stack>
       </Group>
       <Button
@@ -84,15 +76,19 @@ export function UserSidebarFooter() {
 
 export function UserMenu() {
   const { user } = db.useAuth();
+  const { data } = db.useQuery({ $users: { $: { where: { email: user?.email ?? "" } } } });
 
-  if (!user) {
+  if (!data?.$users?.[0]) {
     return null;
   }
+
+  const profile = data?.$users?.[0];
+  const displayName = getUserDisplayName(profile.username, profile.email);
 
   return (
     <Menu position="bottom-end" shadow="md" width={200}>
       <Menu.Target>
-        <Tooltip label={(user as InstaQLEntity<AppSchema, "$users">).username}>
+        <Tooltip label={displayName}>
           <ActionIcon aria-label="ユーザーメニュー" color="gray" size="md" variant="subtle">
             <IconUser size={18} />
           </ActionIcon>
@@ -101,7 +97,7 @@ export function UserMenu() {
       <Menu.Dropdown>
         <Menu.Label>
           <Text size="sm" truncate>
-            {(user as InstaQLEntity<AppSchema, "$users">).username}
+            {displayName}
           </Text>
         </Menu.Label>
         <Menu.Divider />

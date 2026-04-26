@@ -3,6 +3,7 @@ import { IconAlertCircle } from "@tabler/icons-react";
 import { useState, useTransition } from "react";
 
 import { sendMagicCode, signInWithMagicCode } from "~/features/auth/api/auth-client";
+import { checkEmailRegistered } from "~/features/auth/api/check-email-registered";
 import { LoginEmailStep } from "~/features/auth/components/email-step";
 import { LoginMagicCodeStep } from "~/features/auth/components/magic-code-step";
 import { useAppForm } from "~/features/auth/hooks/create-login-form";
@@ -26,6 +27,26 @@ export function LoginForm() {
       startTransition(async () => {
         if (step === "email") {
           setErrorMessage(null);
+
+          if (mode === "signin") {
+            const checkResult = await checkEmailRegistered(value.email);
+            let shouldProceed = true;
+            checkResult.match({
+              err: () => {
+                setErrorMessage("メールアドレスの確認中にエラーが発生しました。");
+                shouldProceed = false;
+              },
+              ok: ({ registered }) => {
+                if (!registered) {
+                  setErrorMessage(
+                    "このメールアドレスは登録されていません。サインアップしてください。",
+                  );
+                  shouldProceed = false;
+                }
+              },
+            });
+            if (!shouldProceed) return;
+          }
 
           const result = await sendMagicCode(value.email);
 
@@ -85,7 +106,9 @@ export function LoginForm() {
               title="エラー"
               withCloseButton
             >
-              {errorMessage}
+              <Text c="red.8" size="sm">
+                {errorMessage}
+              </Text>
             </Alert>
           )}
           {step === "email" ? (
