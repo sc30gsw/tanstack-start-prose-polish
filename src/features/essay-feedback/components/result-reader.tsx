@@ -6,6 +6,7 @@ import { useState } from "react";
 
 import { TtsPlayControls } from "~/features/essay-feedback/components/tts-button";
 import { TtsSyncedText } from "~/features/essay-feedback/components/tts-synced-text";
+import { VoicePicker } from "~/features/essay-feedback/components/voice-picker";
 import { type TtsDisplayMode, useTts } from "~/features/essay-feedback/hooks/use-tts";
 import type { AppSchema } from "~/lib/instant-schema";
 
@@ -24,6 +25,11 @@ export function ResultReader({
     playFromStart,
     playbackState,
     resetPlayback,
+    selectedVoiceURI,
+    setSelectedVoiceURI,
+    voiceLabelJaByUri,
+    voiceSlotAccentByUri,
+    voices,
   } = useTts(correctedBody);
   const [displayMode, setDisplayMode] = useState<TtsDisplayMode>("aloud");
 
@@ -36,7 +42,7 @@ export function ResultReader({
           className="border-default-border border-b"
         >
           <Stack gap="md">
-            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md" verticalSpacing="md">
+            <SimpleGrid cols={{ base: 1, lg: 3, sm: 2 }} spacing="md" verticalSpacing="md">
               <Select
                 aria-describedby="result-reader-mode-hint"
                 data={[
@@ -52,6 +58,20 @@ export function ResultReader({
                 size="sm"
                 value={displayMode}
                 w="100%"
+              />
+              <VoicePicker
+                onChange={(uri) => {
+                  setSelectedVoiceURI(uri);
+                  resetPlayback();
+                }}
+                onClear={() => {
+                  setSelectedVoiceURI(null);
+                  resetPlayback();
+                }}
+                selectedVoiceURI={selectedVoiceURI}
+                voiceLabelJaByUri={voiceLabelJaByUri}
+                voiceSlotAccentByUri={voiceSlotAccentByUri}
+                voices={voices}
               />
               <Box w="100%" className={cn(isSmUp ? "self-end" : "self-stretch")}>
                 <TtsPlayControls

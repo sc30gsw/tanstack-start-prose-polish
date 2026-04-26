@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 
+import {
+  TTS_VOICE_STORAGE_KEY,
+  type TtsLangCode,
+  pickCuratedTtsVoices,
+} from "~/features/essay-feedback/utils/tts-voice";
+
 /** 音読＝前後の単語を区別、シャドーイング＝未発音だけ隠し発音済みは残す */
 export type TtsDisplayMode = "aloud" | "shadowing";
 
@@ -73,6 +79,10 @@ export function useTts(text: string) {
   const [currentWordIndex, setCurrentWordIndex] = useState(-1);
   const [isSupported, setIsSupported] = useState(false);
   const [voicesReady, setVoicesReady] = useState(false);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [voiceLabelJaByUri, setVoiceLabelJaByUri] = useState<Record<string, string>>({});
+  const [voiceSlotAccentByUri, setVoiceSlotAccentByUri] = useState<Record<string, TtsLangCode>>({});
+  const [selectedVoiceURI, setSelectedVoiceURIState] = useState<string | null>(null);
 
   const setIdle = useCallback(() => {
     setPlaybackState("idle");
@@ -86,16 +96,50 @@ export function useTts(text: string) {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     setIsSupported(true);
 
-    const onVoicesChanged = () => setVoicesReady(true);
-    window.speechSynthesis.addEventListener("voiceschanged", onVoicesChanged);
+    let initialized = false;
+
+    const initVoices = () => {
+      const picks = pickCuratedTtsVoices(window.speechSynthesis.getVoices());
+      const flatVoices = picks.map((p) => p.voice);
+      setVoices(flatVoices);
+      setVoiceLabelJaByUri(
+        Object.fromEntries(picks.map((p) => [p.voice.voiceURI, p.curatedLabelJa])),
+      );
+      setVoiceSlotAccentByUri(
+        Object.fromEntries(picks.map((p) => [p.voice.voiceURI, p.slotAccent])),
+      );
+      setVoicesReady(true);
+
+      if (!initialized && flatVoices.length > 0) {
+        initialized = true;
+        const stored = window.localStorage.getItem(TTS_VOICE_STORAGE_KEY);
+        const uris = new Set(flatVoices.map((v) => v.voiceURI));
+        if (stored && uris.has(stored)) {
+          setSelectedVoiceURIState(stored);
+        } else {
+          setSelectedVoiceURIState(flatVoices[0]?.voiceURI ?? null);
+        }
+      }
+    };
+
+    window.speechSynthesis.addEventListener("voiceschanged", initVoices);
 
     if (window.speechSynthesis.getVoices().length > 0) {
-      setVoicesReady(true);
+      initVoices();
     }
 
     return () => {
-      window.speechSynthesis.removeEventListener("voiceschanged", onVoicesChanged);
+      window.speechSynthesis.removeEventListener("voiceschanged", initVoices);
     };
+  }, []);
+
+  const setSelectedVoiceURI = useCallback((uri: string | null) => {
+    setSelectedVoiceURIState(uri);
+    if (uri) {
+      window.localStorage.setItem(TTS_VOICE_STORAGE_KEY, uri);
+    } else {
+      window.localStorage.removeItem(TTS_VOICE_STORAGE_KEY);
+    }
   }, []);
 
   const beginSpeakingFromStart = useCallback(() => {
@@ -108,8 +152,10 @@ export function useTts(text: string) {
     utterance.volume = 1.0;
 
     if (voicesReady) {
-      const voice = getBestEnglishVoice();
-      if (voice) utterance.voice = voice;
+      const picked =
+        (selectedVoiceURI ? voices.find((v) => v.voiceURI === selectedVoiceURI) : null) ??
+        getBestEnglishVoice();
+      if (picked) utterance.voice = picked;
     }
 
     attachUtteranceHandlers(utterance, text, {
@@ -120,7 +166,7 @@ export function useTts(text: string) {
 
     setPlaybackState("playing");
     window.speechSynthesis.speak(utterance);
-  }, [isSupported, setIdle, setPlaying, text, voicesReady]);
+  }, [isSupported, selectedVoiceURI, setIdle, setPlaying, text, voices, voicesReady]);
 
   const play = useCallback(() => {
     if (!isSupported) return;
@@ -161,6 +207,11 @@ export function useTts(text: string) {
   /** 再生を止め先頭に戻す（表示モード切替など）。読み上げは自動では再開しない */
   const resetPlayback = useCallback(() => {
     if (!isSupported) return;
+    //? pause 状態のまま cancel() すると Chromium 系で paused フラグが残り、
+    //? 次回 play() が resume() 経路に入って空キューを再開してしまうため、先に解除する
+    if (window.speechSynthesis.paused) {
+      window.speechSynthesis.resume();
+    }
     window.speechSynthesis.cancel();
     setPlaybackState("idle");
     setCurrentWordIndex(-1);
@@ -185,5 +236,10 @@ export function useTts(text: string) {
     playbackState,
     playFromStart,
     resetPlayback,
+    selectedVoiceURI,
+    setSelectedVoiceURI,
+    voiceLabelJaByUri,
+    voiceSlotAccentByUri,
+    voices,
   };
 }
