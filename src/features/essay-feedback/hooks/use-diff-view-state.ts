@@ -6,13 +6,14 @@ import type {
 import { useState } from "react";
 
 import type { CommentAnnotationMeta } from "~/features/essay-feedback/components/diff-annotation-row";
-import type { DiffComment, DiffCommentInput } from "~/features/essay-feedback/schemas/essay-schema";
+import type { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
+import type { DiffCommentInput } from "~/features/essay-feedback/schemas/essay-schema";
 
 const isChangeLine = (lineType: OnDiffLineClickProps["lineType"]) =>
   lineType === "change-addition" || lineType === "change-deletion";
 
 type UseDiffViewStateProps = {
-  comments: DiffComment[];
+  comments: ReturnType<typeof useDiffComments>["comments"];
   readonly: boolean;
 };
 
@@ -36,7 +37,11 @@ export function useDiffViewState({ comments, readonly }: UseDiffViewStateProps) 
       return;
     }
 
-    if (props.type !== "diff-line" || !isChangeLine(props.lineType)) {
+    if (props.type !== "diff-line") {
+      return;
+    }
+
+    if (props.annotationSide == null) {
       return;
     }
 
@@ -78,7 +83,13 @@ export function useDiffViewState({ comments, readonly }: UseDiffViewStateProps) 
   const lineAnnotations = ((): DiffLineAnnotation<CommentAnnotationMeta>[] => {
     const grouped = new Map<
       DiffCommentInput["side"],
-      Map<number, { ai: DiffComment[]; user: DiffComment[] }>
+      Map<
+        number,
+        {
+          ai: UseDiffViewStateProps["comments"];
+          user: UseDiffViewStateProps["comments"];
+        }
+      >
     >();
 
     for (const comment of comments) {
