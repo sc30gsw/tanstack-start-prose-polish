@@ -2,41 +2,42 @@ import type { InstaQLEntity } from "@instantdb/react";
 import {
   ActionIcon,
   Avatar,
-  Button,
   Group,
   Paper,
   Stack,
   Text,
-  Textarea,
   useComputedColorScheme,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconPencil, IconRobot, IconTrash, IconUser } from "@tabler/icons-react";
+import dayjs from "dayjs";
 import { useState } from "react";
 
+import { DiffCommentThreadEditForm } from "~/features/essay-feedback/components/diff-thread-edit-form";
 import type { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
 import type { DiffComment } from "~/features/essay-feedback/schemas/essay-schema";
 import type { AppSchema } from "~/lib/instant-schema";
 
 type DiffCommentThreadProps = {
-  comments: ReturnType<typeof useDiffComments>["comments"];
+  comments: DiffComment[];
   onDeleteUserComment?: ReturnType<typeof useDiffComments>["removeUserComment"];
   onUpdateUserComment?: ReturnType<typeof useDiffComments>["updateUserComment"];
-  isPending: ReturnType<typeof useDiffComments>["isPending"];
+  isPending?: ReturnType<typeof useDiffComments>["isPending"];
 };
 
 export function DiffCommentThread({
   comments,
   onDeleteUserComment,
   onUpdateUserComment,
-  isPending,
+  isPending = false,
 }: DiffCommentThreadProps) {
   const colorScheme = useComputedColorScheme("light", { getInitialValueInEffect: true });
   const suggestionColor = colorScheme === "dark" ? "blue.2" : "blue.7";
 
-  const [editingId, setEditingId] = useState<null | string>(null);
-  const [draft, setDraft] = useState("");
-  const [busyId, setBusyId] = useState<null | string>(null);
+  const [editingId, setEditingId] = useState<null | InstaQLEntity<AppSchema, "diffComments">["id"]>(
+    null,
+  );
+  const [busyId, setBusyId] = useState<null | InstaQLEntity<AppSchema, "diffComments">["id"]>(null);
 
   if (comments.length === 0) {
     return null;
@@ -48,22 +49,15 @@ export function DiffCommentThread({
     }
 
     setEditingId(comment.id);
-    setDraft(comment.body);
   };
 
-  const saveEdit = (id: InstaQLEntity<AppSchema, "diffComments">["id"]) => {
+  const saveEdit = (id: InstaQLEntity<AppSchema, "diffComments">["id"], nextBody: string) => {
     if (!onUpdateUserComment) {
       return;
     }
 
-    setBusyId(id);
-
-    try {
-      onUpdateUserComment(id, draft);
-      setEditingId(null);
-    } finally {
-      setBusyId(null);
-    }
+    onUpdateUserComment(id, nextBody);
+    setEditingId(null);
   };
 
   const requestDelete = (id: InstaQLEntity<AppSchema, "diffComments">["id"]) => {
@@ -77,6 +71,7 @@ export function DiffCommentThread({
       labels: { cancel: "キャンセル", confirm: "削除する" },
       onConfirm: () => {
         setBusyId(id);
+
         try {
           onDeleteUserComment(id);
         } finally {
@@ -92,10 +87,7 @@ export function DiffCommentThread({
       {comments.map((comment) => {
         const isUser = comment.author === "user";
         const isEditing = editingId === comment.id;
-        const timeLabel = new Date(comment.createdAt).toLocaleString("ja-JP", {
-          hour: "2-digit",
-          minute: "2-digit",
-        });
+        const timeLabel = dayjs(comment.createdAt).format("HH:mm");
         const showMutate = isUser && (onUpdateUserComment != null || onDeleteUserComment != null);
 
         return (
@@ -116,7 +108,7 @@ export function DiffCommentThread({
                         <ActionIcon
                           aria-label="コメントを編集"
                           color="blue"
-                          disabled={busyId != null}
+                          disabled={busyId != null || isPending}
                           onClick={() => {
                             startEdit(comment);
                           }}
@@ -145,40 +137,17 @@ export function DiffCommentThread({
                   )}
                 </Group>
                 {isEditing && isUser && onUpdateUserComment != null ? (
-                  <Stack gap="xs">
-                    <Textarea
-                      aria-label="コメントを編集"
-                      autosize
-                      minRows={2}
-                      onChange={(e) => {
-                        setDraft(e.currentTarget.value);
-                      }}
-                      value={draft}
-                      disabled={isPending}
-                    />
-                    <Group gap="xs" justify="flex-end">
-                      <Button
-                        disabled={busyId === comment.id || isPending}
-                        onClick={() => {
-                          setEditingId(null);
-                        }}
-                        size="xs"
-                        variant="default"
-                      >
-                        キャンセル
-                      </Button>
-                      <Button
-                        disabled={draft.trim() === "" || busyId === comment.id || isPending}
-                        loading={busyId === comment.id}
-                        onClick={() => {
-                          saveEdit(comment.id);
-                        }}
-                        size="xs"
-                      >
-                        保存
-                      </Button>
-                    </Group>
-                  </Stack>
+                  <DiffCommentThreadEditForm
+                    key={comment.id}
+                    initialBody={comment.body}
+                    isPending={isPending}
+                    onCancel={() => {
+                      setEditingId(null);
+                    }}
+                    onSave={(nextBody) => {
+                      return saveEdit(comment.id, nextBody);
+                    }}
+                  />
                 ) : (
                   <>
                     <Text size="xs">{comment.body}</Text>
