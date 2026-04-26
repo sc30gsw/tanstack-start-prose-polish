@@ -1,13 +1,38 @@
 import type { InstaQLEntity } from "@instantdb/react";
 import { cn } from "@lightsound/cn/tw-merge";
-import { Box, Paper, Select, SimpleGrid, Stack, Text, useMantineTheme } from "@mantine/core";
+import {
+  Avatar,
+  Box,
+  Group,
+  Paper,
+  Select,
+  SimpleGrid,
+  Stack,
+  Text,
+  useMantineTheme,
+  type MantineColor,
+} from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { useState } from "react";
 
 import { TtsPlayControls } from "~/features/essay-feedback/components/tts-button";
 import { TtsSyncedText } from "~/features/essay-feedback/components/tts-synced-text";
-import { type TtsDisplayMode, useTts } from "~/features/essay-feedback/hooks/use-tts";
+import {
+  type TtsAccent,
+  type TtsDisplayMode,
+  useTts,
+} from "~/features/essay-feedback/hooks/use-tts";
 import type { AppSchema } from "~/lib/instant-schema";
+
+const ACCENT_OPTIONS = [
+  { value: "american-female", label: "Samantha" },
+  { value: "british-male", label: "Daniel" },
+] as const satisfies { value: TtsAccent; label: string }[];
+
+const ACCENT_AVATAR = {
+  "american-female": { color: "pink", initials: "S" },
+  "british-male": { color: "indigo", initials: "D" },
+} as const satisfies Record<TtsAccent, { color: MantineColor; initials: string }>;
 
 export function ResultReader({
   correctedBody,
@@ -16,6 +41,7 @@ export function ResultReader({
   const isSmUp = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`);
   const ttsFullWidth = isSmUp === false;
   const {
+    accent,
     currentWordIndex,
     isPlaybackActive,
     isSupported,
@@ -24,6 +50,7 @@ export function ResultReader({
     playFromStart,
     playbackState,
     resetPlayback,
+    setAccent,
   } = useTts(correctedBody);
   const [displayMode, setDisplayMode] = useState<TtsDisplayMode>("aloud");
 
@@ -36,7 +63,7 @@ export function ResultReader({
           className="border-default-border border-b"
         >
           <Stack gap="md">
-            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md" verticalSpacing="md">
+            <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="md" verticalSpacing="md">
               <Select
                 aria-describedby="result-reader-mode-hint"
                 data={[
@@ -51,6 +78,35 @@ export function ResultReader({
                 }}
                 size="sm"
                 value={displayMode}
+                w="100%"
+              />
+              <Select
+                data={ACCENT_OPTIONS}
+                label="音声"
+                leftSection={
+                  <Avatar color={ACCENT_AVATAR[accent].color} radius="xl" size={20}>
+                    {ACCENT_AVATAR[accent].initials}
+                  </Avatar>
+                }
+                leftSectionWidth={36}
+                onChange={(v) => {
+                  if (v == null) return;
+                  setAccent(v as TtsAccent);
+                  resetPlayback();
+                }}
+                renderOption={({ option }) => {
+                  const av = ACCENT_AVATAR[option.value as TtsAccent];
+                  return (
+                    <Group gap="xs">
+                      <Avatar color={av.color} radius="xl" size={24}>
+                        {av.initials}
+                      </Avatar>
+                      <Text size="sm">{option.label}</Text>
+                    </Group>
+                  );
+                }}
+                size="sm"
+                value={accent}
                 w="100%"
               />
               <Box w="100%" className={cn(isSmUp ? "self-end" : "self-stretch")}>

@@ -6,26 +6,45 @@ export type TtsDisplayMode = "aloud" | "shadowing";
 /** idle=未開始または終了、playing=再生中、paused=一時停止 */
 export type TtsPlaybackState = "idle" | "paused" | "playing";
 
-const PREFERRED_VOICE_NAMES = [
-  "Google US English",
-  "Microsoft Zira - English (United States)",
-  "Microsoft David - English (United States)",
-  "Samantha",
-  "Alex",
-  "Karen",
-  "Daniel",
-];
+/** アメリカ女性・イギリス男性の2択アクセント */
+export type TtsAccent = "american-female" | "british-male";
 
-function getBestEnglishVoice(): SpeechSynthesisVoice | null {
+const ACCENT_VOICE_NAMES = {
+  "american-female": [
+    "Samantha",
+    "Microsoft Zira - English (United States)",
+    "Microsoft Aria Online (Natural) - English (United States)",
+  ],
+  // Daniel は macOS デフォルト en-GB 男性音声（標準インストール済み）
+  "british-male": [
+    "Daniel",
+    "Arthur",
+    "Oliver",
+    "Google UK English Male",
+    "Microsoft George - English (United Kingdom)",
+    "Microsoft Ryan Online (Natural) - English (United Kingdom)",
+  ],
+} as const satisfies Record<TtsAccent, readonly string[]>;
+
+const ACCENT_LANG = {
+  "american-female": "en-US",
+  "british-male": "en-GB",
+} as const satisfies Record<TtsAccent, string>;
+
+function getVoiceForAccent(accent: TtsAccent): SpeechSynthesisVoice | null {
   const voices = window.speechSynthesis.getVoices();
-  for (const name of PREFERRED_VOICE_NAMES) {
+
+  // 優先名リストで完全一致検索
+  for (const name of ACCENT_VOICE_NAMES[accent]) {
     const found = voices.find((v) => v.name === name);
     if (found) return found;
   }
+
+  const lang = ACCENT_LANG[accent];
   return (
-    voices.find((v) => v.lang === "en-US" && v.localService) ??
-    voices.find((v) => v.lang === "en-US") ??
-    voices.find((v) => v.lang.startsWith("en")) ??
+    voices.find((v) => v.lang === lang && v.localService) ??
+    voices.find((v) => v.lang === lang) ??
+    voices.find((v) => v.lang.startsWith(lang.split("-")[0] ?? lang)) ??
     null
   );
 }
@@ -81,6 +100,7 @@ export function useTts(text: string) {
   const [playbackState, setPlaybackState] = useState<TtsPlaybackState>("idle");
   const [currentWordIndex, setCurrentWordIndex] = useState(-1);
   const [isSupported, setIsSupported] = useState(false);
+  const [accent, setAccent] = useState<TtsAccent>("american-female");
   /** ユーザーが UI で一時停止したとき true。Arc 等の意図しない auto-pause だけ resume する判別に使う */
   const userInitiatedPauseRef = useRef(false);
 
@@ -120,12 +140,12 @@ export function useTts(text: string) {
     void window.speechSynthesis.getVoices();
 
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "en-US";
+    utterance.lang = ACCENT_LANG[accent];
     utterance.rate = 0.85;
     utterance.pitch = 1.0;
     utterance.volume = 1.0;
 
-    const voice = getBestEnglishVoice();
+    const voice = getVoiceForAccent(accent);
     if (voice) utterance.voice = voice;
 
     userInitiatedPauseRef.current = false;
@@ -139,7 +159,7 @@ export function useTts(text: string) {
 
     setPlaybackState("playing");
     window.speechSynthesis.speak(utterance);
-  }, [isSupported, setIdle, setPlaying, text]);
+  }, [accent, isSupported, setIdle, setPlaying, text]);
 
   const play = useCallback(() => {
     if (!isSupported) return;
@@ -192,6 +212,7 @@ export function useTts(text: string) {
   const isPlaybackActive = playbackState !== "idle";
 
   return {
+    accent,
     currentWordIndex,
     isPlaybackActive,
     isSupported,
@@ -200,5 +221,6 @@ export function useTts(text: string) {
     playbackState,
     playFromStart,
     resetPlayback,
+    setAccent,
   } as const;
 }
