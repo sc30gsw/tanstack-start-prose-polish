@@ -86,7 +86,7 @@ export function useDiffComments(essayId: InstaQLEntity<AppSchema, "essays">["id"
     commentId: InstaQLEntity<AppSchema, "diffComments">["id"],
     newBody: InstaQLEntity<AppSchema, "diffComments">["body"],
   ) => {
-    const parsed = v.safeParse(v.pick(diffCommentInputSchema, ["body"]), newBody);
+    const parsed = v.safeParse(v.pick(diffCommentInputSchema, ["body"]), { body: newBody });
 
     if (!parsed.success) {
       return;
