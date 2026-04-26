@@ -16,30 +16,6 @@ export type TtsDisplayMode = "aloud" | "shadowing";
 /** idle=未開始または終了、playing=再生中、paused=一時停止 */
 export type TtsPlaybackState = "idle" | "paused" | "playing";
 
-const PREFERRED_VOICE_NAMES = [
-  "Google US English",
-  "Microsoft Zira - English (United States)",
-  "Microsoft David - English (United States)",
-  "Samantha",
-  "Alex",
-  "Karen",
-  "Daniel",
-];
-
-function getBestEnglishVoice(): SpeechSynthesisVoice | null {
-  const voices = window.speechSynthesis.getVoices();
-  for (const name of PREFERRED_VOICE_NAMES) {
-    const found = voices.find((v) => v.name === name);
-    if (found) return found;
-  }
-  return (
-    voices.find((v) => v.lang === "en-US" && v.localService) ??
-    voices.find((v) => v.lang === "en-US") ??
-    voices.find((v) => v.lang.startsWith("en")) ??
-    null
-  );
-}
-
 function attachUtteranceHandlers(
   utterance: SpeechSynthesisUtterance,
   text: string,
@@ -148,30 +124,18 @@ export function useTts(text: string) {
 
   const beginSpeakingFromStart = useCallback(() => {
     if (!isSupported) return;
+    if (!voicesReady || selectedVoiceURI == null) return;
+
+    const picked = voices.find((v) => v.voiceURI === selectedVoiceURI) ?? null;
+    if (!picked) return;
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.pitch = 1.0;
     utterance.volume = 1.0;
-
-    if (voicesReady) {
-      const picked =
-        (selectedVoiceURI ? voices.find((v) => v.voiceURI === selectedVoiceURI) : null) ??
-        getBestEnglishVoice();
-      if (picked) {
-        utterance.voice = picked;
-        const accentForSynth =
-          (selectedVoiceURI ? voiceSlotAccentByUri[selectedVoiceURI] : undefined) ??
-          inferAccentFromVoice(picked);
-        utterance.lang = utteranceLangForTts(picked, accentForSynth);
-        utterance.rate = utteranceRateForTts(accentForSynth);
-      } else {
-        utterance.lang = "en-US";
-        utterance.rate = utteranceRateForTts(undefined);
-      }
-    } else {
-      utterance.lang = "en-US";
-      utterance.rate = utteranceRateForTts(undefined);
-    }
+    utterance.voice = picked;
+    const accentForSynth = voiceSlotAccentByUri[selectedVoiceURI] ?? inferAccentFromVoice(picked);
+    utterance.lang = utteranceLangForTts(picked, accentForSynth);
+    utterance.rate = utteranceRateForTts(accentForSynth);
 
     attachUtteranceHandlers(utterance, text, {
       onIdle: setIdle,
@@ -194,6 +158,7 @@ export function useTts(text: string) {
 
   const play = useCallback(() => {
     if (!isSupported) return;
+    if (!voicesReady || selectedVoiceURI == null) return;
 
     if (window.speechSynthesis.paused) {
       window.speechSynthesis.resume();
@@ -209,16 +174,17 @@ export function useTts(text: string) {
     queueMicrotask(() => {
       beginSpeakingFromStart();
     });
-  }, [beginSpeakingFromStart, isSupported]);
+  }, [beginSpeakingFromStart, isSupported, selectedVoiceURI, voicesReady]);
 
   const playFromStart = useCallback(() => {
     if (!isSupported) return;
+    if (!voicesReady || selectedVoiceURI == null) return;
     window.speechSynthesis.cancel();
     setCurrentWordIndex(-1);
     queueMicrotask(() => {
       beginSpeakingFromStart();
     });
-  }, [beginSpeakingFromStart, isSupported]);
+  }, [beginSpeakingFromStart, isSupported, selectedVoiceURI, voicesReady]);
 
   const pause = useCallback(() => {
     if (!isSupported) return;
@@ -250,6 +216,7 @@ export function useTts(text: string) {
   }, [isSupported]);
 
   const isPlaybackActive = playbackState !== "idle";
+  const playbackDisabled = !voicesReady || selectedVoiceURI == null;
 
   return {
     currentWordIndex,
@@ -257,6 +224,7 @@ export function useTts(text: string) {
     isSupported,
     pause,
     play,
+    playbackDisabled,
     playbackState,
     playFromStart,
     resetPlayback,

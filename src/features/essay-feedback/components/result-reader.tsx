@@ -22,6 +22,7 @@ export function ResultReader({
     isSupported,
     pause: pauseTts,
     play: playTts,
+    playbackDisabled,
     playFromStart,
     playbackState,
     resetPlayback,
@@ -80,6 +81,7 @@ export function ResultReader({
                   onPause={pauseTts}
                   onPlay={playTts}
                   onPlayFromStart={playFromStart}
+                  playbackDisabled={playbackDisabled}
                   playbackState={playbackState}
                 />
               </Box>
