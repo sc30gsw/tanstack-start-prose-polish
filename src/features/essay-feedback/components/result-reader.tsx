@@ -1,3 +1,4 @@
+import type { InstaQLEntity } from "@instantdb/react";
 import { cn } from "@lightsound/cn/tw-merge";
 import { Box, Paper, Select, SimpleGrid, Stack, Text, useMantineTheme } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
@@ -6,12 +7,11 @@ import { useState } from "react";
 import { TtsPlayControls } from "~/features/essay-feedback/components/tts-button";
 import { TtsSyncedText } from "~/features/essay-feedback/components/tts-synced-text";
 import { type TtsDisplayMode, useTts } from "~/features/essay-feedback/hooks/use-tts";
+import type { AppSchema } from "~/lib/instant-schema";
 
-type ResultReaderProps = {
-  correctedBody: string;
-};
-
-export function ResultReader({ correctedBody }: ResultReaderProps) {
+export function ResultReader({
+  correctedBody,
+}: Record<"correctedBody", NonNullable<InstaQLEntity<AppSchema, "essays">["bodyAfter"]>>) {
   const theme = useMantineTheme();
   const isSmUp = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`);
   const ttsFullWidth = isSmUp === false;

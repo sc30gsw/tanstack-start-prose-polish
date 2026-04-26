@@ -1,52 +1,27 @@
-import { Container, Text } from "@mantine/core";
-import { createFileRoute } from "@tanstack/react-router";
-import * as v from "valibot";
+import { Container } from "@mantine/core";
+import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
+import { valibotValidator } from "@tanstack/valibot-adapter";
 
 import { PageHeader } from "~/components/page-header";
 import { HistoryDetailTabs } from "~/features/essay-feedback/components/history-detail-tabs";
-import { useEssayDetail } from "~/features/essay-feedback/hooks/use-essay-detail";
-
-const HistorySearchSchema = v.object({
-  tab: v.optional(v.picklist(["before", "diff", "after"]), "before"),
-  view: v.optional(v.picklist(["split", "unified"])),
-});
+import {
+  defaultEssayHistoriesSearchParams,
+  essayHistoriesSearchSchema,
+} from "~/features/essay-feedback/schemas/search-params/essay-histories-search-params";
 
 export const Route = createFileRoute("/essays/$essayId/history")({
   component: HistoryPage,
-  validateSearch: (search) => v.parse(HistorySearchSchema, search),
+  validateSearch: valibotValidator(essayHistoriesSearchSchema),
+  search: {
+    middlewares: [stripSearchParams(defaultEssayHistoriesSearchParams)],
+  },
 });
 
 function HistoryPage() {
-  const { essayId } = Route.useParams();
-  const { tab, view } = Route.useSearch();
-  const { essay, isLoading } = useEssayDetail(essayId);
-
-  if (isLoading) {
-    return (
-      <Container py="xl" size="xl">
-        <Text>読み込み中...</Text>
-      </Container>
-    );
-  }
-
-  if (!essay || !essay.bodyBefore) {
-    return (
-      <Container py="xl" size="xl">
-        <Text c="red">エッセイが見つかりませんでした。</Text>
-      </Container>
-    );
-  }
-
   return (
     <Container py="xl" size="xl">
       <PageHeader backHref="/essays" backLabel="履歴一覧" title="学習履歴詳細" />
-      <HistoryDetailTabs
-        bodyAfter={essay.bodyAfter}
-        bodyBefore={essay.bodyBefore}
-        essayId={essayId}
-        tab={tab}
-        view={view}
-      />
+      <HistoryDetailTabs />
     </Container>
   );
 }

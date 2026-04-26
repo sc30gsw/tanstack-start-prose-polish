@@ -1,53 +1,52 @@
-import { Group, Paper, SegmentedControl, Skeleton, Stack, Tabs, Text } from "@mantine/core";
-import { ClientOnly, useNavigate } from "@tanstack/react-router";
+import { Container, Paper, Stack, Tabs, Text } from "@mantine/core";
+import { ClientOnly, getRouteApi } from "@tanstack/react-router";
 
-import { DiffView } from "~/features/essay-feedback/components/diff-view";
+import { HistoryDetailDiffPanel } from "~/features/essay-feedback/components/hisotry-detail-diff-panel";
 import { ResultReader } from "~/features/essay-feedback/components/result-reader";
-import { DIFF_VIEW_MODE_OPTIONS } from "~/features/essay-feedback/constants/diff-view-ui";
-import { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
-import { useResolvedDiffView } from "~/features/essay-feedback/hooks/use-resolved-diff-view";
-import type { DiffSearchParams } from "~/features/essay-feedback/schemas/search-params/essays-diff-search-params";
+import { useEssayDetail } from "~/features/essay-feedback/hooks/use-essay-detail";
+import type { EssayHistoriesSearchParams } from "~/features/essay-feedback/schemas/search-params/essay-histories-search-params";
 
-type HistoryDetailTabsProps = {
-  bodyAfter?: null | string;
-  bodyBefore: string;
-  essayId: string;
-  tab: "after" | "before" | "diff" | undefined;
-  view: DiffSearchParams["view"] | undefined;
-};
+const routeApi = getRouteApi("/essays/$essayId/history");
 
-export function HistoryDetailTabs({
-  bodyBefore,
-  bodyAfter,
-  essayId,
-  tab: tabFromUrl,
-  view: viewFromUrl,
-}: HistoryDetailTabsProps) {
-  const { isLoading } = useDiffComments(essayId);
-  const navigate = useNavigate({ from: "/essays/$essayId/history" });
-  const activeTab = tabFromUrl ?? "before";
-  const diffView = useResolvedDiffView(viewFromUrl);
+export function HistoryDetailTabs() {
+  const { essayId } = routeApi.useParams();
+  const { tab } = routeApi.useSearch();
+  const navigate = routeApi.useNavigate();
+  const { essay, isLoading } = useEssayDetail(essayId);
 
-  const handleDiffViewChange = (value: string) => {
-    void navigate({
-      search: (prev) => ({ ...prev, view: value as "split" | "unified" }),
-    });
-  };
+  const activeTab = tab ?? "before";
 
-  const handleTabChange = (value: null | string) => {
-    if (value == null) return;
-    void navigate({
-      search: (prev) => ({
-        ...prev,
-        tab: value as "after" | "before" | "diff",
-      }),
-    });
-  };
+  if (isLoading) {
+    return (
+      <Container py="xl" size="xl">
+        <Text>読み込み中...</Text>
+      </Container>
+    );
+  }
+
+  if (!essay || !essay.bodyBefore) {
+    return (
+      <Container py="xl" size="xl">
+        <Text c="red">エッセイが見つかりませんでした。</Text>
+      </Container>
+    );
+  }
 
   return (
     <Stack gap="lg">
       <Tabs
-        onChange={handleTabChange}
+        onChange={(value) => {
+          if (!value) {
+            return;
+          }
+
+          navigate({
+            search: (prev) => ({
+              ...prev,
+              tab: value as EssayHistoriesSearchParams["tab"],
+            }),
+          });
+        }}
         styles={{
           list: {
             justifyContent: "center",
@@ -63,81 +62,56 @@ export function HistoryDetailTabs({
       >
         <Tabs.List>
           <Tabs.Tab value="before">添削前</Tabs.Tab>
-          <Tabs.Tab disabled={bodyAfter == null} value="diff">
+          <Tabs.Tab disabled={!essay.bodyAfter} value="diff">
             前後比較
           </Tabs.Tab>
-          <Tabs.Tab disabled={bodyAfter == null} value="after">
+          <Tabs.Tab disabled={!essay.bodyAfter} value="after">
             添削後
           </Tabs.Tab>
         </Tabs.List>
 
-        <Tabs.Panel value="before">
-          <Paper mt="md" p="xl" radius="md" withBorder>
-            <Text size="md" className="line-height-2 font-serif whitespace-pre-wrap">
-              {bodyBefore}
-            </Text>
-          </Paper>
-        </Tabs.Panel>
-
-        <Tabs.Panel value="diff">
-          {bodyAfter != null ? (
-            <Stack gap="md" mt="md">
-              <Group justify="center" w="100%" wrap="nowrap">
-                <SegmentedControl
-                  aria-label="見方を切り替え"
-                  data={DIFF_VIEW_MODE_OPTIONS.map(({ label, value }) => ({ label, value }))}
-                  fullWidth
-                  maw={560}
-                  onChange={handleDiffViewChange}
-                  size="sm"
-                  value={diffView}
-                  w="100%"
-                />
-              </Group>
-              {isLoading ? (
-                <Skeleton aria-busy="true" aria-label="指摘を読み込み中" height={400} radius="md" />
-              ) : (
-                <ClientOnly
-                  fallback={
-                    <Skeleton
-                      aria-busy="true"
-                      aria-label="差分を読み込み中"
-                      height={400}
-                      radius="md"
-                    />
-                  }
-                >
-                  <DiffView
-                    key={`${bodyAfter.length}-${bodyBefore.length}-${diffView}`}
-                    afterText={bodyAfter}
-                    beforeText={bodyBefore}
-                    diffStyle={diffView}
-                    essayId={essayId}
-                  />
-                </ClientOnly>
-              )}
-            </Stack>
-          ) : (
-            <Text c="dimmed" mt="md">
-              添削後の文章がまだありません
-            </Text>
-          )}
-        </Tabs.Panel>
-
-        <Tabs.Panel value="after">
-          {bodyAfter != null ? (
-            <ClientOnly>
-              <Stack mt="md">
-                <ResultReader correctedBody={bodyAfter} />
-              </Stack>
-            </ClientOnly>
-          ) : (
-            <Text c="dimmed" mt="md">
-              添削後の文章がまだありません
-            </Text>
-          )}
-        </Tabs.Panel>
+        <HistoryDetailBeforePanel bodyBefore={essay.bodyBefore} />
+        <HistoryDetailDiffPanel bodyAfter={essay.bodyAfter} bodyBefore={essay.bodyBefore} />
+        <HistoryDetailAfterPanel bodyAfter={essay.bodyAfter} />
       </Tabs>
     </Stack>
+  );
+}
+
+function HistoryDetailBeforePanel({
+  bodyBefore,
+}: Pick<NonNullable<ReturnType<typeof useEssayDetail>["essay"]>, "bodyBefore">) {
+  return (
+    <Tabs.Panel value="before">
+      <Paper mt="md" p="xl" radius="md" withBorder>
+        <Text className="line-height-2 font-serif whitespace-pre-wrap" size="md">
+          {bodyBefore}
+        </Text>
+      </Paper>
+    </Tabs.Panel>
+  );
+}
+
+function HistoryDetailAfterPanel({
+  bodyAfter,
+}: Pick<NonNullable<ReturnType<typeof useEssayDetail>["essay"]>, "bodyAfter">) {
+  if (!bodyAfter) {
+    return (
+      <Tabs.Panel value="after">
+        <Text c="dimmed" mt="md">
+          添削後の文章がまだありません
+        </Text>
+      </Tabs.Panel>
+    );
+  }
+
+  return (
+    <Tabs.Panel value="after">
+      <ClientOnly>
+        <Stack mt="md">
+          <ResultReader correctedBody={bodyAfter} />
+        </Stack>
+      </ClientOnly>
+    </Tabs.Panel>
   );
 }

@@ -22,7 +22,7 @@ import {
 import { DiffNoHunksView } from "~/features/essay-feedback/components/diff-no-hunks-view";
 import { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
 import { useDiffViewState } from "~/features/essay-feedback/hooks/use-diff-view-state";
-import type { DiffSearchParams } from "~/features/essay-feedback/schemas/search-params/essays-diff-search-params";
+import type { DiffSearchParams } from "~/features/essay-feedback/schemas/search-params/essay-diff-search-params";
 import type { AppSchema } from "~/lib/instant-schema";
 
 type DiffViewProps = {

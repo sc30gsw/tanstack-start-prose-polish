@@ -7,7 +7,7 @@ import { EssayNewForm } from "~/features/essay-feedback/components/essay-new-for
 import {
   defaultEssaysNewSearchParams,
   essaysNewSearchSchema,
-} from "~/features/essay-feedback/schemas/search-params/essays-search-params";
+} from "~/features/essay-feedback/schemas/search-params/essays-new-search-params";
 
 export const Route = createFileRoute("/essays/new")({
   component: EssayNewPage,

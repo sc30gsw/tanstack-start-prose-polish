@@ -17,7 +17,7 @@ import { useResolvedDiffView } from "~/features/essay-feedback/hooks/use-resolve
 import {
   defaultDiffSearchParams,
   diffSearchSchema,
-} from "~/features/essay-feedback/schemas/search-params/essays-diff-search-params";
+} from "~/features/essay-feedback/schemas/search-params/essay-diff-search-params";
 
 export const Route = createFileRoute("/essays/$essayId/diff")({
   component: DiffPage,
