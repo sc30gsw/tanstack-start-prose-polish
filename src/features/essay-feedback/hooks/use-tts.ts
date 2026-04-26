@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import {
   TTS_VOICE_STORAGE_KEY,
   type TtsLangCode,
+  getPreferredDefaultTtsVoiceUri,
   inferAccentFromVoice,
   pickCuratedTtsVoices,
   utteranceLangForTts,
@@ -120,7 +121,7 @@ export function useTts(text: string) {
         if (stored && uris.has(stored)) {
           setSelectedVoiceURIState(stored);
         } else {
-          setSelectedVoiceURIState(flatVoices[0]?.voiceURI ?? null);
+          setSelectedVoiceURIState(getPreferredDefaultTtsVoiceUri(picks));
         }
       }
     };

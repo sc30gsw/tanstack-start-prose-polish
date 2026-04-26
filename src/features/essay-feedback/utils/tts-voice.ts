@@ -161,8 +161,24 @@ export type CuratedTtsVoicePick = {
   curatedLabelJa: string;
   /** UI の国旗・色は枠のアクセントに合わせる（バックフィルで実声が米英語でもずれないように） */
   slotAccent: TtsLangCode;
+  /** `CURATION_SLOTS` との対応（Combobox の並び・デフォルト選択用） */
+  slotIndex: number;
   voice: SpeechSynthesisVoice;
 };
+
+/** 先頭枠 = en-US 女性（`TTS_ACCENT_ORDER` が en-US 先頭かつ各アクセントで女性→男性の前提） */
+const US_FEMALE_CURATION_SLOT_INDEX = 0;
+
+/** 初回表示の Combobox 既定: アメリカ英語・女性 */
+export function getPreferredDefaultTtsVoiceUri(picks: CuratedTtsVoicePick[]): string | null {
+  const usFemaleSlot = picks.find((p) => p.slotIndex === US_FEMALE_CURATION_SLOT_INDEX);
+  if (usFemaleSlot) return usFemaleSlot.voice.voiceURI;
+  const anyUsFemale = picks.find(
+    (p) => p.slotAccent === "en-US" && p.curatedLabelJa.endsWith("・女性"),
+  );
+  const ordered = [...picks].sort((a, b) => a.slotIndex - b.slotIndex);
+  return anyUsFemale?.voice.voiceURI ?? ordered[0]?.voice.voiceURI ?? null;
+}
 
 type AnnotatedVoice = {
   accent: TtsLangCode;
@@ -378,6 +394,7 @@ export function pickCuratedTtsVoices(voices: SpeechSynthesisVoice[]): CuratedTts
       picks[i] = {
         curatedLabelJa: `${ACCENT_LABEL_JA[accent]}・${gender === "female" ? "女性" : "男性"}`,
         slotAccent: accent,
+        slotIndex: i,
         voice: picked,
       };
     }
@@ -408,11 +425,14 @@ export function pickCuratedTtsVoices(voices: SpeechSynthesisVoice[]): CuratedTts
     picks[i] = {
       curatedLabelJa: `${ACCENT_LABEL_JA[accent]}・${gender === "female" ? "女性" : "男性"}`,
       slotAccent: accent,
+      slotIndex: i,
       voice: entry.voice,
     };
   }
 
-  return picks.filter((p): p is CuratedTtsVoicePick => p !== null);
+  const curated = picks.filter((p): p is CuratedTtsVoicePick => p !== null);
+  curated.sort((a, b) => a.slotIndex - b.slotIndex);
+  return curated;
 }
 
 export function getVoiceInitial(name: SpeechSynthesisVoice["name"]) {
