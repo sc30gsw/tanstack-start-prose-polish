@@ -16,7 +16,7 @@ const rules = {
   },
   diffComments: {
     allow: {
-      create: "auth.id != null && auth.id in newData.ref('essay.owner.id')",
+      create: "auth.id != null",
       delete: "auth.id != null && data.kind == 'user' && auth.id == data.userId",
       update: "auth.id != null && data.kind == 'user' && auth.id == data.userId",
       view: "auth.id != null && auth.id in data.ref('essay.owner.id')",
@@ -24,7 +24,7 @@ const rules = {
   },
   essays: {
     allow: {
-      create: "auth.id != null && auth.id in newData.ref('owner.id')",
+      create: "auth.id != null",
       delete: "auth.id != null && auth.id in data.ref('owner.id')",
       update: "auth.id != null && auth.id in data.ref('owner.id')",
       view: "auth.id != null && auth.id in data.ref('owner.id')",

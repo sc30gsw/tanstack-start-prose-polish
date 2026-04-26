@@ -1,32 +1,8 @@
-import type { InstaQLEntity } from "@instantdb/react";
 import { ActionIcon, Avatar, Button, Group, Menu, Stack, Text, Tooltip } from "@mantine/core";
 import { IconLogout, IconUser } from "@tabler/icons-react";
 
+import { getUserDisplayName, getUserInitials } from "~/features/auth/utils/user-display-name";
 import { db } from "~/lib/instant";
-import type { AppSchema } from "~/lib/instant-schema";
-
-function getUserDisplayName(
-  username: InstaQLEntity<AppSchema, "$users">["username"],
-  email: NonNullable<InstaQLEntity<AppSchema, "$users">["email"]>,
-) {
-  const u = username?.trim();
-
-  if (u) {
-    return u;
-  }
-
-  return email.split("@")[0] ?? "ユーザー";
-}
-
-function getUserInitials(displayName: string) {
-  const t = displayName.trim();
-
-  if (t.length === 0) {
-    return "?";
-  }
-
-  return t.length <= 2 ? t : t.slice(0, 2);
-}
 
 export function UserSidebarFooter() {
   const { user } = db.useAuth();
@@ -37,7 +13,7 @@ export function UserSidebarFooter() {
   }
 
   const profile = data?.$users?.[0];
-  const displayName = getUserDisplayName(profile?.username, profile.email!);
+  const displayName = getUserDisplayName(profile.username, profile.email);
   const email = profile.email;
 
   return (

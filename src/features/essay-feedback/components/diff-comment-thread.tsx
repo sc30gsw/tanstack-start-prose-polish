@@ -9,14 +9,16 @@ import {
   useComputedColorScheme,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { IconPencil, IconRobot, IconTrash, IconUser } from "@tabler/icons-react";
-import dayjs from "dayjs";
+import { IconPencil, IconRobot, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
 
+import { getUserDisplayName, getUserInitials } from "~/features/auth/utils/user-display-name";
 import { DiffCommentThreadEditForm } from "~/features/essay-feedback/components/diff-thread-edit-form";
 import type { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
 import type { DiffComment } from "~/features/essay-feedback/schemas/essay-schema";
+import { db } from "~/lib/instant";
 import type { AppSchema } from "~/lib/instant-schema";
+import { formatCommentTimestamp } from "~/utils/format-comment-timestamp";
 
 type DiffCommentThreadProps = {
   comments: DiffComment[];
@@ -38,6 +40,13 @@ export function DiffCommentThread({
     null,
   );
   const [busyId, setBusyId] = useState<null | InstaQLEntity<AppSchema, "diffComments">["id"]>(null);
+
+  const { user } = db.useAuth();
+  const { data: usersData } = db.useQuery({
+    $users: { $: { where: { email: user?.email ?? "" } } },
+  });
+  const meProfile = usersData?.$users?.[0];
+  const meDisplayName = getUserDisplayName(meProfile?.username, meProfile?.email ?? user?.email);
 
   if (comments.length === 0) {
     return null;
@@ -87,20 +96,37 @@ export function DiffCommentThread({
       {comments.map((comment) => {
         const isUser = comment.kind === "user";
         const isEditing = editingId === comment.id;
-        const timeLabel = dayjs(comment.createdAt).format("HH:mm");
+        const timeLabel = formatCommentTimestamp(comment.createdAt);
         const showMutate = isUser && (onUpdateUserComment != null || onDeleteUserComment != null);
 
         return (
           <Paper key={comment.id} p="xs" radius="sm" shadow="xs" withBorder>
             <Group align="flex-start" gap="xs" wrap="nowrap">
-              <Avatar color={isUser ? "gray" : "blue"} size="xs">
-                {isUser ? <IconUser size={12} /> : <IconRobot size={12} />}
-              </Avatar>
+              {isUser ? (
+                <Avatar
+                  className="shrink-0 rounded-full"
+                  color="indigo"
+                  size="sm"
+                  variant="gradient"
+                >
+                  {getUserInitials(meDisplayName)}
+                </Avatar>
+              ) : (
+                <Avatar color="blue" size="xs">
+                  <IconRobot size={12} />
+                </Avatar>
+              )}
               <Stack gap="xs" className="min-w-0 flex-1">
                 <Group gap="xs" justify="space-between" wrap="nowrap">
-                  <Text c="dimmed" size="xs" className="flex-1">
-                    {isUser ? "あなた" : "AI"} · {timeLabel}
-                    {comment.updatedAt != null && isUser ? "（編集あり）" : null}
+                  <Text
+                    c="dimmed"
+                    size="xs"
+                    className="min-w-0 flex-1"
+                    lineClamp={1}
+                    title={isUser ? meDisplayName : "AI"}
+                  >
+                    {isUser ? meDisplayName : "AI"} · {timeLabel}
+                    {comment.updatedAt && isUser ? "（編集あり）" : null}{" "}
                   </Text>
                   {showMutate && !isEditing && (
                     <Group gap={4} wrap="nowrap">
