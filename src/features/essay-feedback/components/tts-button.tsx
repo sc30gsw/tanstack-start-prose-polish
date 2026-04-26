@@ -7,8 +7,6 @@ import { type TtsPlaybackState, useTts } from "~/features/essay-feedback/hooks/u
 type TtsPlayControlsProps = {
   fullWidth?: boolean;
   isSupported: boolean;
-  /** Combobox で読み上げ音声が未選択のときなど */
-  playbackDisabled?: boolean;
   onPause: () => void;
   onPlay: () => void;
   onPlayFromStart: () => void;
@@ -18,7 +16,6 @@ type TtsPlayControlsProps = {
 export function TtsPlayControls({
   fullWidth = false,
   isSupported,
-  playbackDisabled = false,
   onPause,
   onPlay,
   onPlayFromStart,
@@ -41,44 +38,6 @@ export function TtsPlayControls({
           </span>
         </Tooltip>
       </Box>
-    );
-  }
-
-  if (playbackDisabled) {
-    const disabledMain = (
-      <Button
-        color="teal"
-        disabled
-        fullWidth={fullWidth}
-        leftSection={<IconPlayerPlay size={16} />}
-        style={fullWidth ? { flex: 1, minWidth: 0 } : undefined}
-        variant="filled"
-      >
-        音声を再生
-      </Button>
-    );
-    const disabledRefresh = (
-      <ActionIcon aria-label="先頭から再生" color="gray" disabled size="input-sm" variant="default">
-        <IconRefresh size={18} />
-      </ActionIcon>
-    );
-    if (fullWidth) {
-      return (
-        <Tooltip label="読み上げ音声を選ぶと再生できます">
-          <Group align="center" aria-disabled gap="sm" w="100%" wrap="nowrap">
-            {disabledMain}
-            {disabledRefresh}
-          </Group>
-        </Tooltip>
-      );
-    }
-    return (
-      <Tooltip label="読み上げ音声を選ぶと再生できます">
-        <Group aria-disabled gap="sm" wrap="wrap">
-          {disabledMain}
-          {disabledRefresh}
-        </Group>
-      </Tooltip>
     );
   }
 
@@ -147,14 +106,13 @@ type TtsButtonProps = {
 };
 
 export function TtsButton({ text }: TtsButtonProps) {
-  const { isSupported, pause, play, playbackDisabled, playFromStart, playbackState } = useTts(text);
+  const { isSupported, pause, play, playFromStart, playbackState } = useTts(text);
   return (
     <TtsPlayControls
       isSupported={isSupported}
       onPause={pause}
       onPlay={play}
       onPlayFromStart={playFromStart}
-      playbackDisabled={playbackDisabled}
       playbackState={playbackState}
     />
   );

@@ -1,20 +1,34 @@
 import { useCallback, useEffect, useState } from "react";
 
-import {
-  TTS_VOICE_STORAGE_KEY,
-  type TtsLangCode,
-  getPreferredDefaultTtsVoiceUri,
-  inferAccentFromVoice,
-  pickCuratedTtsVoices,
-  utteranceLangForTts,
-  utteranceRateForTts,
-} from "~/features/essay-feedback/utils/tts-voice";
-
 /** 音読＝前後の単語を区別、シャドーイング＝未発音だけ隠し発音済みは残す */
 export type TtsDisplayMode = "aloud" | "shadowing";
 
 /** idle=未開始または終了、playing=再生中、paused=一時停止 */
 export type TtsPlaybackState = "idle" | "paused" | "playing";
+
+const PREFERRED_VOICE_NAMES = [
+  "Google US English",
+  "Microsoft Zira - English (United States)",
+  "Microsoft David - English (United States)",
+  "Samantha",
+  "Alex",
+  "Karen",
+  "Daniel",
+];
+
+function getBestEnglishVoice(): SpeechSynthesisVoice | null {
+  const voices = window.speechSynthesis.getVoices();
+  for (const name of PREFERRED_VOICE_NAMES) {
+    const found = voices.find((v) => v.name === name);
+    if (found) return found;
+  }
+  return (
+    voices.find((v) => v.lang === "en-US" && v.localService) ??
+    voices.find((v) => v.lang === "en-US") ??
+    voices.find((v) => v.lang.startsWith("en")) ??
+    null
+  );
+}
 
 function attachUtteranceHandlers(
   utterance: SpeechSynthesisUtterance,
@@ -59,10 +73,6 @@ export function useTts(text: string) {
   const [currentWordIndex, setCurrentWordIndex] = useState(-1);
   const [isSupported, setIsSupported] = useState(false);
   const [voicesReady, setVoicesReady] = useState(false);
-  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
-  const [voiceLabelJaByUri, setVoiceLabelJaByUri] = useState<Record<string, string>>({});
-  const [voiceSlotAccentByUri, setVoiceSlotAccentByUri] = useState<Record<string, TtsLangCode>>({});
-  const [selectedVoiceURI, setSelectedVoiceURIState] = useState<string | null>(null);
 
   const setIdle = useCallback(() => {
     setPlaybackState("idle");
@@ -76,66 +86,31 @@ export function useTts(text: string) {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     setIsSupported(true);
 
-    let initialized = false;
-
-    const initVoices = () => {
-      const picks = pickCuratedTtsVoices(window.speechSynthesis.getVoices());
-      const flatVoices = picks.map((p) => p.voice);
-      setVoices(flatVoices);
-      setVoiceLabelJaByUri(
-        Object.fromEntries(picks.map((p) => [p.voice.voiceURI, p.curatedLabelJa])),
-      );
-      setVoiceSlotAccentByUri(
-        Object.fromEntries(picks.map((p) => [p.voice.voiceURI, p.slotAccent])),
-      );
-      setVoicesReady(true);
-
-      if (!initialized && flatVoices.length > 0) {
-        initialized = true;
-        const stored = window.localStorage.getItem(TTS_VOICE_STORAGE_KEY);
-        const uris = new Set(flatVoices.map((v) => v.voiceURI));
-        if (stored && uris.has(stored)) {
-          setSelectedVoiceURIState(stored);
-        } else {
-          setSelectedVoiceURIState(getPreferredDefaultTtsVoiceUri(picks));
-        }
-      }
-    };
-
-    window.speechSynthesis.addEventListener("voiceschanged", initVoices);
+    const onVoicesChanged = () => setVoicesReady(true);
+    window.speechSynthesis.addEventListener("voiceschanged", onVoicesChanged);
 
     if (window.speechSynthesis.getVoices().length > 0) {
-      initVoices();
+      setVoicesReady(true);
     }
 
     return () => {
-      window.speechSynthesis.removeEventListener("voiceschanged", initVoices);
+      window.speechSynthesis.removeEventListener("voiceschanged", onVoicesChanged);
     };
-  }, []);
-
-  const setSelectedVoiceURI = useCallback((uri: string | null) => {
-    setSelectedVoiceURIState(uri);
-    if (uri) {
-      window.localStorage.setItem(TTS_VOICE_STORAGE_KEY, uri);
-    } else {
-      window.localStorage.removeItem(TTS_VOICE_STORAGE_KEY);
-    }
   }, []);
 
   const beginSpeakingFromStart = useCallback(() => {
     if (!isSupported) return;
-    if (!voicesReady || selectedVoiceURI == null) return;
-
-    const picked = voices.find((v) => v.voiceURI === selectedVoiceURI) ?? null;
-    if (!picked) return;
 
     const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en-US";
+    utterance.rate = 0.85;
     utterance.pitch = 1.0;
     utterance.volume = 1.0;
-    utterance.voice = picked;
-    const accentForSynth = voiceSlotAccentByUri[selectedVoiceURI] ?? inferAccentFromVoice(picked);
-    utterance.lang = utteranceLangForTts(picked, accentForSynth);
-    utterance.rate = utteranceRateForTts(accentForSynth);
+
+    if (voicesReady) {
+      const voice = getBestEnglishVoice();
+      if (voice) utterance.voice = voice;
+    }
 
     attachUtteranceHandlers(utterance, text, {
       onIdle: setIdle,
@@ -145,20 +120,10 @@ export function useTts(text: string) {
 
     setPlaybackState("playing");
     window.speechSynthesis.speak(utterance);
-  }, [
-    isSupported,
-    selectedVoiceURI,
-    setIdle,
-    setPlaying,
-    text,
-    voiceSlotAccentByUri,
-    voices,
-    voicesReady,
-  ]);
+  }, [isSupported, setIdle, setPlaying, text, voicesReady]);
 
   const play = useCallback(() => {
     if (!isSupported) return;
-    if (!voicesReady || selectedVoiceURI == null) return;
 
     if (window.speechSynthesis.paused) {
       window.speechSynthesis.resume();
@@ -174,17 +139,16 @@ export function useTts(text: string) {
     queueMicrotask(() => {
       beginSpeakingFromStart();
     });
-  }, [beginSpeakingFromStart, isSupported, selectedVoiceURI, voicesReady]);
+  }, [beginSpeakingFromStart, isSupported]);
 
   const playFromStart = useCallback(() => {
     if (!isSupported) return;
-    if (!voicesReady || selectedVoiceURI == null) return;
     window.speechSynthesis.cancel();
     setCurrentWordIndex(-1);
     queueMicrotask(() => {
       beginSpeakingFromStart();
     });
-  }, [beginSpeakingFromStart, isSupported, selectedVoiceURI, voicesReady]);
+  }, [beginSpeakingFromStart, isSupported]);
 
   const pause = useCallback(() => {
     if (!isSupported) return;
@@ -197,11 +161,6 @@ export function useTts(text: string) {
   /** 再生を止め先頭に戻す（表示モード切替など）。読み上げは自動では再開しない */
   const resetPlayback = useCallback(() => {
     if (!isSupported) return;
-    //? pause 状態のまま cancel() すると Chromium 系で paused フラグが残り、
-    //? 次回 play() が resume() 経路に入って空キューを再開してしまうため、先に解除する
-    if (window.speechSynthesis.paused) {
-      window.speechSynthesis.resume();
-    }
     window.speechSynthesis.cancel();
     setPlaybackState("idle");
     setCurrentWordIndex(-1);
@@ -216,7 +175,6 @@ export function useTts(text: string) {
   }, [isSupported]);
 
   const isPlaybackActive = playbackState !== "idle";
-  const playbackDisabled = !voicesReady || selectedVoiceURI == null;
 
   return {
     currentWordIndex,
@@ -224,14 +182,8 @@ export function useTts(text: string) {
     isSupported,
     pause,
     play,
-    playbackDisabled,
     playbackState,
     playFromStart,
     resetPlayback,
-    selectedVoiceURI,
-    setSelectedVoiceURI,
-    voiceLabelJaByUri,
-    voiceSlotAccentByUri,
-    voices,
   };
 }
