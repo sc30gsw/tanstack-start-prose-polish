@@ -1,5 +1,14 @@
 import type { InstaQLEntity } from "@instantdb/react";
-import { ActionIcon, Box, Group, Modal, Paper, Text, useComputedColorScheme } from "@mantine/core";
+import {
+  ActionIcon,
+  Box,
+  Group,
+  Modal,
+  Paper,
+  Text,
+  UnstyledButton,
+  useComputedColorScheme,
+} from "@mantine/core";
 import type { FileDiffOptions, GetHoveredLineResult } from "@pierre/diffs";
 import { parseDiffFromFile } from "@pierre/diffs";
 import { FileDiff } from "@pierre/diffs/react";
@@ -15,11 +24,12 @@ import { DiffNoHunksView } from "~/features/essay-feedback/components/diff-no-hu
 import { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
 import { useDiffViewState } from "~/features/essay-feedback/hooks/use-diff-view-state";
 import type { AppSchema } from "~/lib/instant-schema";
+import type { DiffSearchParams } from "~/routes/essays/$essayId/diff";
 
 type DiffViewProps = {
   afterText: InstaQLEntity<AppSchema, "essays">["bodyAfter"];
   beforeText: InstaQLEntity<AppSchema, "essays">["bodyBefore"];
-  diffStyle?: "split" | "unified";
+  diffStyle: DiffSearchParams["view"];
   essayId: InstaQLEntity<AppSchema, "essays">["id"];
   readonly?: boolean;
   showAiModalCommentForm?: boolean;
@@ -33,7 +43,8 @@ export function DiffView({
   readonly = false,
   showAiModalCommentForm: showAiModalCommentFormProp,
 }: DiffViewProps) {
-  const { addComment, comments, removeUserComment, updateUserComment } = useDiffComments(essayId);
+  const { addComment, comments, isPending, removeUserComment, updateUserComment } =
+    useDiffComments(essayId);
 
   const showAiModalCommentForm = showAiModalCommentFormProp ?? !readonly;
   const resolvedColorScheme = useComputedColorScheme("light", { getInitialValueInEffect: true });
@@ -73,13 +84,20 @@ export function DiffView({
   const hasRenderableHunks = fileDiff.hunks.length > 0;
 
   const renderGutterUtility = (getHoveredLine: () => GetHoveredLineResult<"diff"> | undefined) => {
-    if (readonly) return null;
+    if (readonly) {
+      return null;
+    }
 
     return (
-      <Box
+      <UnstyledButton
+        disabled={isPending}
         onClick={() => {
           const hovered = getHoveredLine();
-          if (hovered == null) return;
+
+          if (!hovered) {
+            return;
+          }
+
           setPendingComment({
             lineNumber: hovered.lineNumber,
             side: hovered.side,
@@ -96,7 +114,7 @@ export function DiffView({
         >
           <IconPlus size={14} />
         </ActionIcon>
-      </Box>
+      </UnstyledButton>
     );
   };
 
@@ -114,7 +132,7 @@ export function DiffView({
       size="lg"
       title={aiLineModalTitle}
     >
-      {aiLineModal != null ? (
+      {aiLineModal ? (
         <AiLineCommentModalBody
           comments={comments}
           lineNumber={aiLineModal.lineNumber}
@@ -126,6 +144,7 @@ export function DiffView({
           onUpdateUserComment={updateUserComment}
           showCommentForm={showAiModalCommentForm}
           side={aiLineModal.side}
+          isPending={isPending}
         />
       ) : null}
     </Modal>
@@ -150,7 +169,7 @@ export function DiffView({
 
   return (
     <>
-      <Box className="diff-view-root overflow-hidden rounded-md border border-[color:var(--mantine-color-default-border)]">
+      <Box className="diff-view-root border-default-border overflow-hidden rounded-md border">
         <FileDiff
           key={diffThemeType}
           className="diff-view-file-diff"
@@ -168,6 +187,7 @@ export function DiffView({
               onUpdateUserComment={updateUserComment}
               pendingComment={pendingComment}
               readonly={readonly}
+              isPending={isPending}
             />
           )}
           renderGutterUtility={!readonly ? renderGutterUtility : undefined}
@@ -176,7 +196,7 @@ export function DiffView({
               ? () => (
                   <Group gap={0} grow justify="stretch" wrap="nowrap" w="100%">
                     <Box
-                      className="border-r border-[color:var(--mantine-color-default-border)] bg-[var(--mantine-color-default-hover)]"
+                      className="border-default-border bg-default-hover border-r"
                       p="xs"
                       ta="center"
                     >
@@ -184,7 +204,7 @@ export function DiffView({
                         添削前
                       </Text>
                     </Box>
-                    <Box className="bg-[var(--mantine-color-default-hover)]" p="xs" ta="center">
+                    <Box className="bg-default-hover" p="xs" ta="center">
                       <Text fw={600} size="sm">
                         添削後
                       </Text>
@@ -211,8 +231,7 @@ export function DiffView({
           }
           style={{ minHeight: 360 }}
         />
-        {lineHoverPreview != null &&
-          typeof document !== "undefined" &&
+        {lineHoverPreview &&
           createPortal(
             <Paper
               className="pointer-events-none fixed"

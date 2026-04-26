@@ -4,40 +4,50 @@ import type { DiffLineAnnotation } from "@pierre/diffs";
 import { AiCommentBadge } from "~/features/essay-feedback/components/ai-comment-badge";
 import { DiffCommentForm } from "~/features/essay-feedback/components/diff-comment-form";
 import { DiffCommentThread } from "~/features/essay-feedback/components/diff-comment-thread";
-import type { DiffComment, DiffCommentInput } from "~/features/essay-feedback/schemas/essay-schema";
+import type { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
+import type { useDiffViewState } from "~/features/essay-feedback/hooks/use-diff-view-state";
+import type { DiffCommentInput } from "~/features/essay-feedback/schemas/essay-schema";
 
 export type CommentAnnotationMeta =
-  | { aiComments: DiffComment[]; type: "thread"; userComments: DiffComment[] }
-  | { type: "new-comment" };
+  | (Record<"aiComments" | "userComments", ReturnType<typeof useDiffComments>["comments"]> &
+      Record<"type", "thread">)
+  | Record<"type", "new-comment">;
 
-type DiffAnnotationRowProps = {
-  annotation: DiffLineAnnotation<CommentAnnotationMeta>;
-  onAddComment: (input: DiffCommentInput) => Promise<void>;
-  onClosePendingComment: () => void;
-  onDeleteUserComment: (id: string) => Promise<void>;
-  onOpenAiLineModal: (lineNumber: number, side: DiffCommentInput["side"]) => void;
-  onUpdateUserComment: (id: string, body: string) => Promise<void>;
-  pendingComment: Pick<DiffCommentInput, "lineNumber" | "side"> | null;
-  readonly: boolean;
+type PendingFormProps = Pick<DiffAnnotationRowProps, "isPending"> & {
+  lineNumber: Parameters<DiffAnnotationRowProps["onOpenAiLineModal"]>[0];
+  onClose: DiffAnnotationRowProps["onClosePendingComment"];
+  onSubmit: ReturnType<typeof useDiffComments>["addComment"];
+  side: DiffCommentInput["side"];
 };
 
-function PendingForm({
-  lineNumber,
-  onClose,
-  onSubmit,
-  side,
-}: {
-  lineNumber: number;
-  onClose: () => void;
-  onSubmit: (input: DiffCommentInput) => Promise<void>;
-  side: DiffCommentInput["side"];
-}) {
+function PendingForm({ lineNumber, onClose, onSubmit, side, isPending }: PendingFormProps) {
   return (
     <Paper shadow="xs" withBorder>
-      <DiffCommentForm lineNumber={lineNumber} onClose={onClose} onSubmit={onSubmit} side={side} />
+      <DiffCommentForm
+        lineNumber={lineNumber}
+        onClose={onClose}
+        onSubmit={onSubmit}
+        side={side}
+        isPending={isPending}
+      />
     </Paper>
   );
 }
+
+type DiffAnnotationRowProps = {
+  annotation: DiffLineAnnotation<CommentAnnotationMeta>;
+  onAddComment: ReturnType<typeof useDiffComments>["addComment"];
+  onClosePendingComment: () => void;
+  onDeleteUserComment: ReturnType<typeof useDiffComments>["removeUserComment"];
+  onOpenAiLineModal: (
+    lineNumber: NonNullable<ReturnType<typeof useDiffViewState>["aiLineModal"]>["lineNumber"],
+    side: NonNullable<ReturnType<typeof useDiffViewState>["aiLineModal"]>["side"],
+  ) => void;
+  onUpdateUserComment: ReturnType<typeof useDiffComments>["updateUserComment"];
+  pendingComment: Pick<DiffCommentInput, "lineNumber" | "side"> | null;
+  readonly: boolean;
+  isPending: ReturnType<typeof useDiffComments>["isPending"];
+};
 
 export function DiffAnnotationRow({
   annotation,
@@ -48,35 +58,39 @@ export function DiffAnnotationRow({
   onUpdateUserComment,
   pendingComment,
   readonly,
+  isPending,
 }: DiffAnnotationRowProps) {
-  const { metadata } = annotation;
-  if (metadata == null) return null;
+  if (!annotation.metadata) {
+    return null;
+  }
 
-  if (metadata.type === "new-comment") {
+  if (annotation.metadata.type === "new-comment") {
     return (
       <PendingForm
         lineNumber={annotation.lineNumber}
         onClose={onClosePendingComment}
         onSubmit={onAddComment}
         side={annotation.side}
+        isPending={isPending}
       />
     );
   }
 
   return (
     <Stack gap="xs" p="xs">
-      {metadata.aiComments.map((c) => (
+      {annotation.metadata.aiComments.map((comment) => (
         <AiCommentBadge
-          key={c.id}
-          body={c.body}
+          key={comment.id}
+          body={comment.body}
           onOpenDetail={() => onOpenAiLineModal(annotation.lineNumber, annotation.side)}
-          suggestion={c.suggestion}
+          suggestion={comment.suggestion}
         />
       ))}
       <DiffCommentThread
-        comments={metadata.userComments}
+        comments={annotation.metadata.userComments}
         onDeleteUserComment={onDeleteUserComment}
         onUpdateUserComment={onUpdateUserComment}
+        isPending={isPending}
       />
       {!readonly && pendingComment?.lineNumber === annotation.lineNumber && (
         <PendingForm
@@ -84,6 +98,7 @@ export function DiffAnnotationRow({
           onClose={onClosePendingComment}
           onSubmit={onAddComment}
           side={annotation.side}
+          isPending={isPending}
         />
       )}
     </Stack>

@@ -2,18 +2,17 @@ import { Button, Group, Stack, Textarea } from "@mantine/core";
 import { useForm } from "@tanstack/react-form";
 import * as v from "valibot";
 
-import {
-  diffCommentInputSchema,
-  type DiffCommentInput,
-} from "~/features/essay-feedback/schemas/essay-schema";
+import type { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
+import type { useDiffViewState } from "~/features/essay-feedback/hooks/use-diff-view-state";
+import { diffCommentInputSchema } from "~/features/essay-feedback/schemas/essay-schema";
 
 type DiffCommentFormProps = {
-  /** false のとき送信成功後は onClose を呼ばない（モーダル内など）。既定は true。 */
   closeAfterSubmit?: boolean;
-  lineNumber: number;
+  lineNumber: NonNullable<ReturnType<typeof useDiffViewState>["aiLineModal"]>["lineNumber"];
   onClose: () => void;
-  onSubmit: (input: DiffCommentInput) => Promise<void>;
-  side: "additions" | "deletions";
+  onSubmit: ReturnType<typeof useDiffComments>["addComment"];
+  side: NonNullable<ReturnType<typeof useDiffViewState>["aiLineModal"]>["side"];
+  isPending: ReturnType<typeof useDiffComments>["isPending"];
 };
 
 export function DiffCommentForm({
@@ -25,9 +24,10 @@ export function DiffCommentForm({
 }: DiffCommentFormProps) {
   const form = useForm({
     defaultValues: { body: "", lineNumber, side, suggestion: undefined as string | undefined },
-    onSubmit: async ({ value }) => {
-      await onSubmit(value);
+    onSubmit: ({ value }) => {
+      onSubmit(value);
       form.reset();
+
       if (closeAfterSubmit) {
         onClose();
       }
@@ -35,6 +35,7 @@ export function DiffCommentForm({
     validators: {
       onChange: ({ value }) => {
         const result = v.safeParse(diffCommentInputSchema, value);
+
         return result.success ? undefined : result.issues[0]?.message;
       },
     },
@@ -44,7 +45,7 @@ export function DiffCommentForm({
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        void form.handleSubmit();
+        form.handleSubmit();
       }}
     >
       <Stack gap="xs" p="xs">

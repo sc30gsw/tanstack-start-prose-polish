@@ -32,8 +32,14 @@ export function useDiffViewState({ comments, readonly }: UseDiffViewStateProps) 
   }>(null);
 
   function handleDiffLineClick(props: OnDiffLineClickProps) {
-    if (readonly) return;
-    if (props.type !== "diff-line" || !isChangeLine(props.lineType)) return;
+    if (readonly) {
+      return;
+    }
+
+    if (props.type !== "diff-line" || !isChangeLine(props.lineType)) {
+      return;
+    }
+
     setPendingComment({ lineNumber: props.lineNumber, side: props.annotationSide });
   }
 
@@ -42,18 +48,22 @@ export function useDiffViewState({ comments, readonly }: UseDiffViewStateProps) 
       setLineHoverPreview(null);
       return;
     }
+
     const ai = comments.filter(
       (c) =>
         c.lineNumber === props.lineNumber && c.side === props.annotationSide && c.author === "ai",
     );
+
     if (ai.length === 0) {
       setLineHoverPreview(null);
       return;
     }
+
     const text = ai
       .map((c) => `${c.body}${c.suggestion != null ? ` — ${c.suggestion}` : ""}`)
       .join(" ");
     const rect = props.lineElement.getBoundingClientRect();
+
     setLineHoverPreview({
       left: Math.min(rect.left, globalThis.innerWidth - 340),
       text,
@@ -74,8 +84,13 @@ export function useDiffViewState({ comments, readonly }: UseDiffViewStateProps) 
     for (const comment of comments) {
       const sideMap = grouped.get(comment.side) ?? new Map();
       const bucket = sideMap.get(comment.lineNumber) ?? { ai: [], user: [] };
-      if (comment.author === "ai") bucket.ai.push(comment);
-      else bucket.user.push(comment);
+
+      if (comment.author === "ai") {
+        bucket.ai.push(comment);
+      } else {
+        bucket.user.push(comment);
+      }
+
       sideMap.set(comment.lineNumber, bucket);
       grouped.set(comment.side, sideMap);
     }
@@ -117,5 +132,5 @@ export function useDiffViewState({ comments, readonly }: UseDiffViewStateProps) 
     pendingComment,
     setAiLineModal,
     setPendingComment,
-  };
+  } as const;
 }

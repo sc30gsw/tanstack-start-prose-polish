@@ -3,17 +3,21 @@ import { Box, Group, Paper, Stack, Text } from "@mantine/core";
 
 import { AiCommentBadge } from "~/features/essay-feedback/components/ai-comment-badge";
 import { DiffCommentThread } from "~/features/essay-feedback/components/diff-comment-thread";
-import type { DiffComment, DiffCommentInput } from "~/features/essay-feedback/schemas/essay-schema";
+import type { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
+import type { useDiffViewState } from "~/features/essay-feedback/hooks/use-diff-view-state";
 import type { AppSchema } from "~/lib/instant-schema";
 
 type DiffNoHunksViewProps = {
   afterText: InstaQLEntity<AppSchema, "essays">["bodyAfter"];
   beforeText: InstaQLEntity<AppSchema, "essays">["bodyBefore"];
-  comments: DiffComment[];
+  comments: ReturnType<typeof useDiffComments>["comments"];
   diffStyle: "split" | "unified";
-  onDeleteUserComment: (id: string) => Promise<void>;
-  onOpenAiLineModal: (lineNumber: number, side: DiffCommentInput["side"]) => void;
-  onUpdateUserComment: (id: string, body: string) => Promise<void>;
+  onDeleteUserComment: ReturnType<typeof useDiffComments>["removeUserComment"];
+  onOpenAiLineModal: (
+    lineNumber: NonNullable<ReturnType<typeof useDiffViewState>["aiLineModal"]>["lineNumber"],
+    side: NonNullable<ReturnType<typeof useDiffViewState>["aiLineModal"]>["side"],
+  ) => void;
+  onUpdateUserComment: ReturnType<typeof useDiffComments>["updateUserComment"];
 };
 
 export function DiffNoHunksView({
@@ -26,7 +30,7 @@ export function DiffNoHunksView({
   onUpdateUserComment,
 }: DiffNoHunksViewProps) {
   return (
-    <Box className="diff-view-root overflow-hidden rounded-md border border-[color:var(--mantine-color-default-border)]">
+    <Box className="diff-view-root border-default-border overflow-hidden rounded-md border">
       <Stack gap="md" p="md">
         <Text c="dimmed" size="sm">
           行単位の差分はありません（前後のテキストが同一の可能性があります）。添削前後の全文を並べて表示します。
@@ -37,7 +41,7 @@ export function DiffNoHunksView({
               <Text fw={600} size="xs">
                 添削前
               </Text>
-              <Text className="break-words whitespace-pre-wrap" component="pre" size="sm">
+              <Text className="wrap-break-word whitespace-pre-wrap" component="pre" size="sm">
                 {beforeText}
               </Text>
             </div>
@@ -45,7 +49,7 @@ export function DiffNoHunksView({
               <Text fw={600} size="xs">
                 添削後
               </Text>
-              <Text className="break-words whitespace-pre-wrap" component="pre" size="sm">
+              <Text className="wrap-break-word whitespace-pre-wrap" component="pre" size="sm">
                 {afterText}
               </Text>
             </div>
@@ -56,7 +60,7 @@ export function DiffNoHunksView({
               <Text fw={600} mb="xs" size="xs">
                 添削前
               </Text>
-              <Text className="break-words whitespace-pre-wrap" component="pre" size="sm">
+              <Text className="wrap-break-word whitespace-pre-wrap" component="pre" size="sm">
                 {beforeText}
               </Text>
             </Paper>
@@ -64,7 +68,7 @@ export function DiffNoHunksView({
               <Text fw={600} mb="xs" size="xs">
                 添削後
               </Text>
-              <Text className="break-words whitespace-pre-wrap" component="pre" size="sm">
+              <Text className="wrap-break-word whitespace-pre-wrap" component="pre" size="sm">
                 {afterText}
               </Text>
             </Paper>

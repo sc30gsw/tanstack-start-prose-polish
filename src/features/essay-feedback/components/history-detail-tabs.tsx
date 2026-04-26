@@ -6,13 +6,14 @@ import { ResultReader } from "~/features/essay-feedback/components/result-reader
 import { DIFF_VIEW_MODE_OPTIONS } from "~/features/essay-feedback/constants/diff-view-ui";
 import { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
 import { useResolvedDiffView } from "~/features/essay-feedback/hooks/use-resolved-diff-view";
+import type { DiffSearchParams } from "~/routes/essays/$essayId/diff";
 
 type HistoryDetailTabsProps = {
   bodyAfter?: null | string;
   bodyBefore: string;
   essayId: string;
   tab: "after" | "before" | "diff" | undefined;
-  view: "split" | "unified" | undefined;
+  view: DiffSearchParams["view"] | undefined;
 };
 
 export function HistoryDetailTabs({

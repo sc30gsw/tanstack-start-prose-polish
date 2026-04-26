@@ -1,11 +1,18 @@
 import { id, type InstaQLEntity } from "@instantdb/react";
+import { useTransition } from "react";
 import * as v from "valibot";
 
-import type { DiffCommentInput } from "~/features/essay-feedback/schemas/essay-schema";
+import {
+  diffCommentInputSchema,
+  type DiffComment,
+  type DiffCommentInput,
+} from "~/features/essay-feedback/schemas/essay-schema";
 import { db } from "~/lib/instant";
 import type { AppSchema } from "~/lib/instant-schema";
 
 export function useDiffComments(essayId: InstaQLEntity<AppSchema, "essays">["id"]) {
+  const [isPending, startTransition] = useTransition();
+
   const { data, error, isLoading } = db.useQuery({
     diffComments: {
       $: {
@@ -14,51 +21,70 @@ export function useDiffComments(essayId: InstaQLEntity<AppSchema, "essays">["id"
     },
   });
 
-  const addComment = async (input: DiffCommentInput, author: "ai" | "user" = "user") => {
-    const commentId = id();
-    const txChunk = db.tx.diffComments[commentId];
-    if (txChunk == null) return;
-    await db.transact(
-      txChunk
-        .update({
-          author,
-          body: input.body,
-          createdAt: new Date(),
-          lineNumber: input.lineNumber,
-          side: input.side,
-          suggestion: input.suggestion,
-        })
-        .link({ essay: essayId }),
-    );
+  const addComment = (input: DiffCommentInput, author: DiffComment["author"] = "user") => {
+    startTransition(async () => {
+      const commentId = id();
+      const txChunk = db.tx.diffComments[commentId];
+
+      if (!txChunk) {
+        return;
+      }
+
+      await db.transact(
+        txChunk
+          .update({
+            author,
+            body: input.body,
+            createdAt: new Date(),
+            lineNumber: input.lineNumber,
+            side: input.side,
+            suggestion: input.suggestion,
+          })
+          .link({ essay: essayId }),
+      );
+    });
   };
 
-  const bodySchema = v.pipe(v.string(), v.minLength(1, "コメントを入力してください"));
+  const removeUserComment = (commentId: InstaQLEntity<AppSchema, "diffComments">["id"]) => {
+    startTransition(async () => {
+      const txChunk = db.tx.diffComments[commentId];
 
-  const removeUserComment = async (commentId: InstaQLEntity<AppSchema, "diffComments">["id"]) => {
-    const txChunk = db.tx.diffComments[commentId];
-    if (txChunk == null) return;
-    await db.transact(txChunk.delete());
+      if (!txChunk) {
+        return;
+      }
+
+      await db.transact(txChunk.delete());
+    });
   };
 
-  const updateUserComment = async (
+  const updateUserComment = (
     commentId: InstaQLEntity<AppSchema, "diffComments">["id"],
     newBody: InstaQLEntity<AppSchema, "diffComments">["body"],
   ) => {
-    const parsed = v.safeParse(bodySchema, newBody);
+    const parsed = v.safeParse(v.pick(diffCommentInputSchema, ["body"]), newBody);
+
     if (!parsed.success) {
       return;
     }
-    const txChunk = db.tx.diffComments[commentId];
-    if (txChunk == null) return;
-    await db.transact(
-      txChunk.update({
-        body: parsed.output,
-        updatedAt: new Date(),
-      }),
-    );
+
+    startTransition(async () => {
+      const txChunk = db.tx.diffComments[commentId];
+
+      if (!txChunk) {
+        return;
+      }
+
+      await db.transact(
+        txChunk.update({
+          body: parsed.output.body,
+          updatedAt: new Date(),
+        }),
+      );
+    });
   };
 
   return {
+    isPending,
     addComment,
     comments:
       data?.diffComments.map((comment) => ({

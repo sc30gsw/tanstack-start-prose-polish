@@ -1,3 +1,4 @@
+import type { InstaQLEntity } from "@instantdb/react";
 import {
   ActionIcon,
   Avatar,
@@ -13,18 +14,22 @@ import { modals } from "@mantine/modals";
 import { IconPencil, IconRobot, IconTrash, IconUser } from "@tabler/icons-react";
 import { useState } from "react";
 
+import type { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
 import type { DiffComment } from "~/features/essay-feedback/schemas/essay-schema";
+import type { AppSchema } from "~/lib/instant-schema";
 
 type DiffCommentThreadProps = {
-  comments: DiffComment[];
-  onDeleteUserComment?: (commentId: string) => Promise<void>;
-  onUpdateUserComment?: (commentId: string, body: string) => Promise<void>;
+  comments: ReturnType<typeof useDiffComments>["comments"];
+  onDeleteUserComment?: ReturnType<typeof useDiffComments>["removeUserComment"];
+  onUpdateUserComment?: ReturnType<typeof useDiffComments>["updateUserComment"];
+  isPending: ReturnType<typeof useDiffComments>["isPending"];
 };
 
 export function DiffCommentThread({
   comments,
   onDeleteUserComment,
   onUpdateUserComment,
+  isPending,
 }: DiffCommentThreadProps) {
   const colorScheme = useComputedColorScheme("light", { getInitialValueInEffect: true });
   const suggestionColor = colorScheme === "dark" ? "blue.2" : "blue.7";
@@ -33,42 +38,54 @@ export function DiffCommentThread({
   const [draft, setDraft] = useState("");
   const [busyId, setBusyId] = useState<null | string>(null);
 
-  if (comments.length === 0) return null;
-
-  function startEdit(comment: DiffComment) {
-    if (onUpdateUserComment == null) return;
-    setEditingId(comment.id);
-    setDraft(comment.body);
+  if (comments.length === 0) {
+    return null;
   }
 
-  async function saveEdit(id: string) {
-    if (onUpdateUserComment == null) return;
+  const startEdit = (comment: DiffComment) => {
+    if (!onUpdateUserComment) {
+      return;
+    }
+
+    setEditingId(comment.id);
+    setDraft(comment.body);
+  };
+
+  const saveEdit = (id: InstaQLEntity<AppSchema, "diffComments">["id"]) => {
+    if (!onUpdateUserComment) {
+      return;
+    }
+
     setBusyId(id);
+
     try {
-      await onUpdateUserComment(id, draft);
+      onUpdateUserComment(id, draft);
       setEditingId(null);
     } finally {
       setBusyId(null);
     }
-  }
+  };
 
-  function requestDelete(id: string) {
-    if (onDeleteUserComment == null) return;
+  const requestDelete = (id: InstaQLEntity<AppSchema, "diffComments">["id"]) => {
+    if (!onDeleteUserComment) {
+      return;
+    }
+
     modals.openConfirmModal({
       children: <Text size="sm">このコメントを削除しますか？</Text>,
       confirmProps: { color: "red" },
       labels: { cancel: "キャンセル", confirm: "削除する" },
-      onConfirm: async () => {
+      onConfirm: () => {
         setBusyId(id);
         try {
-          await onDeleteUserComment(id);
+          onDeleteUserComment(id);
         } finally {
           setBusyId(null);
         }
       },
       title: "コメントを削除",
     });
-  }
+  };
 
   return (
     <Stack gap="xs" p="xs">
@@ -109,11 +126,11 @@ export function DiffCommentThread({
                           <IconPencil size={14} />
                         </ActionIcon>
                       )}
-                      {onDeleteUserComment != null && (
+                      {onDeleteUserComment && (
                         <ActionIcon
                           aria-label="コメントを削除"
                           color="red"
-                          disabled={busyId != null}
+                          disabled={Boolean(busyId) || isPending}
                           onClick={() => {
                             requestDelete(comment.id);
                           }}
@@ -137,10 +154,11 @@ export function DiffCommentThread({
                         setDraft(e.currentTarget.value);
                       }}
                       value={draft}
+                      disabled={isPending}
                     />
                     <Group gap="xs" justify="flex-end">
                       <Button
-                        disabled={busyId === comment.id}
+                        disabled={busyId === comment.id || isPending}
                         onClick={() => {
                           setEditingId(null);
                         }}
@@ -150,10 +168,10 @@ export function DiffCommentThread({
                         キャンセル
                       </Button>
                       <Button
-                        disabled={draft.trim() === "" || busyId === comment.id}
+                        disabled={draft.trim() === "" || busyId === comment.id || isPending}
                         loading={busyId === comment.id}
                         onClick={() => {
-                          void saveEdit(comment.id);
+                          saveEdit(comment.id);
                         }}
                         size="xs"
                       >

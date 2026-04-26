@@ -24,6 +24,8 @@ const diffSearchSchema = v.object({
   view: v.optional(v.picklist(["split", "unified"]), defaultDiffSearchParams.view),
 });
 
+export type DiffSearchParams = v.InferOutput<typeof diffSearchSchema>;
+
 export const Route = createFileRoute("/essays/$essayId/diff")({
   component: DiffPage,
   validateSearch: valibotValidator(diffSearchSchema),
@@ -57,7 +59,7 @@ function DiffPage() {
             <Skeleton aria-busy="true" aria-label="差分を読み込み中" height={400} radius="md" />
           }
         >
-          <DiffViewCOntainer />
+          <DiffViewContainer />
         </ClientOnly>
         <Group justify="flex-end" mt="md" wrap="nowrap">
           <Button
@@ -103,10 +105,11 @@ function DiffSegmentControl() {
   );
 }
 
-function DiffViewCOntainer() {
+function DiffViewContainer() {
   const { essayId } = Route.useParams();
   const { view: viewParam } = Route.useSearch();
   const view = useResolvedDiffView(viewParam);
+
   const { essay, isLoading } = useEssayDetail(essayId);
 
   if (isLoading) {

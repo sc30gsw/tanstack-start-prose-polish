@@ -3,20 +3,21 @@ import { Stack, Text } from "@mantine/core";
 import { AiCommentBadge } from "~/features/essay-feedback/components/ai-comment-badge";
 import { DiffCommentForm } from "~/features/essay-feedback/components/diff-comment-form";
 import { DiffCommentThread } from "~/features/essay-feedback/components/diff-comment-thread";
-import type { DiffComment, DiffCommentInput } from "~/features/essay-feedback/schemas/essay-schema";
+import type { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
+import type { useDiffViewState } from "~/features/essay-feedback/hooks/use-diff-view-state";
 
-export type AiLineCommentModalBodyProps = {
-  comments: DiffComment[];
-  lineNumber: number;
-  onAddComment: (input: DiffCommentInput) => Promise<void>;
+type AiLineCommentModalBodyProps = {
+  comments: ReturnType<typeof useDiffComments>["comments"];
+  lineNumber: NonNullable<ReturnType<typeof useDiffViewState>["aiLineModal"]>["lineNumber"];
+  onAddComment: ReturnType<typeof useDiffComments>["addComment"];
   onCloseModal: () => void;
-  onDeleteUserComment?: (commentId: string) => Promise<void>;
-  onUpdateUserComment?: (commentId: string, body: string) => Promise<void>;
+  onDeleteUserComment?: ReturnType<typeof useDiffComments>["removeUserComment"];
+  onUpdateUserComment?: ReturnType<typeof useDiffComments>["updateUserComment"];
   showCommentForm: boolean;
-  side: "additions" | "deletions";
+  side: NonNullable<ReturnType<typeof useDiffViewState>["aiLineModal"]>["side"];
+  isPending: ReturnType<typeof useDiffComments>["isPending"];
 };
 
-/** AI 指摘の確認。親から `comments` を都度渡す（InstantDB 等の更新に追従）。 */
 export function AiLineCommentModalBody({
   comments,
   lineNumber,
@@ -26,29 +27,31 @@ export function AiLineCommentModalBody({
   onUpdateUserComment,
   showCommentForm,
   side,
+  isPending,
 }: AiLineCommentModalBodyProps) {
   const forLine = comments.filter((c) => c.lineNumber === lineNumber && c.side === side);
-  const ai = forLine.filter((c) => c.author === "ai");
-  const user = forLine.filter((c) => c.author === "user");
+  const aiComments = forLine.filter((c) => c.author === "ai");
+  const userComments = forLine.filter((c) => c.author === "user");
 
   return (
     <Stack gap="md">
-      {ai.length === 0 && user.length === 0 ? (
+      {aiComments.length === 0 && userComments.length === 0 ? (
         <Text c="dimmed" size="sm">
           この行の AI 指摘はありません。
         </Text>
       ) : (
         <>
-          {ai.map((c) => (
-            <AiCommentBadge key={c.id} body={c.body} suggestion={c.suggestion} />
+          {aiComments.map((comment) => (
+            <AiCommentBadge key={comment.id} body={comment.body} suggestion={comment.suggestion} />
           ))}
           <Text c="dimmed" size="xs">
             差分上で追加するには行をクリックするか、行末の（＋）を使ってください。
           </Text>
           <DiffCommentThread
-            comments={user}
+            comments={userComments}
             onDeleteUserComment={onDeleteUserComment ?? undefined}
             onUpdateUserComment={onUpdateUserComment ?? undefined}
+            isPending={isPending}
           />
           {showCommentForm ? (
             <DiffCommentForm
@@ -57,6 +60,7 @@ export function AiLineCommentModalBody({
               onClose={onCloseModal}
               onSubmit={onAddComment}
               side={side}
+              isPending={isPending}
             />
           ) : null}
         </>

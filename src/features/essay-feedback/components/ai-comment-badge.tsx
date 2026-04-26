@@ -1,10 +1,12 @@
 import { Alert, Stack, Text, UnstyledButton, useComputedColorScheme } from "@mantine/core";
 import { IconSparkles } from "@tabler/icons-react";
 
+import type { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
+
 type AiCommentBadgeProps = {
-  body: string;
+  body: ReturnType<typeof useDiffComments>["comments"][number]["body"];
   onOpenDetail?: () => void;
-  suggestion?: string;
+  suggestion?: ReturnType<typeof useDiffComments>["comments"][number]["suggestion"];
 };
 
 export function AiCommentBadge({ body, onOpenDetail, suggestion }: AiCommentBadgeProps) {
@@ -24,7 +26,7 @@ export function AiCommentBadge({ body, onOpenDetail, suggestion }: AiCommentBadg
     </Alert>
   );
 
-  if (onOpenDetail == null) {
+  if (!onOpenDetail) {
     return inner;
   }
 
