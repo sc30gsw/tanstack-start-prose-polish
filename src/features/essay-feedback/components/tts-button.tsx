@@ -1,3 +1,4 @@
+import { cn } from "@lightsound/cn/tw-merge";
 import { ActionIcon, Box, Button, Group, Tooltip } from "@mantine/core";
 import { IconPlayerPause, IconPlayerPlay, IconRefresh } from "@tabler/icons-react";
 
@@ -22,9 +23,9 @@ export function TtsPlayControls({
 }: TtsPlayControlsProps) {
   if (!isSupported) {
     return (
-      <Box style={{ display: "block", width: fullWidth ? "100%" : "auto" }}>
+      <Box className={cn("block", fullWidth ? "w-full" : "w-auto")}>
         <Tooltip label="このブラウザは TTS に対応していません">
-          <span style={{ display: "block", width: fullWidth ? "100%" : "auto" }}>
+          <span className={cn("block", fullWidth ? "w-full" : "w-auto")}>
             <Button
               color="teal"
               disabled

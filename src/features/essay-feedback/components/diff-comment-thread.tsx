@@ -96,9 +96,9 @@ export function DiffCommentThread({
               <Avatar color={isUser ? "gray" : "blue"} size="xs">
                 {isUser ? <IconUser size={12} /> : <IconRobot size={12} />}
               </Avatar>
-              <Stack gap="xs" style={{ flex: 1, minWidth: 0 }}>
+              <Stack gap="xs" className="min-w-0 flex-1">
                 <Group gap="xs" justify="space-between" wrap="nowrap">
-                  <Text c="dimmed" size="xs" style={{ flex: 1 }}>
+                  <Text c="dimmed" size="xs" className="flex-1">
                     {isUser ? "あなた" : "AI"} · {timeLabel}
                     {comment.updatedAt != null && isUser ? "（編集あり）" : null}
                   </Text>

@@ -46,7 +46,7 @@ export function AppHeader({
               <IconLayoutSidebarLeftExpand size={20} />
             )}
           </ActionIcon>
-          <Link style={{ color: "inherit", textDecoration: "none" }} to="/">
+          <Link to="/" className="text-inherit no-underline">
             <Group gap={8}>
               <ThemeIcon color="indigo" radius="md" size="md" variant="light">
                 <IconSparkles size={16} />

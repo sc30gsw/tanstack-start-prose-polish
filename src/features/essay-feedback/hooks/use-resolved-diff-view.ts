@@ -1,6 +1,6 @@
 import { useMediaQuery } from "@mantine/hooks";
 
-import type { DiffSearchParams } from "~/routes/essays/$essayId/diff";
+import type { DiffSearchParams } from "~/features/essay-feedback/schemas/search-params/essays-diff-search-params";
 
 const NARROW_MAX = "(max-width: 47.99em)";
 

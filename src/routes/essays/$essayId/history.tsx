@@ -29,12 +29,7 @@ function HistoryPage() {
     );
   }
 
-  const essayData = essay as {
-    bodyAfter?: null | string;
-    bodyBefore?: string;
-  } | null;
-
-  if (essayData == null || essayData.bodyBefore == null) {
+  if (!essay || !essay.bodyBefore) {
     return (
       <Container py="xl" size="xl">
         <Text c="red">エッセイが見つかりませんでした。</Text>
@@ -46,8 +41,8 @@ function HistoryPage() {
     <Container py="xl" size="xl">
       <PageHeader backHref="/essays" backLabel="履歴一覧" title="学習履歴詳細" />
       <HistoryDetailTabs
-        bodyAfter={essayData.bodyAfter}
-        bodyBefore={essayData.bodyBefore}
+        bodyAfter={essay.bodyAfter}
+        bodyBefore={essay.bodyBefore}
         essayId={essayId}
         tab={tab}
         view={view}

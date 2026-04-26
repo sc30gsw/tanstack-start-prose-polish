@@ -30,13 +30,19 @@ export function useScoringStream() {
 
           Object.assign(accumulated, chunk);
 
-          if (chunk.score !== undefined) {
-            setState((prev) => ({ ...prev, result: { ...accumulated }, stage: "cefr" }));
-          } else if (chunk.cefr !== undefined) {
-            setState((prev) => ({ ...prev, result: { ...accumulated }, stage: "toeic" }));
-          } else if (chunk.toeicMin !== undefined) {
-            setState((prev) => ({ ...prev, result: { ...accumulated }, stage: "done" }));
+          const nextStage = chunk.score
+            ? "cefr"
+            : chunk.cefr
+              ? "toeic"
+              : chunk.toeicMin
+                ? "done"
+                : null;
+
+          if (nextStage === null) {
+            continue;
           }
+
+          setState((prev) => ({ ...prev, result: { ...accumulated }, stage: nextStage }));
         }
 
         if (signal.aborted) {

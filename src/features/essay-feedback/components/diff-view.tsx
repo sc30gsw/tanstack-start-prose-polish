@@ -4,7 +4,6 @@ import {
   Box,
   Group,
   Modal,
-  Paper,
   Text,
   UnstyledButton,
   useComputedColorScheme,
@@ -13,7 +12,7 @@ import type { FileDiffOptions, GetHoveredLineResult } from "@pierre/diffs";
 import { parseDiffFromFile } from "@pierre/diffs";
 import { FileDiff } from "@pierre/diffs/react";
 import { IconPlus } from "@tabler/icons-react";
-import { createPortal } from "react-dom";
+import { useCallback, useMemo } from "react";
 
 import { AiLineCommentModalBody } from "~/features/essay-feedback/components/ai-line-comment-modal";
 import {
@@ -23,15 +22,14 @@ import {
 import { DiffNoHunksView } from "~/features/essay-feedback/components/diff-no-hunks-view";
 import { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
 import { useDiffViewState } from "~/features/essay-feedback/hooks/use-diff-view-state";
+import type { DiffSearchParams } from "~/features/essay-feedback/schemas/search-params/essays-diff-search-params";
 import type { AppSchema } from "~/lib/instant-schema";
-import type { DiffSearchParams } from "~/routes/essays/$essayId/diff";
 
 type DiffViewProps = {
   afterText: InstaQLEntity<AppSchema, "essays">["bodyAfter"];
   beforeText: InstaQLEntity<AppSchema, "essays">["bodyBefore"];
   diffStyle: DiffSearchParams["view"];
   essayId: InstaQLEntity<AppSchema, "essays">["id"];
-  readonly?: boolean;
   showAiModalCommentForm?: boolean;
 };
 
@@ -40,83 +38,124 @@ export function DiffView({
   afterText,
   diffStyle = "split",
   essayId,
-  readonly = false,
   showAiModalCommentForm: showAiModalCommentFormProp,
 }: DiffViewProps) {
   const { addComment, comments, isPending, removeUserComment, updateUserComment } =
     useDiffComments(essayId);
 
-  const showAiModalCommentForm = showAiModalCommentFormProp ?? !readonly;
+  const showAiModalCommentForm = showAiModalCommentFormProp ?? true;
   const resolvedColorScheme = useComputedColorScheme("light", { getInitialValueInEffect: true });
   const diffThemeType = resolvedColorScheme === "dark" ? "dark" : "light";
 
   const {
     aiLineModal,
     handleDiffLineClick,
-    handleDiffLineEnter,
-    handleDiffLineLeave,
     lineAnnotations,
-    lineHoverPreview,
     pendingComment,
     setAiLineModal,
     setPendingComment,
-  } = useDiffViewState({ comments, readonly });
+  } = useDiffViewState({ comments });
 
-  const fileDiff = parseDiffFromFile(
-    { contents: beforeText, name: "添削前" },
-    { contents: afterText ?? "", name: "添削後" },
+  // ? React Compiler 任せにせず手動メモ化:
+  // ? parseDiffFromFile の戻り値オブジェクトを <FileDiff fileDiff={...}> に渡す。
+  // ? 新参照のたびに pierre/diffs が diff 全体を再パース・再描画してホバーがちらつく。
+  const fileDiff = useMemo(
+    () =>
+      parseDiffFromFile(
+        { contents: beforeText, name: "添削前" },
+        { contents: afterText ?? "", name: "添削後" },
+      ),
+    [beforeText, afterText],
   );
 
-  const diffOptions = {
-    diffIndicators: "classic",
-    diffStyle,
-    enableGutterUtility: !readonly,
-    lineDiffType: "word-alt",
-    lineHoverHighlight: "line",
-    onLineClick: handleDiffLineClick,
-    onLineEnter: handleDiffLineEnter,
-    onLineLeave: handleDiffLineLeave,
-    overflow: "wrap",
-    theme: { dark: "github-dark", light: "github-light" },
-    themeType: diffThemeType,
-  } as const satisfies FileDiffOptions<CommentAnnotationMeta>;
+  // ? React Compiler 任せにせず手動メモ化:
+  // ? renderGutterUtility は <FileDiff> 経由で gutter "+" ボタン DOM の生成元になる。
+  // ? 新参照のたびに pierre/diffs がボタンを作り直し、ホバー中に視覚的にちらつく。
+  const renderGutterUtility = useCallback(
+    (getHoveredLine: () => GetHoveredLineResult<"diff"> | undefined) => {
+      return (
+        <UnstyledButton
+          disabled={isPending}
+          onClick={() => {
+            const hovered = getHoveredLine();
+
+            if (!hovered) {
+              return;
+            }
+
+            setPendingComment({
+              lineNumber: hovered.lineNumber,
+              side: hovered.side,
+            });
+          }}
+        >
+          <ActionIcon
+            aria-label="行にコメントを追加"
+            color="blue"
+            radius="xl"
+            size="sm"
+            title="コメントを追加"
+            variant="light"
+          >
+            <IconPlus size={14} />
+          </ActionIcon>
+        </UnstyledButton>
+      );
+    },
+    [isPending, setPendingComment],
+  );
+
+  // ? React Compiler 任せにせず手動メモ化:
+  // ? renderAnnotation は <FileDiff> 経由で各注釈行の生成関数になる。
+  // ? 新参照のたびに pierre/diffs が注釈行を作り直し、入力中フォームのフォーカスが飛ぶ。
+  const renderAnnotation = useCallback(
+    (
+      annotation: Parameters<
+        NonNullable<FileDiffOptions<CommentAnnotationMeta>["renderAnnotation"]>
+      >[0],
+    ) => (
+      <DiffAnnotationRow
+        annotation={annotation}
+        onAddComment={addComment}
+        onClosePendingComment={() => setPendingComment(null)}
+        onDeleteUserComment={removeUserComment}
+        onOpenAiLineModal={(lineNumber, side) => setAiLineModal({ lineNumber, side })}
+        onUpdateUserComment={updateUserComment}
+        pendingComment={pendingComment}
+        isPending={isPending}
+      />
+    ),
+    [
+      addComment,
+      removeUserComment,
+      updateUserComment,
+      setPendingComment,
+      setAiLineModal,
+      pendingComment,
+      isPending,
+    ],
+  );
+
+  // ? React Compiler 任せにせず手動メモ化:
+  // ? <FileDiff options={...}> は内部で参照同値判定し、新参照だと gutter / hover を全再構築。
+  // ? as const satisfies は型のみで参照は毎回新規になるため、useMemo で参照固定が必須。
+  const diffOptions = useMemo(
+    () =>
+      ({
+        diffIndicators: "classic",
+        diffStyle,
+        enableGutterUtility: true,
+        lineDiffType: "word-alt",
+        lineHoverHighlight: "line",
+        onLineClick: handleDiffLineClick,
+        overflow: "wrap",
+        theme: { dark: "github-dark", light: "github-light" },
+        themeType: diffThemeType,
+      }) as const satisfies FileDiffOptions<CommentAnnotationMeta>,
+    [diffStyle, handleDiffLineClick, diffThemeType],
+  );
 
   const hasRenderableHunks = fileDiff.hunks.length > 0;
-
-  const renderGutterUtility = (getHoveredLine: () => GetHoveredLineResult<"diff"> | undefined) => {
-    if (readonly) {
-      return null;
-    }
-
-    return (
-      <UnstyledButton
-        disabled={isPending}
-        onClick={() => {
-          const hovered = getHoveredLine();
-
-          if (!hovered) {
-            return;
-          }
-
-          setPendingComment({
-            lineNumber: hovered.lineNumber,
-            side: hovered.side,
-          });
-        }}
-      >
-        <ActionIcon
-          aria-label="行にコメントを追加"
-          color="blue"
-          radius="xl"
-          size="sm"
-          title="コメントを追加"
-          variant="light"
-        >
-          <IconPlus size={14} />
-        </ActionIcon>
-      </UnstyledButton>
-    );
-  };
 
   const aiLineModalTitle =
     aiLineModal == null
@@ -172,25 +211,13 @@ export function DiffView({
       <Box className="diff-view-root border-default-border overflow-hidden rounded-md border">
         <FileDiff
           key={diffThemeType}
-          className="diff-view-file-diff"
+          className="diff-view-file-diff min-h-[360px]"
           disableWorkerPool
           fileDiff={fileDiff}
           lineAnnotations={lineAnnotations}
           options={diffOptions}
-          renderAnnotation={(annotation) => (
-            <DiffAnnotationRow
-              annotation={annotation}
-              onAddComment={addComment}
-              onClosePendingComment={() => setPendingComment(null)}
-              onDeleteUserComment={removeUserComment}
-              onOpenAiLineModal={(lineNumber, side) => setAiLineModal({ lineNumber, side })}
-              onUpdateUserComment={updateUserComment}
-              pendingComment={pendingComment}
-              readonly={readonly}
-              isPending={isPending}
-            />
-          )}
-          renderGutterUtility={!readonly ? renderGutterUtility : undefined}
+          renderAnnotation={renderAnnotation}
+          renderGutterUtility={renderGutterUtility}
           renderHeaderMetadata={
             diffStyle === "split"
               ? () => (
@@ -229,22 +256,7 @@ export function DiffView({
                   </Box>
                 )
           }
-          style={{ minHeight: 360 }}
         />
-        {lineHoverPreview &&
-          createPortal(
-            <Paper
-              className="pointer-events-none fixed"
-              maw={320}
-              p="xs"
-              shadow="md"
-              style={{ left: lineHoverPreview.left, top: lineHoverPreview.top, zIndex: 400 }}
-              withBorder
-            >
-              <Text size="xs">{lineHoverPreview.text}</Text>
-            </Paper>,
-            document.body,
-          )}
       </Box>
       {aiLineModalNode}
     </>

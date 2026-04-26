@@ -63,14 +63,14 @@ export function HistoryCard({ essay }: Record<"essay", InstaQLEntity<AppSchema, 
           <Link
             params={{ essayId: essay.id }}
             search={{ tab: "before" }}
-            style={{ flex: 1, minWidth: 0, textDecoration: "none" }}
+            className="text-decoration-none min-w-0 flex-1"
             to="/essays/$essayId/history"
           >
             <Group gap="sm" wrap="nowrap">
               <ThemeIcon autoContrast color={modeColor} radius="md" size="lg" variant="light">
                 <IconBook2 size={18} />
               </ThemeIcon>
-              <Stack gap={2} style={{ minWidth: 0 }}>
+              <Stack gap={2} className="min-w-0">
                 <Text c="var(--mantine-color-text)" fw={600} lineClamp={1} size="sm">
                   {title}
                 </Text>
@@ -148,7 +148,7 @@ function HistoryCardDeleteButton({ id }: Pick<InstaQLEntity<AppSchema, "essays">
       color="red"
       onClick={handleDeleteRequest}
       size="lg"
-      style={{ flexShrink: 0 }}
+      className="shrink-0"
       title="履歴を削除"
       disabled={isPending}
       variant="light"

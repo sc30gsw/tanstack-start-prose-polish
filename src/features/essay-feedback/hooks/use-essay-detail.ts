@@ -1,6 +1,9 @@
-import { db } from "~/lib/instant";
+import type { InstaQLEntity } from "@instantdb/react";
 
-export function useEssayDetail(essayId: string) {
+import { db } from "~/lib/instant";
+import type { AppSchema } from "~/lib/instant-schema";
+
+export function useEssayDetail(essayId: InstaQLEntity<AppSchema, "essays">["id"]) {
   const { data, error, isLoading } = db.useQuery({
     essays: {
       $: { where: { id: essayId } },

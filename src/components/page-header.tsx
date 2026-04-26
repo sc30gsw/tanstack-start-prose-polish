@@ -21,7 +21,7 @@ export function PageHeader({ title, backHref, backLabel, children }: PageHeaderP
       )}
       {children ? (
         <Group align="center" justify="space-between" wrap="wrap">
-          <Title m={0} order={1} size="h2" style={{ minWidth: 0 }}>
+          <Title m={0} order={1} size="h2" className="min-w-0">
             {title}
           </Title>
           {children}

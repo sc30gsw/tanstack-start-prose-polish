@@ -94,18 +94,10 @@ type ScoringRowProps = { children: ReactNode; label: string };
 function ScoringRow({ children, label }: ScoringRowProps) {
   return (
     <Group align="flex-start" gap="md" justify="flex-start" w="100%" wrap="wrap">
-      <Text fw={700} maw="100%" miw="10rem" size="md" style={{ flex: "0 0 auto" }}>
+      <Text fw={700} maw="100%" miw="10rem" size="md" className="flex-0-auto flex-0">
         {label}
       </Text>
-      <Box
-        style={{
-          flex: "1 1 min(0, 100%)",
-          minWidth: 0,
-          textAlign: "left",
-        }}
-      >
-        {children}
-      </Box>
+      <Box className="min-w-0 flex-1 text-left">{children}</Box>
     </Group>
   );
 }

@@ -8,23 +8,16 @@ import {
   useNavigate,
 } from "@tanstack/react-router";
 import { valibotValidator } from "@tanstack/valibot-adapter";
-import * as v from "valibot";
 
 import { PageHeader } from "~/components/page-header";
 import { DiffView } from "~/features/essay-feedback/components/diff-view";
 import { DIFF_VIEW_MODE_OPTIONS } from "~/features/essay-feedback/constants/diff-view-ui";
 import { useEssayDetail } from "~/features/essay-feedback/hooks/use-essay-detail";
 import { useResolvedDiffView } from "~/features/essay-feedback/hooks/use-resolved-diff-view";
-
-const defaultDiffSearchParams = {
-  view: "split",
-} as const satisfies Record<string, (typeof DIFF_VIEW_MODE_OPTIONS)[number]["value"]>;
-
-const diffSearchSchema = v.object({
-  view: v.optional(v.picklist(["split", "unified"]), defaultDiffSearchParams.view),
-});
-
-export type DiffSearchParams = v.InferOutput<typeof diffSearchSchema>;
+import {
+  defaultDiffSearchParams,
+  diffSearchSchema,
+} from "~/features/essay-feedback/schemas/search-params/essays-diff-search-params";
 
 export const Route = createFileRoute("/essays/$essayId/diff")({
   component: DiffPage,

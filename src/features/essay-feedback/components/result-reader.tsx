@@ -1,3 +1,4 @@
+import { cn } from "@lightsound/cn/tw-merge";
 import { Box, Paper, Select, SimpleGrid, Stack, Text, useMantineTheme } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { useState } from "react";
@@ -32,7 +33,7 @@ export function ResultReader({ correctedBody }: ResultReaderProps) {
         <Box
           bg="var(--mantine-color-default-hover)"
           p="md"
-          style={{ borderBottom: "1px solid var(--mantine-color-default-border)" }}
+          className="border-default-border border-b"
         >
           <Stack gap="md">
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md" verticalSpacing="md">
@@ -52,7 +53,7 @@ export function ResultReader({ correctedBody }: ResultReaderProps) {
                 value={displayMode}
                 w="100%"
               />
-              <Box style={{ alignSelf: isSmUp ? "end" : "stretch" }} w="100%">
+              <Box w="100%" className={cn(isSmUp ? "self-end" : "self-stretch")}>
                 <TtsPlayControls
                   fullWidth={ttsFullWidth}
                   isSupported={isSupported}
@@ -67,7 +68,7 @@ export function ResultReader({ correctedBody }: ResultReaderProps) {
               c="var(--mantine-color-text)"
               id="result-reader-mode-hint"
               size="sm"
-              style={{ lineHeight: 1.5, maxWidth: "42em", opacity: 0.78 }}
+              className="line-height-1.5 max-w-[42em] opacity-78"
             >
               音読は再生中の語を強調します。シャドーイングは、まだ読んでいない箇所を隠して練習できます
             </Text>

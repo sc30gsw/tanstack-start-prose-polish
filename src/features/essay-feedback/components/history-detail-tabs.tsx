@@ -6,7 +6,7 @@ import { ResultReader } from "~/features/essay-feedback/components/result-reader
 import { DIFF_VIEW_MODE_OPTIONS } from "~/features/essay-feedback/constants/diff-view-ui";
 import { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
 import { useResolvedDiffView } from "~/features/essay-feedback/hooks/use-resolved-diff-view";
-import type { DiffSearchParams } from "~/routes/essays/$essayId/diff";
+import type { DiffSearchParams } from "~/features/essay-feedback/schemas/search-params/essays-diff-search-params";
 
 type HistoryDetailTabsProps = {
   bodyAfter?: null | string;
@@ -73,14 +73,7 @@ export function HistoryDetailTabs({
 
         <Tabs.Panel value="before">
           <Paper mt="md" p="xl" radius="md" withBorder>
-            <Text
-              size="md"
-              style={{
-                fontFamily: "Georgia, 'Times New Roman', serif",
-                lineHeight: 2,
-                whiteSpace: "pre-wrap",
-              }}
-            >
+            <Text size="md" className="line-height-2 font-serif whitespace-pre-wrap">
               {bodyBefore}
             </Text>
           </Paper>
@@ -120,8 +113,6 @@ export function HistoryDetailTabs({
                     beforeText={bodyBefore}
                     diffStyle={diffView}
                     essayId={essayId}
-                    readonly
-                    showAiModalCommentForm
                   />
                 </ClientOnly>
               )}

@@ -45,7 +45,6 @@ type DiffAnnotationRowProps = {
   ) => void;
   onUpdateUserComment: ReturnType<typeof useDiffComments>["updateUserComment"];
   pendingComment: Pick<DiffCommentInput, "lineNumber" | "side"> | null;
-  readonly: boolean;
   isPending: ReturnType<typeof useDiffComments>["isPending"];
 };
 
@@ -57,7 +56,6 @@ export function DiffAnnotationRow({
   onOpenAiLineModal,
   onUpdateUserComment,
   pendingComment,
-  readonly,
   isPending,
 }: DiffAnnotationRowProps) {
   if (!annotation.metadata) {
@@ -92,7 +90,7 @@ export function DiffAnnotationRow({
         onUpdateUserComment={onUpdateUserComment}
         isPending={isPending}
       />
-      {!readonly && pendingComment?.lineNumber === annotation.lineNumber && (
+      {pendingComment?.lineNumber === annotation.lineNumber && (
         <PendingForm
           lineNumber={annotation.lineNumber}
           onClose={onClosePendingComment}
