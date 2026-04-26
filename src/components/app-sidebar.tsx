@@ -1,6 +1,8 @@
-import { AppShell, Button, Divider, NavLink, ScrollArea, Text } from "@mantine/core";
+import { AppShell, Button, Divider, NavLink, ScrollArea } from "@mantine/core";
 import { IconClockHour3, IconHome, IconPencilPlus } from "@tabler/icons-react";
 import { Link, useRouterState } from "@tanstack/react-router";
+
+import { UserSidebarFooter } from "~/features/auth/components/user-menu";
 
 export function AppSidebar({ onClose }: Partial<Record<"onClose", () => void>>) {
   const { matches } = useRouterState();
@@ -39,9 +41,7 @@ export function AppSidebar({ onClose }: Partial<Record<"onClose", () => void>>) 
 
       <AppShell.Section>
         <Divider mb="xs" />
-        <Text c="dimmed" py="xs" size="xs" ta="center">
-          ProsePolish v0.1
-        </Text>
+        <UserSidebarFooter />
       </AppShell.Section>
     </>
   );

@@ -1,6 +1,5 @@
-import { Alert, Paper, Stack } from "@mantine/core";
+import { Alert, Anchor, Paper, Stack, Text } from "@mantine/core";
 import { IconAlertCircle } from "@tabler/icons-react";
-import { getRouteApi } from "@tanstack/react-router";
 import { useState, useTransition } from "react";
 
 import { sendMagicCode, signInWithMagicCode } from "~/features/auth/api/auth-client";
@@ -12,13 +11,9 @@ import {
   loginFormEmptyValues,
 } from "~/features/auth/schemas/login-schema";
 
-const routeApi = getRouteApi("/login");
-
 export function LoginForm() {
-  const { returnTo } = routeApi.useSearch();
-  const navigate = routeApi.useNavigate();
-
   const [step, setStep] = useState<"code" | "email">("email");
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
 
   const [isPending, startTransition] = useTransition();
@@ -48,23 +43,30 @@ export function LoginForm() {
 
         setErrorMessage(null);
 
-        const result = await signInWithMagicCode(value.email, value.code, value.username);
+        const username = mode === "signup" ? value.username : "";
+        const result = await signInWithMagicCode(value.email, value.code, username);
 
         result.match({
           err: (e) => {
             setErrorMessage(e.message || "サインインに失敗しました。コードを確認してください。");
           },
-          ok: () => {
-            navigate({ to: returnTo ?? "/" });
-          },
+          // db.useAuth() state update → login.tsx <db.SignedIn><SignedInRedirect> handles redirect
+          ok: () => {},
         });
       });
     },
     validators: {
-      onChange: ({ value }) => getLoginFormValidationError(step, value),
-      onSubmit: ({ value }) => getLoginFormValidationError(step, value),
+      onChange: ({ value }) => getLoginFormValidationError(step, value, mode),
+      onSubmit: ({ value }) => getLoginFormValidationError(step, value, mode),
     },
   });
+
+  function handleModeSwitch() {
+    setMode((prev) => (prev === "signin" ? "signup" : "signin"));
+    setStep("email");
+    setErrorMessage(null);
+    form.reset();
+  }
 
   return (
     <Paper p="xl" radius="md" shadow="md" w={400} withBorder>
@@ -87,7 +89,26 @@ export function LoginForm() {
             </Alert>
           )}
           {step === "email" ? (
-            <LoginEmailStep form={form} isLoading={isPending} />
+            <>
+              <LoginEmailStep form={form} isLoading={isPending} isSignUp={mode === "signup"} />
+              <Text c="dimmed" size="sm" ta="center">
+                {mode === "signin" ? (
+                  <>
+                    アカウントをお持ちでない方は{" "}
+                    <Anchor component="button" fw={500} onClick={handleModeSwitch} type="button">
+                      サインアップ
+                    </Anchor>
+                  </>
+                ) : (
+                  <>
+                    すでにアカウントをお持ちの方は{" "}
+                    <Anchor component="button" fw={500} onClick={handleModeSwitch} type="button">
+                      サインイン
+                    </Anchor>
+                  </>
+                )}
+              </Text>
+            </>
           ) : (
             <LoginMagicCodeStep
               form={form}

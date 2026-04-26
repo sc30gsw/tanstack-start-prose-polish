@@ -8,6 +8,10 @@ export const emailSchema = v.object({
   username: v.pipe(v.string(), v.minLength(1, "ユーザー名を入力してください")),
 });
 
+export const emailOnlySchema = v.object({
+  email: v.pipe(v.string(), v.email("有効なメールアドレスを入力してください")),
+});
+
 export const magicCodeSchema = v.object({
   code: v.pipe(
     v.string(),
@@ -41,12 +45,13 @@ function firstObjectPathKey(issue: BaseIssue<unknown>): string | undefined {
 export function getLoginFormValidationError(
   step: "code" | "email",
   value: LoginFormValues,
+  mode: "signin" | "signup" = "signin",
 ): { fields: Partial<Record<LoginFormFieldKey, string>> } | undefined {
   if (step === "email") {
-    const result = v.safeParse(emailSchema, {
-      email: value.email,
-      username: value.username,
-    });
+    const schema = mode === "signup" ? emailSchema : emailOnlySchema;
+    const parseValue =
+      mode === "signup" ? { email: value.email, username: value.username } : { email: value.email };
+    const result = v.safeParse(schema, parseValue);
     if (result.success) {
       return undefined;
     }
