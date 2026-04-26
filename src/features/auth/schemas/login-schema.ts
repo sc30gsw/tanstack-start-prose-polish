@@ -1,5 +1,5 @@
 import * as v from "valibot";
-import type { InferInput } from "valibot";
+import type { BaseIssue, InferInput } from "valibot";
 
 import { MAGIC_CODE_LENGTH } from "~/features/auth/constants/auth";
 
@@ -24,3 +24,51 @@ export const loginFormEmptyValues = {
   email: "",
   username: "",
 } satisfies LoginFormValues;
+
+type LoginFormFieldKey = keyof LoginFormValues;
+
+function firstObjectPathKey(issue: BaseIssue<unknown>): string | undefined {
+  const head = issue.path?.[0] as { key?: PropertyKey; type?: string } | undefined;
+  if (head?.type === "object" && head.key !== undefined) {
+    return String(head.key);
+  }
+  return undefined;
+}
+
+/**
+ * TanStack Form 用: Valibot の issue を `fields` に落とし、各フィールドにエラーを出せるようにする
+ */
+export function getLoginFormValidationError(
+  step: "code" | "email",
+  value: LoginFormValues,
+): { fields: Partial<Record<LoginFormFieldKey, string>> } | undefined {
+  if (step === "email") {
+    const result = v.safeParse(emailSchema, {
+      email: value.email,
+      username: value.username,
+    });
+    if (result.success) {
+      return undefined;
+    }
+    const fields: Partial<Record<LoginFormFieldKey, string>> = {};
+    for (const issue of result.issues) {
+      const key = firstObjectPathKey(issue) as LoginFormFieldKey | undefined;
+      if ((key === "email" || key === "username") && fields[key] === undefined) {
+        fields[key] = issue.message;
+      }
+    }
+    return { fields };
+  }
+
+  const result = v.safeParse(magicCodeSchema, { code: value.code });
+  if (result.success) {
+    return undefined;
+  }
+  const fields: Partial<Record<LoginFormFieldKey, string>> = {};
+  for (const issue of result.issues) {
+    if (firstObjectPathKey(issue) === "code" && fields.code === undefined) {
+      fields.code = issue.message;
+    }
+  }
+  return { fields };
+}

@@ -1,6 +1,6 @@
 import { Loader, Stack } from "@mantine/core";
-import { ClientOnly, Outlet, createFileRoute } from "@tanstack/react-router";
-import { useLocation, useNavigate } from "@tanstack/react-router";
+import { Outlet, createFileRoute, useLocation, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 import { AppShellLayout } from "~/components/app-shell-layout";
 import { db } from "~/lib/instant";
@@ -10,20 +10,16 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 function AuthGate() {
-  return (
-    <ClientOnly
-      fallback={
-        <Stack align="center" justify="center" style={{ minHeight: "100vh" }}>
-          <Loader aria-label="読み込み中" />
-        </Stack>
-      }
-    >
-      <AuthGuard />
-    </ClientOnly>
-  );
-}
+  const { isLoading } = db.useAuth();
 
-function AuthGuard() {
+  if (isLoading) {
+    return (
+      <Stack align="center" justify="center" style={{ minHeight: "100vh" }}>
+        <Loader aria-label="読み込み中" />
+      </Stack>
+    );
+  }
+
   return (
     <>
       <db.SignedIn>
@@ -41,9 +37,10 @@ function AuthGuard() {
 function RedirectToLogin() {
   const location = useLocation();
   const navigate = useNavigate();
-  const pathname = location.pathname;
 
-  navigate({ replace: true, search: { returnTo: pathname }, to: "/login" });
+  useEffect(() => {
+    navigate({ replace: true, search: { returnTo: location.pathname }, to: "/login" });
+  }, [navigate, location.pathname]);
 
   return null;
 }

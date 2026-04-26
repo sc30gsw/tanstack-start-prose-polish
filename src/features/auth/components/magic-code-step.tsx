@@ -25,43 +25,48 @@ export const LoginMagicCodeStep = withForm({
             </div>
           )}
         </form.Subscribe>
-        <form.Field name="code">
-          {(field) => (
-            <Stack align="center" gap="xs">
-              <PinInput
-                aria-label="確認コード"
-                error={field.state.meta.isTouched && field.state.meta.errors.length > 0}
-                length={MAGIC_CODE_LENGTH}
-                onBlur={field.handleBlur}
-                onChange={field.handleChange}
-                oneTimeCode
-                placeholder=""
-                size="lg"
-                type="number"
-                value={field.state.value}
-              />
-              {field.state.meta.isTouched && field.state.meta.errors[0] && (
-                <Text c="red" size="xs">
-                  {field.state.meta.errors[0]}
-                </Text>
-              )}
-            </Stack>
-          )}
-        </form.Field>
-        <form.Subscribe selector={(s) => ({ isValid: s.isValid })}>
-          {({ isValid }) => (
-            <Stack gap="xs">
-              <Button disabled={!isValid} loading={isLoading} size="md" type="submit" fullWidth>
-                サインイン
-              </Button>
-              <Group justify="center">
-                <Button onClick={onBack} size="xs" variant="subtle">
-                  メールアドレスに戻る
-                </Button>
-              </Group>
-            </Stack>
+        <form.Subscribe selector={(s) => s.submissionAttempts}>
+          {(submissionAttempts) => (
+            <form.Field name="code">
+              {(field) => {
+                const showError =
+                  Boolean(field.state.meta.errors[0]) &&
+                  (field.state.meta.isTouched || submissionAttempts > 0);
+                return (
+                  <Stack align="center" gap="xs">
+                    <PinInput
+                      aria-label="確認コード"
+                      error={showError}
+                      length={MAGIC_CODE_LENGTH}
+                      onBlur={field.handleBlur}
+                      onChange={field.handleChange}
+                      oneTimeCode
+                      placeholder=""
+                      size="lg"
+                      type="number"
+                      value={field.state.value}
+                    />
+                    {showError && field.state.meta.errors[0] && (
+                      <Text c="red" size="xs">
+                        {field.state.meta.errors[0]}
+                      </Text>
+                    )}
+                  </Stack>
+                );
+              }}
+            </form.Field>
           )}
         </form.Subscribe>
+        <Stack gap="xs">
+          <Button disabled={isLoading} loading={isLoading} size="md" type="submit" fullWidth>
+            サインイン
+          </Button>
+          <Group justify="center">
+            <Button onClick={onBack} size="xs" variant="subtle">
+              メールアドレス入力に戻る
+            </Button>
+          </Group>
+        </Stack>
       </Stack>
     );
   },

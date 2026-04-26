@@ -2,16 +2,14 @@ import { Alert, Paper, Stack } from "@mantine/core";
 import { IconAlertCircle } from "@tabler/icons-react";
 import { getRouteApi } from "@tanstack/react-router";
 import { useState, useTransition } from "react";
-import * as v from "valibot";
 
 import { sendMagicCode, signInWithMagicCode } from "~/features/auth/api/auth-client";
 import { LoginEmailStep } from "~/features/auth/components/email-step";
 import { LoginMagicCodeStep } from "~/features/auth/components/magic-code-step";
 import { useAppForm } from "~/features/auth/hooks/create-login-form";
 import {
-  emailSchema,
+  getLoginFormValidationError,
   loginFormEmptyValues,
-  magicCodeSchema,
 } from "~/features/auth/schemas/login-schema";
 
 const routeApi = getRouteApi("/login");
@@ -26,6 +24,7 @@ export function LoginForm() {
   const [isPending, startTransition] = useTransition();
 
   const form = useAppForm({
+    canSubmitWhenInvalid: true,
     defaultValues: loginFormEmptyValues,
     onSubmit: ({ value }) => {
       startTransition(async () => {
@@ -55,28 +54,14 @@ export function LoginForm() {
             setErrorMessage(e.message || "サインインに失敗しました。コードを確認してください。");
           },
           ok: () => {
-            void navigate({ to: returnTo ?? "/" });
+            navigate({ to: returnTo ?? "/" });
           },
         });
       });
     },
     validators: {
-      onChange: ({ value }) => {
-        if (step === "email") {
-          const result = v.safeParse(emailSchema, {
-            email: value.email,
-            username: value.username,
-          });
-
-          return result.success
-            ? undefined
-            : (result.issues[0]?.message ?? "入力を確認してください");
-        }
-
-        const result = v.safeParse(magicCodeSchema, { code: value.code });
-
-        return result.success ? undefined : (result.issues[0]?.message ?? "入力を確認してください");
-      },
+      onChange: ({ value }) => getLoginFormValidationError(step, value),
+      onSubmit: ({ value }) => getLoginFormValidationError(step, value),
     },
   });
 

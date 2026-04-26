@@ -3,7 +3,7 @@ import type { InstantRules } from "@instantdb/react";
 const rules = {
   $users: {
     allow: {
-      create: "false",
+      create: "true",
       delete: "false",
       update: "false",
       view: "auth.id == data.id",
