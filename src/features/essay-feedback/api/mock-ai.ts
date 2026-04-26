@@ -169,13 +169,14 @@ function generateAiComments(lines: string[], opts?: EssayOpts): DiffComment[] {
     if (correction == null) continue;
 
     comments.push({
-      author: "ai",
       body: correction.body,
       createdAt: new Date(),
       id: `ai-${lineNumber}-${i}`,
+      kind: "ai",
       lineNumber,
       side: "additions",
       suggestion: correction.suggestion,
+      userId: crypto.randomUUID(),
     });
   }
 
@@ -183,14 +184,15 @@ function generateAiComments(lines: string[], opts?: EssayOpts): DiffComment[] {
     const topicLine = Math.max(1, Math.floor(lines.length / 2));
     if (!usedLines.has(topicLine)) {
       comments.unshift({
-        author: "ai",
         body: `Topic relevance check: Make sure your essay directly addresses the given topic — "${opts.prompt.slice(0, 60)}${opts.prompt.length > 60 ? "…" : ""}"`,
         createdAt: new Date(),
         id: `ai-topic-${topicLine}`,
+        kind: "ai",
         lineNumber: topicLine,
         side: "additions",
         suggestion:
           "Add a clear thesis statement in your opening paragraph that explicitly references the topic.",
+        userId: crypto.randomUUID(),
       });
     }
   }

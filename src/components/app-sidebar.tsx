@@ -4,8 +4,8 @@ import { Link, useRouterState } from "@tanstack/react-router";
 
 export function AppSidebar({ onClose }: Partial<Record<"onClose", () => void>>) {
   const { matches } = useRouterState();
-  const isHomeActive = matches.some((m) => m.routeId === "/");
-  const isEssaysActive = matches.some((m) => m.routeId === "/essays/");
+  const isHomeActive = matches.some((m) => m.routeId === "/_authenticated/");
+  const isEssaysActive = matches.some((m) => m.routeId === "/_authenticated/essays/");
 
   return (
     <>

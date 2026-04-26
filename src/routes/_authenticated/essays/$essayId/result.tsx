@@ -6,7 +6,7 @@ import { PageHeader } from "~/components/page-header";
 import { ResultReader } from "~/features/essay-feedback/components/result-reader";
 import { useEssayDetail } from "~/features/essay-feedback/hooks/use-essay-detail";
 
-export const Route = createFileRoute("/essays/$essayId/result")({
+export const Route = createFileRoute("/_authenticated/essays/$essayId/result")({
   component: ResultPage,
 });
 

@@ -9,7 +9,7 @@ import {
   essaysNewSearchSchema,
 } from "~/features/essay-feedback/schemas/search-params/essays-new-search-params";
 
-export const Route = createFileRoute("/essays/new")({
+export const Route = createFileRoute("/_authenticated/essays/new")({
   component: EssayNewPage,
   validateSearch: valibotValidator(essaysNewSearchSchema),
   search: {

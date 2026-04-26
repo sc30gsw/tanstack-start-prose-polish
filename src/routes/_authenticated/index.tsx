@@ -25,7 +25,7 @@ import { ClientOnly, Link, createFileRoute } from "@tanstack/react-router";
 
 import { HomeRecentHistory } from "~/features/essay-feedback/components/home-recent-history";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_authenticated/")({
   component: HomePage,
 });
 

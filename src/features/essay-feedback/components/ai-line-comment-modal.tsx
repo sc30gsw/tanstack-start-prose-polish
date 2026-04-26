@@ -9,7 +9,7 @@ import type { useDiffViewState } from "~/features/essay-feedback/hooks/use-diff-
 type AiLineCommentModalBodyProps = {
   comments: ReturnType<typeof useDiffComments>["comments"];
   lineNumber: NonNullable<ReturnType<typeof useDiffViewState>["aiLineModal"]>["lineNumber"];
-  onAddComment: ReturnType<typeof useDiffComments>["addComment"];
+  onAddComment: ReturnType<typeof useDiffComments>["addUserComment"];
   onCloseModal: () => void;
   onDeleteUserComment?: ReturnType<typeof useDiffComments>["removeUserComment"];
   onUpdateUserComment?: ReturnType<typeof useDiffComments>["updateUserComment"];
@@ -30,8 +30,8 @@ export function AiLineCommentModalBody({
   isPending,
 }: AiLineCommentModalBodyProps) {
   const forLine = comments.filter((c) => c.lineNumber === lineNumber && c.side === side);
-  const aiComments = forLine.filter((c) => c.author === "ai");
-  const userComments = forLine.filter((c) => c.author === "user");
+  const aiComments = forLine.filter((c) => c.kind === "ai");
+  const userComments = forLine.filter((c) => c.kind === "user");
 
   return (
     <Stack gap="md">

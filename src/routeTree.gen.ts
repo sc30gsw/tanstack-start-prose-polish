@@ -9,82 +9,103 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as EssaysIndexRouteImport } from './routes/essays/index'
-import { Route as EssaysNewRouteImport } from './routes/essays/new'
-import { Route as EssaysEssayIdScoringRouteImport } from './routes/essays/$essayId/scoring'
-import { Route as EssaysEssayIdResultRouteImport } from './routes/essays/$essayId/result'
-import { Route as EssaysEssayIdHistoryRouteImport } from './routes/essays/$essayId/history'
-import { Route as EssaysEssayIdDiffRouteImport } from './routes/essays/$essayId/diff'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as AuthenticatedEssaysIndexRouteImport } from './routes/_authenticated/essays/index'
+import { Route as AuthenticatedEssaysNewRouteImport } from './routes/_authenticated/essays/new'
+import { Route as AuthenticatedEssaysEssayIdScoringRouteImport } from './routes/_authenticated/essays/$essayId/scoring'
+import { Route as AuthenticatedEssaysEssayIdResultRouteImport } from './routes/_authenticated/essays/$essayId/result'
+import { Route as AuthenticatedEssaysEssayIdHistoryRouteImport } from './routes/_authenticated/essays/$essayId/history'
+import { Route as AuthenticatedEssaysEssayIdDiffRouteImport } from './routes/_authenticated/essays/$essayId/diff'
 
-const IndexRoute = IndexRouteImport.update({
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
-const EssaysIndexRoute = EssaysIndexRouteImport.update({
-  id: '/essays/',
-  path: '/essays/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EssaysNewRoute = EssaysNewRouteImport.update({
+const AuthenticatedEssaysIndexRoute =
+  AuthenticatedEssaysIndexRouteImport.update({
+    id: '/essays/',
+    path: '/essays/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedEssaysNewRoute = AuthenticatedEssaysNewRouteImport.update({
   id: '/essays/new',
   path: '/essays/new',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
-const EssaysEssayIdScoringRoute = EssaysEssayIdScoringRouteImport.update({
-  id: '/essays/$essayId/scoring',
-  path: '/essays/$essayId/scoring',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EssaysEssayIdResultRoute = EssaysEssayIdResultRouteImport.update({
-  id: '/essays/$essayId/result',
-  path: '/essays/$essayId/result',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EssaysEssayIdHistoryRoute = EssaysEssayIdHistoryRouteImport.update({
-  id: '/essays/$essayId/history',
-  path: '/essays/$essayId/history',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EssaysEssayIdDiffRoute = EssaysEssayIdDiffRouteImport.update({
-  id: '/essays/$essayId/diff',
-  path: '/essays/$essayId/diff',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const AuthenticatedEssaysEssayIdScoringRoute =
+  AuthenticatedEssaysEssayIdScoringRouteImport.update({
+    id: '/essays/$essayId/scoring',
+    path: '/essays/$essayId/scoring',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedEssaysEssayIdResultRoute =
+  AuthenticatedEssaysEssayIdResultRouteImport.update({
+    id: '/essays/$essayId/result',
+    path: '/essays/$essayId/result',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedEssaysEssayIdHistoryRoute =
+  AuthenticatedEssaysEssayIdHistoryRouteImport.update({
+    id: '/essays/$essayId/history',
+    path: '/essays/$essayId/history',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedEssaysEssayIdDiffRoute =
+  AuthenticatedEssaysEssayIdDiffRouteImport.update({
+    id: '/essays/$essayId/diff',
+    path: '/essays/$essayId/diff',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/essays/new': typeof EssaysNewRoute
-  '/essays/': typeof EssaysIndexRoute
-  '/essays/$essayId/diff': typeof EssaysEssayIdDiffRoute
-  '/essays/$essayId/history': typeof EssaysEssayIdHistoryRoute
-  '/essays/$essayId/result': typeof EssaysEssayIdResultRoute
-  '/essays/$essayId/scoring': typeof EssaysEssayIdScoringRoute
+  '/': typeof AuthenticatedIndexRoute
+  '/login': typeof LoginRoute
+  '/essays/new': typeof AuthenticatedEssaysNewRoute
+  '/essays/': typeof AuthenticatedEssaysIndexRoute
+  '/essays/$essayId/diff': typeof AuthenticatedEssaysEssayIdDiffRoute
+  '/essays/$essayId/history': typeof AuthenticatedEssaysEssayIdHistoryRoute
+  '/essays/$essayId/result': typeof AuthenticatedEssaysEssayIdResultRoute
+  '/essays/$essayId/scoring': typeof AuthenticatedEssaysEssayIdScoringRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/essays/new': typeof EssaysNewRoute
-  '/essays': typeof EssaysIndexRoute
-  '/essays/$essayId/diff': typeof EssaysEssayIdDiffRoute
-  '/essays/$essayId/history': typeof EssaysEssayIdHistoryRoute
-  '/essays/$essayId/result': typeof EssaysEssayIdResultRoute
-  '/essays/$essayId/scoring': typeof EssaysEssayIdScoringRoute
+  '/login': typeof LoginRoute
+  '/': typeof AuthenticatedIndexRoute
+  '/essays/new': typeof AuthenticatedEssaysNewRoute
+  '/essays': typeof AuthenticatedEssaysIndexRoute
+  '/essays/$essayId/diff': typeof AuthenticatedEssaysEssayIdDiffRoute
+  '/essays/$essayId/history': typeof AuthenticatedEssaysEssayIdHistoryRoute
+  '/essays/$essayId/result': typeof AuthenticatedEssaysEssayIdResultRoute
+  '/essays/$essayId/scoring': typeof AuthenticatedEssaysEssayIdScoringRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/essays/new': typeof EssaysNewRoute
-  '/essays/': typeof EssaysIndexRoute
-  '/essays/$essayId/diff': typeof EssaysEssayIdDiffRoute
-  '/essays/$essayId/history': typeof EssaysEssayIdHistoryRoute
-  '/essays/$essayId/result': typeof EssaysEssayIdResultRoute
-  '/essays/$essayId/scoring': typeof EssaysEssayIdScoringRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/login': typeof LoginRoute
+  '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/essays/new': typeof AuthenticatedEssaysNewRoute
+  '/_authenticated/essays/': typeof AuthenticatedEssaysIndexRoute
+  '/_authenticated/essays/$essayId/diff': typeof AuthenticatedEssaysEssayIdDiffRoute
+  '/_authenticated/essays/$essayId/history': typeof AuthenticatedEssaysEssayIdHistoryRoute
+  '/_authenticated/essays/$essayId/result': typeof AuthenticatedEssaysEssayIdResultRoute
+  '/_authenticated/essays/$essayId/scoring': typeof AuthenticatedEssaysEssayIdScoringRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/login'
     | '/essays/new'
     | '/essays/'
     | '/essays/$essayId/diff'
@@ -93,6 +114,7 @@ export interface FileRouteTypes {
     | '/essays/$essayId/scoring'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/login'
     | '/'
     | '/essays/new'
     | '/essays'
@@ -102,87 +124,119 @@ export interface FileRouteTypes {
     | '/essays/$essayId/scoring'
   id:
     | '__root__'
-    | '/'
-    | '/essays/new'
-    | '/essays/'
-    | '/essays/$essayId/diff'
-    | '/essays/$essayId/history'
-    | '/essays/$essayId/result'
-    | '/essays/$essayId/scoring'
+    | '/_authenticated'
+    | '/login'
+    | '/_authenticated/'
+    | '/_authenticated/essays/new'
+    | '/_authenticated/essays/'
+    | '/_authenticated/essays/$essayId/diff'
+    | '/_authenticated/essays/$essayId/history'
+    | '/_authenticated/essays/$essayId/result'
+    | '/_authenticated/essays/$essayId/scoring'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  EssaysNewRoute: typeof EssaysNewRoute
-  EssaysIndexRoute: typeof EssaysIndexRoute
-  EssaysEssayIdDiffRoute: typeof EssaysEssayIdDiffRoute
-  EssaysEssayIdHistoryRoute: typeof EssaysEssayIdHistoryRoute
-  EssaysEssayIdResultRoute: typeof EssaysEssayIdResultRoute
-  EssaysEssayIdScoringRoute: typeof EssaysEssayIdScoringRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/': {
+      id: '/_authenticated/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/essays/': {
-      id: '/essays/'
+    '/_authenticated/essays/': {
+      id: '/_authenticated/essays/'
       path: '/essays'
       fullPath: '/essays/'
-      preLoaderRoute: typeof EssaysIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedEssaysIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/essays/new': {
-      id: '/essays/new'
+    '/_authenticated/essays/new': {
+      id: '/_authenticated/essays/new'
       path: '/essays/new'
       fullPath: '/essays/new'
-      preLoaderRoute: typeof EssaysNewRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedEssaysNewRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/essays/$essayId/scoring': {
-      id: '/essays/$essayId/scoring'
+    '/_authenticated/essays/$essayId/scoring': {
+      id: '/_authenticated/essays/$essayId/scoring'
       path: '/essays/$essayId/scoring'
       fullPath: '/essays/$essayId/scoring'
-      preLoaderRoute: typeof EssaysEssayIdScoringRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedEssaysEssayIdScoringRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/essays/$essayId/result': {
-      id: '/essays/$essayId/result'
+    '/_authenticated/essays/$essayId/result': {
+      id: '/_authenticated/essays/$essayId/result'
       path: '/essays/$essayId/result'
       fullPath: '/essays/$essayId/result'
-      preLoaderRoute: typeof EssaysEssayIdResultRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedEssaysEssayIdResultRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/essays/$essayId/history': {
-      id: '/essays/$essayId/history'
+    '/_authenticated/essays/$essayId/history': {
+      id: '/_authenticated/essays/$essayId/history'
       path: '/essays/$essayId/history'
       fullPath: '/essays/$essayId/history'
-      preLoaderRoute: typeof EssaysEssayIdHistoryRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedEssaysEssayIdHistoryRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/essays/$essayId/diff': {
-      id: '/essays/$essayId/diff'
+    '/_authenticated/essays/$essayId/diff': {
+      id: '/_authenticated/essays/$essayId/diff'
       path: '/essays/$essayId/diff'
       fullPath: '/essays/$essayId/diff'
-      preLoaderRoute: typeof EssaysEssayIdDiffRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedEssaysEssayIdDiffRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
   }
 }
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedEssaysNewRoute: typeof AuthenticatedEssaysNewRoute
+  AuthenticatedEssaysIndexRoute: typeof AuthenticatedEssaysIndexRoute
+  AuthenticatedEssaysEssayIdDiffRoute: typeof AuthenticatedEssaysEssayIdDiffRoute
+  AuthenticatedEssaysEssayIdHistoryRoute: typeof AuthenticatedEssaysEssayIdHistoryRoute
+  AuthenticatedEssaysEssayIdResultRoute: typeof AuthenticatedEssaysEssayIdResultRoute
+  AuthenticatedEssaysEssayIdScoringRoute: typeof AuthenticatedEssaysEssayIdScoringRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedEssaysNewRoute: AuthenticatedEssaysNewRoute,
+  AuthenticatedEssaysIndexRoute: AuthenticatedEssaysIndexRoute,
+  AuthenticatedEssaysEssayIdDiffRoute: AuthenticatedEssaysEssayIdDiffRoute,
+  AuthenticatedEssaysEssayIdHistoryRoute:
+    AuthenticatedEssaysEssayIdHistoryRoute,
+  AuthenticatedEssaysEssayIdResultRoute: AuthenticatedEssaysEssayIdResultRoute,
+  AuthenticatedEssaysEssayIdScoringRoute:
+    AuthenticatedEssaysEssayIdScoringRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  EssaysNewRoute: EssaysNewRoute,
-  EssaysIndexRoute: EssaysIndexRoute,
-  EssaysEssayIdDiffRoute: EssaysEssayIdDiffRoute,
-  EssaysEssayIdHistoryRoute: EssaysEssayIdHistoryRoute,
-  EssaysEssayIdResultRoute: EssaysEssayIdResultRoute,
-  EssaysEssayIdScoringRoute: EssaysEssayIdScoringRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

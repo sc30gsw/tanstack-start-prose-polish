@@ -53,7 +53,7 @@ export function useDiffViewState({ comments }: UseDiffViewStateProps) {
       const sideMap = grouped.get(comment.side) ?? new Map();
       const bucket = sideMap.get(comment.lineNumber) ?? { ai: [], user: [] };
 
-      if (comment.author === "ai") {
+      if (comment.kind === "ai") {
         bucket.ai.push(comment);
       } else {
         bucket.user.push(comment);

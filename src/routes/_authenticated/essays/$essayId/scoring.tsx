@@ -8,7 +8,7 @@ import { useEssayDetail } from "~/features/essay-feedback/hooks/use-essay-detail
 import { useScoringStream } from "~/features/essay-feedback/hooks/use-scoring-stream";
 import type { EssayMode } from "~/features/essay-feedback/schemas/essay-schema";
 
-export const Route = createFileRoute("/essays/$essayId/scoring")({
+export const Route = createFileRoute("/_authenticated/essays/$essayId/scoring")({
   component: ScoringPage,
 });
 

@@ -4,7 +4,6 @@ import * as v from "valibot";
 
 import {
   diffCommentInputSchema,
-  type DiffComment,
   type DiffCommentInput,
 } from "~/features/essay-feedback/schemas/essay-schema";
 import { db } from "~/lib/instant";
@@ -21,7 +20,7 @@ export function useDiffComments(essayId: InstaQLEntity<AppSchema, "essays">["id"
     },
   });
 
-  const addComment = (input: DiffCommentInput, author: DiffComment["author"] = "user") => {
+  const addUserComment = (input: DiffCommentInput, userId: string) => {
     startTransition(async () => {
       const commentId = id();
       const txChunk = db.tx.diffComments[commentId];
@@ -33,12 +32,38 @@ export function useDiffComments(essayId: InstaQLEntity<AppSchema, "essays">["id"
       await db.transact(
         txChunk
           .update({
-            author,
             body: input.body,
             createdAt: new Date(),
+            kind: "user",
             lineNumber: input.lineNumber,
             side: input.side,
             suggestion: input.suggestion,
+            userId,
+          })
+          .link({ essay: essayId }),
+      );
+    });
+  };
+
+  const addAiComment = (input: DiffCommentInput) => {
+    startTransition(async () => {
+      const commentId = id();
+      const txChunk = db.tx.diffComments[commentId];
+
+      if (!txChunk) {
+        return;
+      }
+
+      await db.transact(
+        txChunk
+          .update({
+            body: input.body,
+            createdAt: new Date(),
+            kind: "ai",
+            lineNumber: input.lineNumber,
+            side: input.side,
+            suggestion: input.suggestion,
+            userId: crypto.randomUUID(),
           })
           .link({ essay: essayId }),
       );
@@ -85,14 +110,15 @@ export function useDiffComments(essayId: InstaQLEntity<AppSchema, "essays">["id"
 
   return {
     isPending,
-    addComment,
+    addAiComment,
+    addUserComment,
     comments:
       data?.diffComments.map((comment) => ({
         ...comment,
-        author: comment.author as "ai" | "user",
         createdAt: new Date(comment.createdAt),
-        updatedAt: comment.updatedAt ? new Date(comment.updatedAt) : undefined,
+        kind: comment.kind as "ai" | "user",
         side: comment.side as "additions" | "deletions",
+        updatedAt: comment.updatedAt ? new Date(comment.updatedAt) : undefined,
       })) ?? [],
     error,
     isLoading,

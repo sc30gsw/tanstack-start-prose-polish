@@ -16,7 +16,7 @@ export type CommentAnnotationMeta =
 type PendingFormProps = Pick<DiffAnnotationRowProps, "isPending"> & {
   lineNumber: Parameters<DiffAnnotationRowProps["onOpenAiLineModal"]>[0];
   onClose: DiffAnnotationRowProps["onClosePendingComment"];
-  onSubmit: ReturnType<typeof useDiffComments>["addComment"];
+  onSubmit: ReturnType<typeof useDiffComments>["addUserComment"];
   side: DiffCommentInput["side"];
 };
 
@@ -36,7 +36,7 @@ function PendingForm({ lineNumber, onClose, onSubmit, side, isPending }: Pending
 
 type DiffAnnotationRowProps = {
   annotation: DiffLineAnnotation<CommentAnnotationMeta>;
-  onAddComment: ReturnType<typeof useDiffComments>["addComment"];
+  onAddComment: ReturnType<typeof useDiffComments>["addUserComment"];
   onClosePendingComment: () => void;
   onDeleteUserComment: ReturnType<typeof useDiffComments>["removeUserComment"];
   onOpenAiLineModal: (

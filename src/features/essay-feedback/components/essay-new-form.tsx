@@ -4,6 +4,7 @@ import { useForm } from "@tanstack/react-form";
 import { getRouteApi } from "@tanstack/react-router";
 import * as v from "valibot";
 
+import { useAuthUser } from "~/features/auth/hooks/use-auth-user";
 import { correctEssay } from "~/features/essay-feedback/api/mock-ai";
 import { DiverseModePrompt } from "~/features/essay-feedback/components/diverse-prompt";
 import { EssayEditor } from "~/features/essay-feedback/components/essay-editor";
@@ -15,7 +16,7 @@ import {
 } from "~/features/essay-feedback/schemas/essay-schema";
 import { db } from "~/lib/instant";
 
-const routeApi = getRouteApi("/essays/new");
+const routeApi = getRouteApi("/_authenticated/essays/new");
 
 function selectBodyBefore(s: { values: EssayDraftInput }) {
   return s.values.bodyBefore;
@@ -24,6 +25,7 @@ function selectBodyBefore(s: { values: EssayDraftInput }) {
 export function EssayNewForm() {
   const { mode } = routeApi.useSearch();
   const navigate = routeApi.useNavigate();
+  const { user } = useAuthUser();
 
   const form = useForm({
     defaultValues: {
@@ -41,29 +43,29 @@ export function EssayNewForm() {
         return;
       }
 
-      await db.transact(
-        txEssay.update({
-          bodyBefore: value.bodyBefore,
-          createdAt: now,
-          mode: value.mode,
-          prompt: value.prompt,
-          status: "scoring",
-          updatedAt: now,
-        }),
-      );
+      const txEssayUpdate = txEssay.update({
+        bodyBefore: value.bodyBefore,
+        createdAt: now,
+        mode: value.mode,
+        prompt: value.prompt,
+        status: "scoring",
+        updatedAt: now,
+      });
+
+      await db.transact(user ? txEssayUpdate.link({ owner: user.id }) : txEssayUpdate);
 
       correctEssay(value.bodyBefore, { mode: value.mode, prompt: value.prompt }).then((result) => {
         result.match({
           err: () => {},
           ok: async ({ correctedBody, aiComments }) => {
-            const txEssayUpdate = db.tx.essays[essayId];
+            const txUpdate = db.tx.essays[essayId];
 
-            if (!txEssayUpdate) {
+            if (!txUpdate) {
               return;
             }
 
             await db.transact(
-              txEssayUpdate.update({
+              txUpdate.update({
                 bodyAfter: correctedBody,
                 status: "reviewed",
                 updatedAt: new Date(),
@@ -81,12 +83,13 @@ export function EssayNewForm() {
               await db.transact(
                 txComment
                   .update({
-                    author: comment.author,
                     body: comment.body,
                     createdAt: new Date(),
+                    kind: "ai",
                     lineNumber: comment.lineNumber,
                     side: comment.side,
                     suggestion: comment.suggestion,
+                    userId: crypto.randomUUID(),
                   })
                   .link({ essay: essayId }),
               );

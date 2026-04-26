@@ -10,6 +10,8 @@ import {
 } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 
+import { UserMenu } from "~/features/auth/components/user-menu";
+
 type AppHeaderProps = {
   desktopOpened: boolean;
   mobileOpened: boolean;
@@ -70,6 +72,7 @@ export function AppHeader({
               {isDark ? <IconSun size={18} /> : <IconMoon size={18} />}
             </ActionIcon>
           </Tooltip>
+          <UserMenu />
         </Group>
       </Group>
     </AppShell.Header>

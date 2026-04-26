@@ -20,7 +20,7 @@ import {
   essaysSearchSchema,
 } from "~/features/essay-feedback/schemas/search-params/essays-search-params";
 
-export const Route = createFileRoute("/essays/")({
+export const Route = createFileRoute("/_authenticated/essays/")({
   component: EssaysPage,
   validateSearch: valibotValidator(essaysSearchSchema),
   search: {
@@ -28,7 +28,7 @@ export const Route = createFileRoute("/essays/")({
   },
 });
 
-const routeApi = getRouteApi("/essays/");
+const routeApi = getRouteApi("/_authenticated/essays/");
 
 function EssaysList() {
   const { q, mode: modeFilter, page } = routeApi.useSearch();

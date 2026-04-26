@@ -2,6 +2,7 @@ import { Button, Group, Stack, Textarea } from "@mantine/core";
 import { useForm } from "@tanstack/react-form";
 import * as v from "valibot";
 
+import { useAuthUser } from "~/features/auth/hooks/use-auth-user";
 import type { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
 import type { useDiffViewState } from "~/features/essay-feedback/hooks/use-diff-view-state";
 import { diffCommentInputSchema } from "~/features/essay-feedback/schemas/essay-schema";
@@ -10,7 +11,7 @@ type DiffCommentFormProps = {
   closeAfterSubmit?: boolean;
   lineNumber: NonNullable<ReturnType<typeof useDiffViewState>["aiLineModal"]>["lineNumber"];
   onClose: () => void;
-  onSubmit: ReturnType<typeof useDiffComments>["addComment"];
+  onSubmit: ReturnType<typeof useDiffComments>["addUserComment"];
   side: NonNullable<ReturnType<typeof useDiffViewState>["aiLineModal"]>["side"];
   isPending: ReturnType<typeof useDiffComments>["isPending"];
 };
@@ -22,10 +23,11 @@ export function DiffCommentForm({
   onSubmit,
   onClose,
 }: DiffCommentFormProps) {
+  const { user } = useAuthUser();
   const form = useForm({
     defaultValues: { body: "", lineNumber, side, suggestion: undefined as string | undefined },
     onSubmit: ({ value }) => {
-      onSubmit(value);
+      onSubmit(value, user?.id ?? "");
       form.reset();
 
       if (closeAfterSubmit) {

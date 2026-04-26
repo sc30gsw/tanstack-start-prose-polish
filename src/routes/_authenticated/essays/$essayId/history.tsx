@@ -9,7 +9,7 @@ import {
   essayHistoriesSearchSchema,
 } from "~/features/essay-feedback/schemas/search-params/essay-histories-search-params";
 
-export const Route = createFileRoute("/essays/$essayId/history")({
+export const Route = createFileRoute("/_authenticated/essays/$essayId/history")({
   component: HistoryPage,
   validateSearch: valibotValidator(essayHistoriesSearchSchema),
   search: {

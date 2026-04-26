@@ -19,7 +19,7 @@ import {
   diffSearchSchema,
 } from "~/features/essay-feedback/schemas/search-params/essay-diff-search-params";
 
-export const Route = createFileRoute("/essays/$essayId/diff")({
+export const Route = createFileRoute("/_authenticated/essays/$essayId/diff")({
   component: DiffPage,
   validateSearch: valibotValidator(diffSearchSchema),
   search: {

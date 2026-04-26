@@ -8,7 +8,7 @@ import type { useEssayDetail } from "~/features/essay-feedback/hooks/use-essay-d
 import { useResolvedDiffView } from "~/features/essay-feedback/hooks/use-resolved-diff-view";
 import type { DiffSearchParams } from "~/features/essay-feedback/schemas/search-params/essay-diff-search-params";
 
-const routeApi = getRouteApi("/essays/$essayId/history");
+const routeApi = getRouteApi("/_authenticated/essays/$essayId/history");
 
 export function HistoryDetailDiffPanel({
   bodyAfter,

@@ -80,7 +80,7 @@ export function DiffNoHunksView({
               コメント
             </Text>
             {comments
-              .filter((c) => c.author === "ai")
+              .filter((c) => c.kind === "ai")
               .map((c) => (
                 <AiCommentBadge
                   key={c.id}
@@ -92,7 +92,7 @@ export function DiffNoHunksView({
                 />
               ))}
             <DiffCommentThread
-              comments={comments.filter((c) => c.author === "user")}
+              comments={comments.filter((c) => c.kind === "user")}
               onDeleteUserComment={onDeleteUserComment}
               onUpdateUserComment={onUpdateUserComment}
             />

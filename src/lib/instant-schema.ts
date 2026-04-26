@@ -2,6 +2,10 @@ import { i } from "@instantdb/react";
 
 export const schema = i.schema({
   entities: {
+    $users: i.entity({
+      email: i.string().unique().indexed(),
+      username: i.string().optional(),
+    }),
     essays: i.entity({
       bodyAfter: i.string().optional().indexed(),
       bodyBefore: i.string().indexed(),
@@ -17,19 +21,24 @@ export const schema = i.schema({
       updatedAt: i.date(),
     }),
     diffComments: i.entity({
-      author: i.string(),
       body: i.string(),
       createdAt: i.date(),
+      kind: i.string().indexed(),
       lineNumber: i.number(),
       side: i.string(),
       suggestion: i.string().optional(),
       updatedAt: i.date().optional(),
+      userId: i.string().indexed(),
     }),
   },
   links: {
     essayComments: {
       forward: { has: "one", label: "essay", on: "diffComments" },
       reverse: { has: "many", label: "comments", on: "essays" },
+    },
+    essayOwner: {
+      forward: { has: "one", label: "owner", on: "essays" },
+      reverse: { has: "many", label: "essays", on: "$users" },
     },
   },
 });

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { MODE_LABELS } from "~/constants";
 import type { EssaysModeFilter } from "~/features/essay-feedback/schemas/search-params/essays-search-params";
 
-const routeApi = getRouteApi("/essays/");
+const routeApi = getRouteApi("/_authenticated/essays/");
 
 export function EssaySearch() {
   return (

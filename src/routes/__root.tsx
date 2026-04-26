@@ -5,7 +5,6 @@ import { HeadContent, Outlet, Scripts, createRootRoute } from "@tanstack/react-r
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { useEffect } from "react";
 
-import { AppShellLayout } from "~/components/app-shell-layout";
 import { mantineCssVariablesResolver, theme } from "~/lib/theme";
 
 import appCss from "../styles.css?url";
@@ -45,9 +44,7 @@ function RootComponent() {
           theme={theme}
         >
           <ModalsProvider>
-            <AppShellLayout>
-              <Outlet />
-            </AppShellLayout>
+            <Outlet />
           </ModalsProvider>
         </MantineProvider>
         <Scripts />

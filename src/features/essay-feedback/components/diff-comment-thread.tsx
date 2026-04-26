@@ -85,7 +85,7 @@ export function DiffCommentThread({
   return (
     <Stack gap="xs" p="xs">
       {comments.map((comment) => {
-        const isUser = comment.author === "user";
+        const isUser = comment.kind === "user";
         const isEditing = editingId === comment.id;
         const timeLabel = dayjs(comment.createdAt).format("HH:mm");
         const showMutate = isUser && (onUpdateUserComment != null || onDeleteUserComment != null);

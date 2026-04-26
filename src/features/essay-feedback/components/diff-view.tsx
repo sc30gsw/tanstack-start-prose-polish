@@ -40,7 +40,7 @@ export function DiffView({
   essayId,
   showAiModalCommentForm: showAiModalCommentFormProp,
 }: DiffViewProps) {
-  const { addComment, comments, isPending, removeUserComment, updateUserComment } =
+  const { addUserComment, comments, isPending, removeUserComment, updateUserComment } =
     useDiffComments(essayId);
 
   const showAiModalCommentForm = showAiModalCommentFormProp ?? true;
@@ -116,7 +116,7 @@ export function DiffView({
     ) => (
       <DiffAnnotationRow
         annotation={annotation}
-        onAddComment={addComment}
+        onAddComment={addUserComment}
         onClosePendingComment={() => setPendingComment(null)}
         onDeleteUserComment={removeUserComment}
         onOpenAiLineModal={(lineNumber, side) => setAiLineModal({ lineNumber, side })}
@@ -126,7 +126,7 @@ export function DiffView({
       />
     ),
     [
-      addComment,
+      addUserComment,
       removeUserComment,
       updateUserComment,
       setPendingComment,
@@ -175,7 +175,7 @@ export function DiffView({
         <AiLineCommentModalBody
           comments={comments}
           lineNumber={aiLineModal.lineNumber}
-          onAddComment={addComment}
+          onAddComment={addUserComment}
           onCloseModal={() => {
             setAiLineModal(null);
           }}

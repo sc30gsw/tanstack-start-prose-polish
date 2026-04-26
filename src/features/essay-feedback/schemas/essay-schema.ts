@@ -1,7 +1,7 @@
 import * as v from "valibot";
 
 import {
-  DIFF_COMMENT_AUTHOR,
+  DIFF_COMMENT_KIND,
   ESSAY_MODE,
   ESSAY_STATUS,
   MAX_ESSAY_BODY_CHARS,
@@ -45,10 +45,11 @@ export const diffCommentInputSchema = v.object({
 
 const diffCommentSchema = v.object({
   ...diffCommentInputSchema.entries,
-  author: v.picklist(DIFF_COMMENT_AUTHOR),
   createdAt: v.date(),
   id: v.string(),
+  kind: v.picklist(DIFF_COMMENT_KIND),
   updatedAt: v.optional(v.date()),
+  userId: v.string(),
 });
 
 const essaySchema = v.object({

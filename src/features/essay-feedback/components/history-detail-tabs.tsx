@@ -6,7 +6,7 @@ import { ResultReader } from "~/features/essay-feedback/components/result-reader
 import { useEssayDetail } from "~/features/essay-feedback/hooks/use-essay-detail";
 import type { EssayHistoriesSearchParams } from "~/features/essay-feedback/schemas/search-params/essay-histories-search-params";
 
-const routeApi = getRouteApi("/essays/$essayId/history");
+const routeApi = getRouteApi("/_authenticated/essays/$essayId/history");
 
 export function HistoryDetailTabs() {
   const { essayId } = routeApi.useParams();
