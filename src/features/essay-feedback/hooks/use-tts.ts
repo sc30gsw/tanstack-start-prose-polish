@@ -200,5 +200,5 @@ export function useTts(text: string) {
     playbackState,
     playFromStart,
     resetPlayback,
-  };
+  } as const;
 }
