@@ -53,7 +53,6 @@ const CURATED_NAME_SUBSTRINGS = {
       "amy",
       "emma",
       "megan",
-      "flo",
       "tessa",
     ],
     male: [
@@ -272,8 +271,62 @@ function voiceQualityScoreFromName(n: string): number {
   return s;
 }
 
+/**
+ * macOS PlainTalk 時代の Novelty 音声 + Ventura 以降の character 音声。
+ * diphone / 旧式合成で著しく不明瞭なため、他候補がある限り選ばない。
+ */
+const NOVELTY_VOICE_NAMES = [
+  "agnes",
+  "albert",
+  "bad news",
+  "bahh",
+  "bells",
+  "boing",
+  "bruce",
+  "bubbles",
+  "cellos",
+  "deranged",
+  "eddy",
+  "flo",
+  "fred",
+  "good news",
+  "grandma",
+  "grandpa",
+  "hysterical",
+  "jester",
+  "junior",
+  "kathy",
+  "organ",
+  "pipe organ",
+  "princess",
+  "ralph",
+  "reed",
+  "rocko",
+  "sandy",
+  "shelley",
+  "superstar",
+  "trinoids",
+  "vicki",
+  "whisper",
+  "zarvox",
+] as const satisfies readonly string[];
+
+function isNoveltyVoiceName(nameLower: string): boolean {
+  for (const novelty of NOVELTY_VOICE_NAMES) {
+    if (nameLower === novelty) return true;
+    if (nameLower.startsWith(`${novelty} `)) return true;
+    if (nameLower.startsWith(`${novelty}(`)) return true;
+  }
+  return false;
+}
+
 function isDiscouragedFromName(n: string): boolean {
-  return n.includes("compact") || n.includes("embeddable") || n.includes("downgraded");
+  return (
+    n.includes("compact") ||
+    n.includes("embeddable") ||
+    n.includes("downgraded") ||
+    isNoveltyVoiceName(n)
+  );
 }
 
 const ACCENT_UTTERANCE_LANG = {
@@ -403,6 +456,7 @@ export function pickCuratedTtsVoices(voices: SpeechSynthesisVoice[]): CuratedTts
   const englishUnused = annotated
     .filter((a) => !usedUris.has(a.voice.voiceURI) && isLikelyEnglishTtsVoice(a.voice))
     .sort((a, b) => {
+      if (a.isDiscouraged !== b.isDiscouraged) return a.isDiscouraged ? 1 : -1;
       const q = b.qualityScore - a.qualityScore;
       if (q !== 0) return q;
       return a.voice.voiceURI.localeCompare(b.voice.voiceURI);
