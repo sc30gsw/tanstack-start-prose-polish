@@ -14,6 +14,7 @@
     "fallow:fix": "fallow fix",
     "fallow:health": "fallow health",
     "fix": "vp check --fix",
+    "instant:push-perms": "npx instant-cli push perms --yes",
     "instant:push-schema": "INSTANT_SCHEMA_FILE_PATH=src/lib/instant-schema.ts npx instant-cli push schema --yes",
     "preview": "vp preview",
     "test": "vp test"
