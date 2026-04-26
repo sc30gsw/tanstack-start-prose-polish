@@ -22,6 +22,7 @@ export function LoginForm() {
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
 
   const [isPending, startTransition] = useTransition();
+  const [isResending, startResendTransition] = useTransition();
 
   const form = useAppForm({
     canSubmitWhenInvalid: true,
@@ -91,10 +92,25 @@ export function LoginForm() {
             <LoginMagicCodeStep
               form={form}
               isLoading={isPending}
+              isResending={isResending}
               onBack={() => {
                 setStep("email");
                 setErrorMessage(null);
                 form.setFieldValue("code", "");
+              }}
+              onResend={() => {
+                startResendTransition(async () => {
+                  setErrorMessage(null);
+
+                  const result = await sendMagicCode(form.getFieldValue("email"));
+
+                  result.match({
+                    err: (e) => {
+                      setErrorMessage(e.message || "コードの再送に失敗しました。");
+                    },
+                    ok: () => {},
+                  });
+                });
               }}
             />
           )}

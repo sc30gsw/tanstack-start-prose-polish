@@ -24,12 +24,14 @@ export const LoginEmailStep = withForm({
                 {(field) => (
                   <TextInput
                     autoComplete="username"
+                    required
                     error={
                       field.state.meta.errors[0] &&
                       (field.state.meta.isTouched || submissionAttempts > 0)
                         ? field.state.meta.errors[0]
                         : undefined
                     }
+                    disabled={isLoading}
                     label="ユーザー名"
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.currentTarget.value)}
@@ -42,6 +44,7 @@ export const LoginEmailStep = withForm({
                 {(field) => (
                   <TextInput
                     autoComplete="email"
+                    required
                     error={
                       field.state.meta.errors[0] &&
                       (field.state.meta.isTouched || submissionAttempts > 0)
@@ -50,6 +53,7 @@ export const LoginEmailStep = withForm({
                     }
                     inputMode="email"
                     label="メールアドレス"
+                    disabled={isLoading}
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.currentTarget.value)}
                     placeholder="you@example.com"

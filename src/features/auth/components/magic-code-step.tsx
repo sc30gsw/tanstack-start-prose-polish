@@ -1,13 +1,33 @@
 import { Button, Group, PinInput, Stack, Text, Title } from "@mantine/core";
+import { useEffect, useState } from "react";
 
 import { MAGIC_CODE_LENGTH } from "~/features/auth/constants/auth";
 import { withForm } from "~/features/auth/hooks/create-login-form";
 import { loginFormEmptyValues } from "~/features/auth/schemas/login-schema";
 
+const RESEND_COOLDOWN_SECONDS = 30;
+
 export const LoginMagicCodeStep = withForm({
   defaultValues: loginFormEmptyValues,
-  props: { isLoading: false, onBack: () => {} },
-  render: function LoginMagicCodeStepRender({ form, isLoading, onBack }) {
+  props: { isLoading: false, isResending: false, onBack: () => {}, onResend: () => {} },
+  render: function LoginMagicCodeStepRender({ form, isLoading, isResending, onBack, onResend }) {
+    const [cooldown, setCooldown] = useState(RESEND_COOLDOWN_SECONDS);
+
+    useEffect(() => {
+      if (cooldown <= 0) {
+        return;
+      }
+
+      const timer = setTimeout(() => setCooldown((s) => s - 1), 1000);
+
+      return () => clearTimeout(timer);
+    }, [cooldown]);
+
+    const handleResend = async () => {
+      onResend();
+      setCooldown(RESEND_COOLDOWN_SECONDS);
+    };
+
     return (
       <Stack gap="md">
         <form.Subscribe selector={(s) => s.values.email}>
@@ -45,6 +65,7 @@ export const LoginMagicCodeStep = withForm({
                       size="lg"
                       type="number"
                       value={field.state.value}
+                      disabled={isLoading || isResending}
                     />
                     {showError && field.state.meta.errors[0] && (
                       <Text c="red" size="xs">
@@ -58,12 +79,27 @@ export const LoginMagicCodeStep = withForm({
           )}
         </form.Subscribe>
         <Stack gap="xs">
-          <Button disabled={isLoading} loading={isLoading} size="md" type="submit" fullWidth>
+          <Button
+            disabled={isLoading || isResending}
+            loading={isLoading}
+            size="md"
+            type="submit"
+            fullWidth
+          >
             サインイン
           </Button>
-          <Group justify="center">
-            <Button onClick={onBack} size="xs" variant="subtle">
+          <Group justify="space-between">
+            <Button disabled={isLoading || isResending} onClick={onBack} size="xs" variant="subtle">
               メールアドレス入力に戻る
+            </Button>
+            <Button
+              disabled={cooldown > 0 || isLoading || isResending}
+              loading={isResending}
+              onClick={handleResend}
+              size="xs"
+              variant="subtle"
+            >
+              {cooldown > 0 ? `再送（${cooldown}秒）` : "コードを再送"}
             </Button>
           </Group>
         </Stack>
