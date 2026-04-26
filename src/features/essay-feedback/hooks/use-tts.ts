@@ -3,7 +3,10 @@ import { useCallback, useEffect, useState } from "react";
 import {
   TTS_VOICE_STORAGE_KEY,
   type TtsLangCode,
+  inferAccentFromVoice,
   pickCuratedTtsVoices,
+  utteranceLangForTts,
+  utteranceRateForTts,
 } from "~/features/essay-feedback/utils/tts-voice";
 
 /** 音読＝前後の単語を区別、シャドーイング＝未発音だけ隠し発音済みは残す */
@@ -146,8 +149,6 @@ export function useTts(text: string) {
     if (!isSupported) return;
 
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "en-US";
-    utterance.rate = 0.85;
     utterance.pitch = 1.0;
     utterance.volume = 1.0;
 
@@ -155,7 +156,20 @@ export function useTts(text: string) {
       const picked =
         (selectedVoiceURI ? voices.find((v) => v.voiceURI === selectedVoiceURI) : null) ??
         getBestEnglishVoice();
-      if (picked) utterance.voice = picked;
+      if (picked) {
+        utterance.voice = picked;
+        const accentForSynth =
+          (selectedVoiceURI ? voiceSlotAccentByUri[selectedVoiceURI] : undefined) ??
+          inferAccentFromVoice(picked);
+        utterance.lang = utteranceLangForTts(picked, accentForSynth);
+        utterance.rate = utteranceRateForTts(accentForSynth);
+      } else {
+        utterance.lang = "en-US";
+        utterance.rate = utteranceRateForTts(undefined);
+      }
+    } else {
+      utterance.lang = "en-US";
+      utterance.rate = utteranceRateForTts(undefined);
     }
 
     attachUtteranceHandlers(utterance, text, {
@@ -166,7 +180,16 @@ export function useTts(text: string) {
 
     setPlaybackState("playing");
     window.speechSynthesis.speak(utterance);
-  }, [isSupported, selectedVoiceURI, setIdle, setPlaying, text, voices, voicesReady]);
+  }, [
+    isSupported,
+    selectedVoiceURI,
+    setIdle,
+    setPlaying,
+    text,
+    voiceSlotAccentByUri,
+    voices,
+    voicesReady,
+  ]);
 
   const play = useCallback(() => {
     if (!isSupported) return;

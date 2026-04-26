@@ -1,10 +1,9 @@
 import type { MantineColor } from "@mantine/core";
 
-export type TtsLangCode = "en-AU" | "en-CA" | "en-GB" | "en-US";
+export type TtsLangCode = "en-AU" | "en-GB" | "en-US";
 
 const TTS_LANG_META = {
   "en-AU": { color: "green", flag: "🇦🇺", label: "Australian" },
-  "en-CA": { color: "orange", flag: "🇨🇦", label: "Canadian" },
   "en-GB": { color: "red", flag: "🇬🇧", label: "British" },
   "en-US": { color: "blue", flag: "🇺🇸", label: "American" },
 } as const satisfies Record<
@@ -12,19 +11,17 @@ const TTS_LANG_META = {
   Record<"color", MantineColor> & Record<"flag" | "label", string>
 >;
 
-/** UI 表示順: アメリカ → イギリス → オーストラリア → カナダ。各言語で女性→男性 */
+/** UI 表示順: アメリカ → イギリス → オーストラリア。各言語で女性→男性 */
 export const TTS_ACCENT_ORDER = [
   "en-US",
   "en-GB",
   "en-AU",
-  "en-CA",
 ] as const satisfies readonly TtsLangCode[];
 
 const ACCENT_LABEL_JA = {
   "en-US": "アメリカ英語",
   "en-GB": "イギリス英語",
   "en-AU": "オーストラリア英語",
-  "en-CA": "カナダ英語",
 } as const satisfies Record<TtsLangCode, string>;
 
 const TTS_LANG_CODES = Object.keys(TTS_LANG_META);
@@ -46,15 +43,18 @@ const CURATED_NAME_SUBSTRINGS = {
       "great britain) - female",
       "british english female",
       "sonia",
-      "martha",
       "libby",
       "maisie",
+      "kate",
+      "martha",
       "serena",
       "hazel",
       "susan",
       "amy",
       "emma",
       "megan",
+      "flo",
+      "tessa",
     ],
     male: [
       "english (united kingdom",
@@ -79,6 +79,7 @@ const CURATED_NAME_SUBSTRINGS = {
     female: [
       "english (australia",
       "australia",
+      "siri",
       "karen",
       "catherine",
       "nicole",
@@ -87,6 +88,7 @@ const CURATED_NAME_SUBSTRINGS = {
     ],
     male: [
       "english (australia",
+      "william",
       "australia",
       "australian english male",
       "english (australia) - male",
@@ -98,36 +100,6 @@ const CURATED_NAME_SUBSTRINGS = {
       "darren",
       "simon",
       "james",
-    ],
-  },
-  "en-CA": {
-    female: [
-      "english (canada",
-      "canada",
-      "google canada english female",
-      "canada english female",
-      "canadian english female",
-      "english (canada) - female",
-      "canada) - female",
-      "heather",
-      "linda",
-      "clara",
-      "susan",
-      "melanie",
-    ],
-    male: [
-      "english (canada",
-      "canada",
-      "google canada english male",
-      "canada english male",
-      "canadian english male",
-      "english (canada) - male",
-      "canada) - male",
-      "liam",
-      "wayne",
-      "richard",
-      "marcus",
-      "jacques",
     ],
   },
 } as const satisfies Record<TtsLangCode, Record<"female" | "male", string[]>>;
@@ -182,12 +154,21 @@ const MALE_NAME_FRAGMENTS = [
   "marcus",
   "jason",
   "davis",
+  "lee",
 ] as const satisfies readonly string[];
 
 export type CuratedTtsVoicePick = {
   curatedLabelJa: string;
   /** UI の国旗・色は枠のアクセントに合わせる（バックフィルで実声が米英語でもずれないように） */
   slotAccent: TtsLangCode;
+  voice: SpeechSynthesisVoice;
+};
+
+type AnnotatedVoice = {
+  accent: TtsLangCode;
+  isDiscouraged: boolean;
+  nameLower: string;
+  qualityScore: number;
   voice: SpeechSynthesisVoice;
 };
 
@@ -206,7 +187,7 @@ export function normalizeVoiceLang(lang: string): string {
 
 /**
  * BCP47 の lang が en-US に丸められていても、音声名に UK / Australia 等があればそちらを優先する。
- * 枠「4アクセント×男女」を揃えるための分類に使う。
+ * 枠「3アクセント×男女」を揃えるための分類に使う。
  */
 export function inferAccentFromVoice(voice: SpeechSynthesisVoice): TtsLangCode {
   const n = voice.name.toLowerCase();
@@ -218,9 +199,6 @@ export function inferAccentFromVoice(voice: SpeechSynthesisVoice): TtsLangCode {
   }
   if (n.includes("english (australia") || n.includes("english(australia")) {
     return "en-AU";
-  }
-  if (n.includes("english (canada") || n.includes("english(canada")) {
-    return "en-CA";
   }
   if (n.includes("english (united states") || n.includes("english (america")) {
     return "en-US";
@@ -242,16 +220,8 @@ export function inferAccentFromVoice(voice: SpeechSynthesisVoice): TtsLangCode {
   if (n.includes("australia") || n.includes("australian") || n.includes("en-au")) {
     return "en-AU";
   }
-  if (n.includes("canada") || n.includes("canadian") || n.includes("en-ca")) {
-    return "en-CA";
-  }
 
-  if (
-    langNorm === "en-GB" ||
-    langNorm === "en-AU" ||
-    langNorm === "en-CA" ||
-    langNorm === "en-US"
-  ) {
+  if (langNorm === "en-GB" || langNorm === "en-AU" || langNorm === "en-US") {
     return langNorm as TtsLangCode;
   }
   return "en-US";
@@ -266,40 +236,104 @@ export function getSlotAccentMeta(accent: TtsLangCode): (typeof TTS_LANG_META)[T
   return TTS_LANG_META[accent];
 }
 
+function voiceQualityScoreFromName(n: string): number {
+  let s = 0;
+  if (n.includes("enhanced")) s += 120;
+  if (n.includes("generative")) s += 110;
+  if (n.includes("premium")) s += 100;
+  if (n.includes("neural")) s += 100;
+  if (n.includes("wavenet")) s += 100;
+  if (n.includes("online")) s += 60;
+  if (n.includes("natural")) s += 50;
+  if (n.includes("siri")) s += 40;
+  if (n.includes("microsoft")) s += 25;
+  if (n.includes("google")) s += 25;
+  if (n.includes("compact")) s -= 80;
+  if (n.includes("embeddable")) s -= 70;
+  if (n.includes("downgraded")) s -= 60;
+  if (n.includes("legacy")) s -= 40;
+  if (n.includes("standard") && !n.includes("enhanced")) s -= 25;
+  return s;
+}
+
+function isDiscouragedFromName(n: string): boolean {
+  return n.includes("compact") || n.includes("embeddable") || n.includes("downgraded");
+}
+
+const ACCENT_UTTERANCE_LANG = {
+  "en-US": "en-US",
+  "en-GB": "en-GB",
+  "en-AU": "en-AU",
+} as const satisfies Record<TtsLangCode, string>;
+
+/**
+ * SpeechSynthesisUtterance.lang に渡す値。声のアクセントと一致させないと AU などで濁りやすい。
+ */
+export function utteranceLangForTts(
+  voice: SpeechSynthesisVoice,
+  slotAccent: TtsLangCode | undefined,
+): string {
+  if (slotAccent) return ACCENT_UTTERANCE_LANG[slotAccent];
+  const n = normalizeVoiceLang(voice.lang);
+  if (n.length >= 2 && n.slice(0, 2).toLowerCase() === "en") return n;
+  return "en-US";
+}
+
+/** en-US 以外は rate を下げると環境によって母音が潰れて聞き取りづらい */
+export function utteranceRateForTts(slotAccent: TtsLangCode | undefined): number {
+  if (slotAccent === undefined || slotAccent === "en-US") return 0.85;
+  return 1;
+}
+
+type ScoredVoicePick = { d: boolean; q: number; spec: number; v: SpeechSynthesisVoice };
+
 function pickVoiceForSlot(
-  voices: SpeechSynthesisVoice[],
+  annotated: readonly AnnotatedVoice[],
   accent: TtsLangCode,
   gender: "female" | "male",
-  nameSubstrings: string[],
+  nameSubstrings: readonly string[],
   usedUris: Set<string>,
 ): SpeechSynthesisVoice | null {
-  for (const sub of nameSubstrings) {
-    const key = sub.toLowerCase();
-    for (const v of voices) {
-      if (usedUris.has(v.voiceURI)) continue;
-      if (inferAccentFromVoice(v) !== accent) continue;
-      if (!v.name.toLowerCase().includes(key)) continue;
-      return v;
+  const scored: ScoredVoicePick[] = [];
+
+  const pushMatches = (specBase: number, key: string) => {
+    for (const a of annotated) {
+      if (usedUris.has(a.voice.voiceURI)) continue;
+      if (a.accent !== accent) continue;
+      if (!a.nameLower.includes(key)) continue;
+      scored.push({ d: a.isDiscouraged, q: a.qualityScore, spec: specBase, v: a.voice });
     }
+  };
+
+  for (let i = 0; i < nameSubstrings.length; i++) {
+    const sub = nameSubstrings[i];
+    if (sub === undefined) continue;
+    pushMatches(i, sub);
   }
 
   const broad = gender === "female" ? FEMALE_NAME_FRAGMENTS : MALE_NAME_FRAGMENTS;
-  for (const fragment of broad) {
-    for (const v of voices) {
-      if (usedUris.has(v.voiceURI)) continue;
-      if (inferAccentFromVoice(v) !== accent) continue;
-      if (!v.name.toLowerCase().includes(fragment)) continue;
-      return v;
+  for (let i = 0; i < broad.length; i++) {
+    const frag = broad[i];
+    if (frag === undefined) continue;
+    pushMatches(1000 + i, frag);
+  }
+
+  if (scored.length === 0) return null;
+
+  const byUri = new Map<string, ScoredVoicePick>();
+  for (const s of scored) {
+    const prev = byUri.get(s.v.voiceURI);
+    if (!prev || s.spec < prev.spec || (s.spec === prev.spec && s.q > prev.q)) {
+      byUri.set(s.v.voiceURI, s);
     }
   }
 
-  for (const v of voices) {
-    if (usedUris.has(v.voiceURI)) continue;
-    if (inferAccentFromVoice(v) !== accent) continue;
-    return v;
-  }
+  let finalists = [...byUri.values()];
+  const withoutDiscouraged = finalists.filter((s) => !s.d);
+  if (withoutDiscouraged.length > 0) finalists = withoutDiscouraged;
 
-  return null;
+  finalists.sort((a, b) => b.q - a.q || a.spec - b.spec);
+  return finalists[0]?.v ?? null;
 }
 
 const CURATION_SLOTS = TTS_ACCENT_ORDER.flatMap((accent) =>
@@ -313,9 +347,20 @@ function isLikelyEnglishTtsVoice(v: SpeechSynthesisVoice): boolean {
 }
 
 /**
- * 4アクセント × 男女の8枠。アクセント一致で埋まらない枠は、未使用の英語声を順に割り当てる（一覧は常に8件に近づける）。
+ * 3アクセント × 男女の6枠。アクセント一致で埋まらない枠は、未使用の英語声を順に割り当てる（一覧は常に6件に近づける）。
  */
 export function pickCuratedTtsVoices(voices: SpeechSynthesisVoice[]): CuratedTtsVoicePick[] {
+  const annotated: AnnotatedVoice[] = voices.map((voice) => {
+    const nameLower = voice.name.toLowerCase();
+    return {
+      accent: inferAccentFromVoice(voice),
+      isDiscouraged: isDiscouragedFromName(nameLower),
+      nameLower,
+      qualityScore: voiceQualityScoreFromName(nameLower),
+      voice,
+    };
+  });
+
   const usedUris = new Set<string>();
   const picks = Array.from(
     { length: CURATION_SLOTS.length },
@@ -327,7 +372,7 @@ export function pickCuratedTtsVoices(voices: SpeechSynthesisVoice[]): CuratedTts
     if (slot === undefined) continue;
     const { accent, gender } = slot;
     const subs = CURATED_NAME_SUBSTRINGS[accent][gender];
-    const picked = pickVoiceForSlot(voices, accent, gender, subs, usedUris);
+    const picked = pickVoiceForSlot(annotated, accent, gender, subs, usedUris);
     if (picked) {
       usedUris.add(picked.voiceURI);
       picks[i] = {
@@ -338,24 +383,32 @@ export function pickCuratedTtsVoices(voices: SpeechSynthesisVoice[]): CuratedTts
     }
   }
 
-  const englishUnused = [...voices]
-    .filter((v) => !usedUris.has(v.voiceURI) && isLikelyEnglishTtsVoice(v))
-    .sort((a, b) => a.voiceURI.localeCompare(b.voiceURI));
+  const englishUnused = annotated
+    .filter((a) => !usedUris.has(a.voice.voiceURI) && isLikelyEnglishTtsVoice(a.voice))
+    .sort((a, b) => {
+      const q = b.qualityScore - a.qualityScore;
+      if (q !== 0) return q;
+      return a.voice.voiceURI.localeCompare(b.voice.voiceURI);
+    });
 
-  let bi = 0;
+  const pool = [...englishUnused];
   for (let i = 0; i < picks.length; i++) {
     if (picks[i] !== null) continue;
-    const v = englishUnused[bi];
-    if (v === undefined) break;
-    bi++;
-    usedUris.add(v.voiceURI);
     const slot = CURATION_SLOTS[i];
     if (slot === undefined) continue;
     const { accent, gender } = slot;
+
+    const accentIdx = pool.findIndex((a) => a.accent === accent);
+    let entry: AnnotatedVoice | undefined =
+      accentIdx === -1 ? undefined : pool.splice(accentIdx, 1)[0];
+    if (entry === undefined) entry = pool.shift();
+    if (entry === undefined) break;
+
+    usedUris.add(entry.voice.voiceURI);
     picks[i] = {
       curatedLabelJa: `${ACCENT_LABEL_JA[accent]}・${gender === "female" ? "女性" : "男性"}`,
       slotAccent: accent,
-      voice: v,
+      voice: entry.voice,
     };
   }
 
