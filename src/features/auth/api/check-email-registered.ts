@@ -18,7 +18,7 @@ const checkEmailRegisteredFn = createServerFn({ method: "POST" })
   });
 
 export function checkEmailRegistered(email: InstaQLEntity<AppSchema, "$users">["email"]) {
-  return Result.tryPromise<{ registered: boolean }, Error>({
+  return Result.tryPromise({
     catch: (e) => e as Error,
     try: () => checkEmailRegisteredFn({ data: { email } }),
   });
