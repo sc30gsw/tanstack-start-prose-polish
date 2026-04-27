@@ -1,8 +1,8 @@
 import { Button, Loader, Stack, Text } from "@mantine/core";
 import { Link } from "@tanstack/react-router";
 
-import { HistoryCard } from "~/features/essays/components/index/history-card";
-import { useRecentEssays } from "~/features/essays/hooks/shared/use-recent-essays";
+import { HistoryCard } from "~/features/essays/components/history-card";
+import { useRecentEssays } from "~/features/essays/hooks/use-recent-essays";
 
 export function HistoryList() {
   const { essays, isLoading, error } = useRecentEssays();

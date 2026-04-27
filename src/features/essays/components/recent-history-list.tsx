@@ -1,12 +1,12 @@
 import { Anchor, Button, Loader, Stack, Text } from "@mantine/core";
 import { Link } from "@tanstack/react-router";
 
-import { HistoryCard } from "~/features/essays/components/index/history-card";
-import { useRecentEssays } from "~/features/essays/hooks/shared/use-recent-essays";
+import { HistoryCard } from "~/features/essays/components/history-card";
+import { useRecentEssays } from "~/features/essays/hooks/use-recent-essays";
 
 const HOME_RECENT_LIMIT = 5;
 
-export function HomeRecentHistory() {
+export function RecentHistoryList() {
   const { essays, isLoading, error } = useRecentEssays();
   const recent = essays.slice(0, HOME_RECENT_LIMIT);
   const restCount = Math.max(0, essays.length - HOME_RECENT_LIMIT);

@@ -3,7 +3,7 @@ import { ClientOnly, getRouteApi } from "@tanstack/react-router";
 
 import { HistoryDetailDiffPanel } from "~/features/essays/components/history/hisotry-detail-diff-panel";
 import { ResultReader } from "~/features/essays/components/result/result-reader";
-import { useEssayDetail } from "~/features/essays/hooks/shared/use-essay-detail";
+import { useEssayDetail } from "~/features/essays/hooks/use-essay-detail";
 import type { EssayHistoriesSearchParams } from "~/features/essays/schemas/search-params/essay-histories-search-params";
 
 const routeApi = getRouteApi("/_authenticated/essays/$essayId/history");

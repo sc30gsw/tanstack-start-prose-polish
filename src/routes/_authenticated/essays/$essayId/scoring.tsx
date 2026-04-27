@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { PageHeader } from "~/components/page-header";
 import { ScoringProgress } from "~/features/essays/components/scoring/scoring-progress";
 import { useScoringStream } from "~/features/essays/hooks/scoring/use-scoring-stream";
-import { useEssayDetail } from "~/features/essays/hooks/shared/use-essay-detail";
+import { useEssayDetail } from "~/features/essays/hooks/use-essay-detail";
 import type { EssayMode, Score } from "~/features/essays/schemas/essay-schema";
 
 export const Route = createFileRoute("/_authenticated/essays/$essayId/scoring")({

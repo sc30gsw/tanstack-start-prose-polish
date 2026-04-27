@@ -24,7 +24,7 @@ import {
   type TtsDisplayMode,
   useTts,
 } from "~/features/essays/hooks/result/use-tts";
-import { useEssayDetail } from "~/features/essays/hooks/shared/use-essay-detail";
+import { useEssayDetail } from "~/features/essays/hooks/use-essay-detail";
 
 const ACCENT_OPTIONS = [
   { value: "american-female", label: "Samantha" },

@@ -8,10 +8,10 @@ import {
 } from "@tanstack/react-router";
 import { valibotValidator } from "@tanstack/valibot-adapter";
 
-import { EssaySearch } from "~/features/essays/components/index/essay-search";
-import { EssaysPagination } from "~/features/essays/components/index/essays-pagination";
-import { HistoryCard } from "~/features/essays/components/index/history-card";
-import { ESSAY_LIST_PAGE_SIZE, useEssaysList } from "~/features/essays/hooks/index/use-essays-list";
+import { EssaySearch } from "~/features/essays/components/essay-search";
+import { EssaysPagination } from "~/features/essays/components/essays-pagination";
+import { HistoryCard } from "~/features/essays/components/history-card";
+import { ESSAY_LIST_PAGE_SIZE, useEssaysList } from "~/features/essays/hooks/use-essays-list";
 import {
   defaultEssaysSearchParams,
   essaysSearchSchema,

@@ -23,7 +23,7 @@ import {
 } from "@tabler/icons-react";
 import { ClientOnly, Link, createFileRoute } from "@tanstack/react-router";
 
-import { HomeRecentHistory } from "~/features/essays/components/index/home-recent-history";
+import { RecentHistoryList } from "~/features/essays/components/recent-history-list";
 
 export const Route = createFileRoute("/_authenticated/")({
   component: HomePage,
@@ -57,7 +57,7 @@ const FEATURES = [
 ] as const satisfies readonly {
   color: MantineColor;
   description: string;
-  Icon: React.FC<{ size?: number }>;
+  Icon: React.FC<Partial<Record<"size", number>>>;
   title: string;
 }[];
 
@@ -142,7 +142,7 @@ function HomePage() {
             </Stack>
           }
         >
-          <HomeRecentHistory />
+          <RecentHistoryList />
         </ClientOnly>
       </Paper>
     </Container>

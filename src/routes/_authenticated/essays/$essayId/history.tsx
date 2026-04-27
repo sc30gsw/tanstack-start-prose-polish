@@ -6,7 +6,7 @@ import { PageHeader } from "~/components/page-header";
 import { EssayScoringSummaryChart } from "~/features/essays/components/history/essay-scoring-summary-chart";
 import { HistoryDetailTabs } from "~/features/essays/components/history/history-detail-tabs";
 import { SCORE_CEFR } from "~/features/essays/constants/essay";
-import { useEssayDetail } from "~/features/essays/hooks/shared/use-essay-detail";
+import { useEssayDetail } from "~/features/essays/hooks/use-essay-detail";
 import {
   defaultEssayHistoriesSearchParams,
   essayHistoriesSearchSchema,
