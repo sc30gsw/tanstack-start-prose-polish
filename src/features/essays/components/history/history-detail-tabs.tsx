@@ -94,7 +94,9 @@ function HistoryDetailBeforePanel({
 
 function HistoryDetailAfterPanel({
   bodyAfter,
-}: Pick<NonNullable<ReturnType<typeof useEssayDetail>["essay"]>, "bodyAfter">) {
+  essayId,
+}: Pick<NonNullable<ReturnType<typeof useEssayDetail>["essay"]>, "bodyAfter"> &
+  Record<"essayId", string>) {
   if (!bodyAfter) {
     return (
       <Tabs.Panel value="after">
@@ -109,7 +111,7 @@ function HistoryDetailAfterPanel({
     <Tabs.Panel value="after">
       <ClientOnly>
         <Stack mt="md">
-          <ResultReader correctedBody={bodyAfter} />
+          <ResultReader essayId={essayId} />
         </Stack>
       </ClientOnly>
     </Tabs.Panel>
