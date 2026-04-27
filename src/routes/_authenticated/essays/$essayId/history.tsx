@@ -1,9 +1,9 @@
-import { Container, Skeleton, Stack } from "@mantine/core";
-import { ClientOnly, createFileRoute, Link, stripSearchParams } from "@tanstack/react-router";
+import { Container, Stack } from "@mantine/core";
+import { createFileRoute, Link, stripSearchParams } from "@tanstack/react-router";
 import { valibotValidator } from "@tanstack/valibot-adapter";
 
 import { PageHeader } from "~/components/page-header";
-import { EssayScoringSummaryChart } from "~/features/essays/components/history/essay-scoring-summary-chart";
+import { EssayScoringSummaryPaper } from "~/features/essays/components/history/essay-scoring-summary-paper";
 import { HistoryDetailTabs } from "~/features/essays/components/history/history-detail-tabs";
 import {
   defaultEssayHistoriesSearchParams,
@@ -23,9 +23,7 @@ function HistoryPage() {
     <Container py="xl" size="xl">
       <Stack gap="lg">
         <PageHeader backLink={<Link to="/essays">学習履歴一覧</Link>} title="学習履歴詳細" />
-        <ClientOnly fallback={<Skeleton height={280} radius="md" />}>
-          <EssayScoringSummaryChart />
-        </ClientOnly>
+        <EssayScoringSummaryPaper />
         <HistoryDetailTabs />
       </Stack>
     </Container>
