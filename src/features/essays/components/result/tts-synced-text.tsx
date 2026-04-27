@@ -1,7 +1,7 @@
 import { Stack, Text } from "@mantine/core";
 import type { CSSProperties } from "react";
 
-import type { TtsDisplayMode } from "~/features/essays/hooks/use-tts";
+import type { TtsDisplayMode } from "~/features/essays/hooks/result/use-tts";
 
 const BODY_STYLE = {
   fontFamily: "Georgia, 'Times New Roman', serif",

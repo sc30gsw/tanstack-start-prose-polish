@@ -1,11 +1,11 @@
 import { Group, SegmentedControl, Skeleton, Stack, Tabs, Text } from "@mantine/core";
 import { ClientOnly, getRouteApi } from "@tanstack/react-router";
 
-import { DiffView } from "~/features/essays/components/diff-view";
+import { DiffView } from "~/features/essays/components/diff/diff-view";
 import { DIFF_VIEW_MODE_OPTIONS } from "~/features/essays/constants/diff-view-ui";
-import { useDiffComments } from "~/features/essays/hooks/use-diff-comments";
-import type { useEssayDetail } from "~/features/essays/hooks/use-essay-detail";
-import { useResolvedDiffView } from "~/features/essays/hooks/use-resolved-diff-view";
+import { useDiffComments } from "~/features/essays/hooks/diff/use-diff-comments";
+import { useResolvedDiffView } from "~/features/essays/hooks/diff/use-resolved-diff-view";
+import type { useEssayDetail } from "~/features/essays/hooks/shared/use-essay-detail";
 import type { DiffSearchParams } from "~/features/essays/schemas/search-params/essay-diff-search-params";
 
 const routeApi = getRouteApi("/_authenticated/essays/$essayId/history");

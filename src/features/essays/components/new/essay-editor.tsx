@@ -1,6 +1,6 @@
 import { Stack, Textarea } from "@mantine/core";
 
-import { CharCounter } from "~/features/essays/components/char-counter";
+import { CharCounter } from "~/features/essays/components/new/char-counter";
 
 type EssayEditorProps = {
   /**

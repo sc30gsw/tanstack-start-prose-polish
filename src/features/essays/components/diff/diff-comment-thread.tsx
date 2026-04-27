@@ -15,8 +15,8 @@ import { useState } from "react";
 import { db } from "~/db/instant";
 import type { AppSchema } from "~/db/instant-schema";
 import { getUserDisplayName, getUserInitials } from "~/features/auth/utils/user-display-name";
-import { DiffCommentThreadEditForm } from "~/features/essays/components/diff-thread-edit-form";
-import type { useDiffComments } from "~/features/essays/hooks/use-diff-comments";
+import { DiffCommentThreadEditForm } from "~/features/essays/components/diff/diff-thread-edit-form";
+import type { useDiffComments } from "~/features/essays/hooks/diff/use-diff-comments";
 import type { DiffComment } from "~/features/essays/schemas/essay-schema";
 import { formatCommentTimestamp } from "~/utils/format-comment-timestamp";
 

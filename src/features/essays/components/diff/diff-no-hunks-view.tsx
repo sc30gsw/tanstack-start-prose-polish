@@ -2,10 +2,10 @@ import type { InstaQLEntity } from "@instantdb/react";
 import { Box, Group, Paper, Stack, Text } from "@mantine/core";
 
 import type { AppSchema } from "~/db/instant-schema";
-import { AiCommentBadge } from "~/features/essays/components/ai-comment-badge";
-import { DiffCommentThread } from "~/features/essays/components/diff-comment-thread";
-import type { useDiffComments } from "~/features/essays/hooks/use-diff-comments";
-import type { useDiffViewState } from "~/features/essays/hooks/use-diff-view-state";
+import { AiCommentBadge } from "~/features/essays/components/diff/ai-comment-badge";
+import { DiffCommentThread } from "~/features/essays/components/diff/diff-comment-thread";
+import type { useDiffComments } from "~/features/essays/hooks/diff/use-diff-comments";
+import type { useDiffViewState } from "~/features/essays/hooks/diff/use-diff-view-state";
 
 type DiffNoHunksViewProps = {
   afterText: InstaQLEntity<AppSchema, "essays">["bodyAfter"];

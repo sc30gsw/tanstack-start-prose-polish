@@ -7,10 +7,10 @@ import * as v from "valibot";
 import { db } from "~/db/instant";
 import { useAuthUser } from "~/features/auth/hooks/use-auth-user";
 import { correctEssay } from "~/features/essays/api/mock-ai";
-import { DiverseModePrompt } from "~/features/essays/components/diverse-prompt";
-import { EssayEditor } from "~/features/essays/components/essay-editor";
-import { ModePicker } from "~/features/essays/components/mode-picker";
-import { TopicPicker } from "~/features/essays/components/topic-picker";
+import { DiverseModePrompt } from "~/features/essays/components/new/diverse-prompt";
+import { EssayEditor } from "~/features/essays/components/new/essay-editor";
+import { ModePicker } from "~/features/essays/components/new/mode-picker";
+import { TopicPicker } from "~/features/essays/components/new/topic-picker";
 import { essayDraftSchema, type EssayDraftInput } from "~/features/essays/schemas/essay-schema";
 
 const routeApi = getRouteApi("/_authenticated/essays/new");

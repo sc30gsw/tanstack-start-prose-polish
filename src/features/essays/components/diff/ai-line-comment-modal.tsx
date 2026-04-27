@@ -1,10 +1,10 @@
 import { Stack, Text } from "@mantine/core";
 
-import { AiCommentBadge } from "~/features/essays/components/ai-comment-badge";
-import { DiffCommentForm } from "~/features/essays/components/diff-comment-form";
-import { DiffCommentThread } from "~/features/essays/components/diff-comment-thread";
-import type { useDiffComments } from "~/features/essays/hooks/use-diff-comments";
-import type { useDiffViewState } from "~/features/essays/hooks/use-diff-view-state";
+import { AiCommentBadge } from "~/features/essays/components/diff/ai-comment-badge";
+import { DiffCommentForm } from "~/features/essays/components/diff/diff-comment-form";
+import { DiffCommentThread } from "~/features/essays/components/diff/diff-comment-thread";
+import type { useDiffComments } from "~/features/essays/hooks/diff/use-diff-comments";
+import type { useDiffViewState } from "~/features/essays/hooks/diff/use-diff-view-state";
 
 type AiLineCommentModalBodyProps = {
   comments: ReturnType<typeof useDiffComments>["comments"];

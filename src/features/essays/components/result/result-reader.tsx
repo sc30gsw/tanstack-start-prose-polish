@@ -17,10 +17,14 @@ import { useMediaQuery } from "@mantine/hooks";
 import { useState } from "react";
 
 import type { AppSchema } from "~/db/instant-schema";
-import { TtsPlayControls } from "~/features/essays/components/tts-button";
-import { TtsSyncedText } from "~/features/essays/components/tts-synced-text";
-import { useEssayDetail } from "~/features/essays/hooks/use-essay-detail";
-import { type TtsAccent, type TtsDisplayMode, useTts } from "~/features/essays/hooks/use-tts";
+import { TtsPlayControls } from "~/features/essays/components/result/tts-button";
+import { TtsSyncedText } from "~/features/essays/components/result/tts-synced-text";
+import {
+  type TtsAccent,
+  type TtsDisplayMode,
+  useTts,
+} from "~/features/essays/hooks/result/use-tts";
+import { useEssayDetail } from "~/features/essays/hooks/shared/use-essay-detail";
 
 const ACCENT_OPTIONS = [
   { value: "american-female", label: "Samantha" },
@@ -158,7 +162,7 @@ export function ResultReader({
             currentWordIndex={currentWordIndex}
             displayMode={displayMode}
             isPlaying={isPlaybackActive}
-            text={correctedBody}
+            text={essay.bodyAfter}
           />
         </Box>
       </Stack>

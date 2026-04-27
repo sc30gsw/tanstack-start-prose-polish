@@ -3,7 +3,7 @@ import { IconListDetails } from "@tabler/icons-react";
 import { ClientOnly, createFileRoute, Link } from "@tanstack/react-router";
 
 import { PageHeader } from "~/components/page-header";
-import { ResultReader } from "~/features/essays/components/result-reader";
+import { ResultReader } from "~/features/essays/components/result/result-reader";
 
 export const Route = createFileRoute("/_authenticated/essays/$essayId/result")({
   component: ResultPage,

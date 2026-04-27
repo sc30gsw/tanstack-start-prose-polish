@@ -2,7 +2,7 @@ import { cn } from "@lightsound/cn/tw-merge";
 import { ActionIcon, Box, Button, Group, Tooltip } from "@mantine/core";
 import { IconPlayerPause, IconPlayerPlay, IconRefresh } from "@tabler/icons-react";
 
-import { type TtsPlaybackState, useTts } from "~/features/essays/hooks/use-tts";
+import { type TtsPlaybackState, useTts } from "~/features/essays/hooks/result/use-tts";
 
 type TtsPlayControlsProps = {
   fullWidth?: boolean;

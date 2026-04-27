@@ -15,14 +15,14 @@ import { IconPlus } from "@tabler/icons-react";
 import { useCallback, useMemo } from "react";
 
 import type { AppSchema } from "~/db/instant-schema";
-import { AiLineCommentModalBody } from "~/features/essays/components/ai-line-comment-modal";
+import { AiLineCommentModalBody } from "~/features/essays/components/diff/ai-line-comment-modal";
 import {
   DiffAnnotationRow,
   type CommentAnnotationMeta,
-} from "~/features/essays/components/diff-annotation-row";
-import { DiffNoHunksView } from "~/features/essays/components/diff-no-hunks-view";
-import { useDiffComments } from "~/features/essays/hooks/use-diff-comments";
-import { useDiffViewState } from "~/features/essays/hooks/use-diff-view-state";
+} from "~/features/essays/components/diff/diff-annotation-row";
+import { DiffNoHunksView } from "~/features/essays/components/diff/diff-no-hunks-view";
+import { useDiffComments } from "~/features/essays/hooks/diff/use-diff-comments";
+import { useDiffViewState } from "~/features/essays/hooks/diff/use-diff-view-state";
 import type { DiffSearchParams } from "~/features/essays/schemas/search-params/essay-diff-search-params";
 
 type DiffViewProps = {

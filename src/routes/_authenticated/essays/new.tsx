@@ -3,7 +3,7 @@ import { createFileRoute, Link, stripSearchParams } from "@tanstack/react-router
 import { valibotValidator } from "@tanstack/valibot-adapter";
 
 import { PageHeader } from "~/components/page-header";
-import { EssayNewForm } from "~/features/essays/components/essay-new-form";
+import { EssayNewForm } from "~/features/essays/components/new/essay-new-form";
 import {
   defaultEssaysNewSearchParams,
   essaysNewSearchSchema,

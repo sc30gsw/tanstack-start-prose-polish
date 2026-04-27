@@ -1,8 +1,8 @@
 import type { DiffLineAnnotation, OnDiffLineClickProps } from "@pierre/diffs";
 import { useCallback, useMemo, useState } from "react";
 
-import type { CommentAnnotationMeta } from "~/features/essays/components/diff-annotation-row";
-import type { useDiffComments } from "~/features/essays/hooks/use-diff-comments";
+import type { CommentAnnotationMeta } from "~/features/essays/components/diff/diff-annotation-row";
+import type { useDiffComments } from "~/features/essays/hooks/diff/use-diff-comments";
 import type { DiffCommentInput } from "~/features/essays/schemas/essay-schema";
 
 type UseDiffViewStateProps = {

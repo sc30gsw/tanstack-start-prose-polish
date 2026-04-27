@@ -1,7 +1,7 @@
 import { Alert, Stack, Text, UnstyledButton, useComputedColorScheme } from "@mantine/core";
 import { IconSparkles } from "@tabler/icons-react";
 
-import type { useDiffComments } from "~/features/essays/hooks/use-diff-comments";
+import type { useDiffComments } from "~/features/essays/hooks/diff/use-diff-comments";
 
 type AiCommentBadgeProps = {
   body: ReturnType<typeof useDiffComments>["comments"][number]["body"];

@@ -3,8 +3,8 @@ import { useForm } from "@tanstack/react-form";
 import * as v from "valibot";
 
 import { useAuthUser } from "~/features/auth/hooks/use-auth-user";
-import type { useDiffComments } from "~/features/essays/hooks/use-diff-comments";
-import type { useDiffViewState } from "~/features/essays/hooks/use-diff-view-state";
+import type { useDiffComments } from "~/features/essays/hooks/diff/use-diff-comments";
+import type { useDiffViewState } from "~/features/essays/hooks/diff/use-diff-view-state";
 import { diffCommentInputSchema } from "~/features/essays/schemas/essay-schema";
 
 type DiffCommentFormProps = {

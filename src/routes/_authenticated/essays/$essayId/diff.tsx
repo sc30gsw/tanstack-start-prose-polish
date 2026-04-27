@@ -10,10 +10,10 @@ import {
 import { valibotValidator } from "@tanstack/valibot-adapter";
 
 import { PageHeader } from "~/components/page-header";
-import { DiffView } from "~/features/essays/components/diff-view";
+import { DiffView } from "~/features/essays/components/diff/diff-view";
 import { DIFF_VIEW_MODE_OPTIONS } from "~/features/essays/constants/diff-view-ui";
-import { useEssayDetail } from "~/features/essays/hooks/use-essay-detail";
-import { useResolvedDiffView } from "~/features/essays/hooks/use-resolved-diff-view";
+import { useResolvedDiffView } from "~/features/essays/hooks/diff/use-resolved-diff-view";
+import { useEssayDetail } from "~/features/essays/hooks/shared/use-essay-detail";
 import {
   defaultDiffSearchParams,
   diffSearchSchema,

@@ -3,7 +3,7 @@ import { Button, Group } from "@mantine/core";
 import { useForm } from "@tanstack/react-form";
 import * as v from "valibot";
 
-import type { useDiffComments } from "~/features/essays/hooks/use-diff-comments";
+import type { useDiffComments } from "~/features/essays/hooks/diff/use-diff-comments";
 
 const diffThreadEditFormSchema = v.object({
   body: v.pipe(v.string(), v.trim(), v.minLength(1, "コメントを入力してください")),
