@@ -1,7 +1,9 @@
 import { RadarChart } from "@mantine/charts";
-import { Paper, Stack, Text } from "@mantine/core";
+import { Container, Paper, Stack, Text } from "@mantine/core";
+import { getRouteApi } from "@tanstack/react-router";
 
 import { SCORE_CEFR } from "~/features/essays/constants/essay";
+import { useEssayDetail } from "~/features/essays/hooks/use-essay-detail";
 
 type ScoreCefr = (typeof SCORE_CEFR)[number];
 
@@ -14,26 +16,42 @@ const CEFR_TO_NUMERIC = {
   C2: 100,
 } as const satisfies Record<ScoreCefr, number>;
 
-type EssayScoringSummaryChartProps = {
-  cefr: ScoreCefr;
-  score: number;
-  toeicMax: number;
-  toeicMin: number;
-};
+const routeApi = getRouteApi("/_authenticated/essays/$essayId/history");
 
-export function EssayScoringSummaryChart({
-  cefr,
-  score,
-  toeicMax,
-  toeicMin,
-}: EssayScoringSummaryChartProps) {
-  const toeicMidNormalized = ((toeicMin + toeicMax) / 2 / 990) * 100;
+export function EssayScoringSummaryChart() {
+  const { essayId } = routeApi.useParams();
+  const { essay, isLoading, error } = useEssayDetail(essayId);
+
+  if (isLoading) {
+    return (
+      <Container py="xl" size="md">
+        <Text>読み込み中...</Text>
+      </Container>
+    );
+  }
+
+  if (!essay || error || !essay.scoring) {
+    return (
+      <Container py="xl" size="md">
+        <Text c="red">エッセイが見つかりませんでした。</Text>
+      </Container>
+    );
+  }
+
+  const summary = {
+    cefr: essay.scoring.cefr as (typeof SCORE_CEFR)[number],
+    score: essay.scoring.score,
+    toeicMax: essay.scoring.toeicMax,
+    toeicMin: essay.scoring.toeicMin,
+  };
+
+  const toeicMidNormalized = ((essay.scoring.toeicMin + essay.scoring.toeicMax) / 2 / 990) * 100;
 
   const data = [
-    { metric: "点数", value: score },
-    { metric: "CEFR", value: CEFR_TO_NUMERIC[cefr] },
+    { metric: "点数", value: summary.score },
+    { metric: "CEFR", value: CEFR_TO_NUMERIC[summary.cefr] },
     { metric: "TOEIC", value: toeicMidNormalized },
-  ];
+  ] as const satisfies { metric: string; value: number }[];
 
   return (
     <Paper p="md" withBorder>

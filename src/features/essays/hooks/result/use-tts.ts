@@ -1,5 +1,5 @@
 import type { InstaQLEntity } from "@instantdb/react";
-import { type RefObject, useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import type { AppSchema } from "~/db/instant-schema";
 import type { EssayResultSearchParams } from "~/features/essays/schemas/search-params/essay-result-search-params";
@@ -32,7 +32,7 @@ const DEFAULT_SPEECH_UTTERANCE = {
   pitch: 1,
   rate: 0.85,
   volume: 1,
-} as const satisfies Record<string, number>;
+} as const satisfies Pick<SpeechSynthesisUtterance, "pitch" | "rate" | "volume">;
 
 function getVoiceForAccent(accent: EssayResultSearchParams["accent"]) {
   const voices = window.speechSynthesis.getVoices();
@@ -56,18 +56,16 @@ function getVoiceForAccent(accent: EssayResultSearchParams["accent"]) {
 
 type AttachUtteranceHandlersProps = {
   onIdle: () => void;
-  onPlaying: () => void;
   setCurrentWordIndex: (i: number) => void;
-  userInitiatedPauseRef: RefObject<boolean>;
+  userInitiatedPauseRef: { current: boolean };
 };
 
 function attachUtteranceHandlers(
   utterance: SpeechSynthesisUtterance,
   text: NonNullable<InstaQLEntity<AppSchema, "essays">["bodyAfter"]>,
-  { onPlaying, onIdle, setCurrentWordIndex, userInitiatedPauseRef }: AttachUtteranceHandlersProps,
+  { onIdle, setCurrentWordIndex, userInitiatedPauseRef }: AttachUtteranceHandlersProps,
 ) {
   utterance.onstart = () => {
-    onPlaying();
     setCurrentWordIndex(0);
   };
 
@@ -95,7 +93,10 @@ function attachUtteranceHandlers(
     setCurrentWordIndex(-1);
   };
 
-  utterance.onerror = () => {
+  //? cancel() 後に発火する "canceled"/"interrupted" は無視する。
+  //? cancel() → beginSpeakingFromStart() の連続呼び出し時に onerror が新規 utterance の状態を上書きするのを防ぐ。
+  utterance.onerror = (event) => {
+    if (event.error === "canceled" || event.error === "interrupted") return;
     onIdle();
     setCurrentWordIndex(-1);
   };
@@ -112,14 +113,10 @@ export function useTts({ accent, text }: UseTtsProps) {
   const [isSupported, setIsSupported] = useState(false);
   const userInitiatedPauseRef = useRef(false);
 
-  const setIdle = useCallback(() => {
+  function setIdle() {
     userInitiatedPauseRef.current = false;
     setPlaybackState("idle");
-  }, []);
-
-  const setPlaying = useCallback(() => {
-    setPlaybackState("playing");
-  }, []);
+  }
 
   useEffect(() => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
@@ -137,7 +134,7 @@ export function useTts({ accent, text }: UseTtsProps) {
     };
   }, []);
 
-  const beginSpeakingFromStart = useCallback(() => {
+  function beginSpeakingFromStart() {
     if (!isSupported) return;
     if (!text.trim()) {
       setIdle();
@@ -163,16 +160,15 @@ export function useTts({ accent, text }: UseTtsProps) {
 
     attachUtteranceHandlers(utterance, text, {
       onIdle: setIdle,
-      onPlaying: setPlaying,
       setCurrentWordIndex,
       userInitiatedPauseRef,
     });
 
     setPlaybackState("playing");
     window.speechSynthesis.speak(utterance);
-  }, [accent, isSupported, setIdle, setPlaying, text]);
+  }
 
-  const play = useCallback(() => {
+  function play() {
     if (!isSupported) {
       return;
     }
@@ -180,29 +176,26 @@ export function useTts({ accent, text }: UseTtsProps) {
     if (window.speechSynthesis.paused) {
       userInitiatedPauseRef.current = false;
       window.speechSynthesis.resume();
-
       setPlaybackState("playing");
-
       return;
     }
 
     //? speaking が true のまま固まるケースや、内部状態と React の desync を cancel で解消する
     window.speechSynthesis.cancel();
     beginSpeakingFromStart();
-  }, [beginSpeakingFromStart, isSupported]);
+  }
 
-  const playFromStart = useCallback(() => {
+  function playFromStart() {
     if (!isSupported) {
       return;
     }
 
     window.speechSynthesis.cancel();
-
     setCurrentWordIndex(-1);
     beginSpeakingFromStart();
-  }, [beginSpeakingFromStart, isSupported]);
+  }
 
-  const pause = useCallback(() => {
+  function pause() {
     if (!isSupported) {
       return;
     }
@@ -210,30 +203,28 @@ export function useTts({ accent, text }: UseTtsProps) {
     if (window.speechSynthesis.speaking) {
       userInitiatedPauseRef.current = true;
       window.speechSynthesis.pause();
-
       setPlaybackState("paused");
     }
-  }, [isSupported]);
+  }
 
-  const resetPlayback = useCallback(() => {
+  function resetPlayback() {
     if (!isSupported) {
       return;
     }
 
     userInitiatedPauseRef.current = false;
     window.speechSynthesis.cancel();
-
     setPlaybackState("idle");
     setCurrentWordIndex(-1);
-  }, [isSupported]);
+  }
 
   useEffect(() => {
     return () => {
-      if (isSupported) {
+      if (typeof window !== "undefined" && "speechSynthesis" in window) {
         window.speechSynthesis.cancel();
       }
     };
-  }, [isSupported]);
+  }, []);
 
   const isPlaybackActive = playbackState !== "idle";
 
