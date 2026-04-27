@@ -1,5 +1,6 @@
 import { Alert, Anchor, Paper, Stack, Text } from "@mantine/core";
 import { IconAlertCircle } from "@tabler/icons-react";
+import { getRouteApi } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { sendMagicCode, signInWithMagicCode } from "~/features/auth/api/auth-client";
@@ -12,9 +13,13 @@ import {
   loginFormEmptyValues,
 } from "~/features/auth/schemas/login-schema";
 
+const routeApi = getRouteApi("/login");
+
 export function LoginForm() {
+  const { mode } = routeApi.useSearch();
+  const navigate = routeApi.useNavigate();
+
   const [step, setStep] = useState<"code" | "email">("email");
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
 
   const [isResending, setIsResending] = useState(false);
@@ -84,9 +89,11 @@ export function LoginForm() {
   });
 
   function handleModeSwitch() {
-    setMode((prev) => (prev === "signin" ? "signup" : "signin"));
+    navigate({ search: (prev) => ({ ...prev, mode: mode === "signin" ? "signup" : "signin" }) });
+
     setStep("email");
     setErrorMessage(null);
+
     form.reset();
   }
 
@@ -95,7 +102,7 @@ export function LoginForm() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          void form.handleSubmit();
+          form.handleSubmit();
         }}
       >
         <Stack gap="md">

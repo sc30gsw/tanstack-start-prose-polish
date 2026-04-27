@@ -1,15 +1,21 @@
 import { Center, Loader, Stack } from "@mantine/core";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, stripSearchParams, useNavigate } from "@tanstack/react-router";
 import { valibotValidator } from "@tanstack/valibot-adapter";
 import { useEffect } from "react";
 
 import { db } from "~/db/instant";
 import { LoginForm } from "~/features/auth/components/login-form";
-import { loginSearchParamsSchema } from "~/features/auth/schemas/search-params/login-search-params";
+import {
+  defaultLoginSearchParams,
+  loginSearchParamsSchema,
+} from "~/features/auth/schemas/search-params/login-search-params";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
   validateSearch: valibotValidator(loginSearchParamsSchema),
+  search: {
+    middlewares: [stripSearchParams(defaultLoginSearchParams)],
+  },
 });
 
 function LoginPage() {
