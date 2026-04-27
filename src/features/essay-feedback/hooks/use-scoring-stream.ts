@@ -1,4 +1,5 @@
 import type { InstaQLEntity } from "@instantdb/react";
+import { id } from "@instantdb/react";
 import { useCallback, useState, useTransition } from "react";
 
 import { db } from "~/db/instant";
@@ -74,21 +75,17 @@ export function useScoringStream() {
 
         if (isEveryNonNull(scoring)) {
           const [score, scoreFeedback, cefr, toeicMin, toeicMax] = scoring;
-          const txEssay = db.tx.essays[essayId];
+          const scoreId = id();
+          const txScore = db.tx.scores[scoreId];
 
-          if (!txEssay) {
+          if (!txScore) {
             return;
           }
 
           await db.transact(
-            txEssay.update({
-              cefr,
-              score,
-              scoreFeedback,
-              toeicMax,
-              toeicMin,
-              updatedAt: new Date(),
-            }),
+            txScore
+              .update({ cefr, score, scoreFeedback, toeicMax, toeicMin })
+              .link({ essay: essayId }),
           );
         }
       });

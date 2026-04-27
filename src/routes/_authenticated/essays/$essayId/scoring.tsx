@@ -7,7 +7,6 @@ import { ScoringProgress } from "~/features/essay-feedback/components/scoring-pr
 import { useEssayDetail } from "~/features/essay-feedback/hooks/use-essay-detail";
 import { useScoringStream } from "~/features/essay-feedback/hooks/use-scoring-stream";
 import type { EssayMode, Score } from "~/features/essay-feedback/schemas/essay-schema";
-import { isEveryNonNull } from "~/lib/every-non-null";
 
 export const Route = createFileRoute("/_authenticated/essays/$essayId/scoring")({
   component: ScoringPage,
@@ -24,22 +23,18 @@ function ScoringPage() {
       return;
     }
 
-    const { bodyBefore, mode, prompt, score, scoreFeedback, cefr, toeicMin, toeicMax } = essay;
+    const { bodyBefore, mode, prompt, scoring } = essay;
     if (!bodyBefore) {
       return;
     }
 
-    const scoring = [score, scoreFeedback, cefr, toeicMin, toeicMax] as const;
-
-    if (isEveryNonNull(scoring)) {
-      const [score, scoreFeedback, cefr, toeicMin, toeicMax] = scoring;
-
+    if (scoring != null) {
       hydrate({
-        cefr: cefr as Score["cefr"],
-        score,
-        scoreFeedback,
-        toeicMax,
-        toeicMin,
+        cefr: scoring.cefr as Score["cefr"],
+        score: scoring.score,
+        scoreFeedback: scoring.scoreFeedback,
+        toeicMax: scoring.toeicMax,
+        toeicMin: scoring.toeicMin,
       });
 
       return;

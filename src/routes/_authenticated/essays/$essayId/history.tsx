@@ -11,7 +11,6 @@ import {
   defaultEssayHistoriesSearchParams,
   essayHistoriesSearchSchema,
 } from "~/features/essay-feedback/schemas/search-params/essay-histories-search-params";
-import { isEveryNonNull } from "~/lib/every-non-null";
 
 type ScoreCefr = (typeof SCORE_CEFR)[number];
 
@@ -27,30 +26,16 @@ function HistoryPage() {
   const { essayId } = Route.useParams();
   const { essay } = useEssayDetail(essayId);
 
-  const summary = essay
-    ? (() => {
-        const scoring = [
-          essay.score,
-          essay.scoreFeedback,
-          essay.cefr,
-          essay.toeicMin,
-          essay.toeicMax,
-        ] as const;
-
-        if (!isEveryNonNull(scoring)) {
-          return null;
+  const scoring = essay?.scoring ?? null;
+  const summary =
+    scoring != null
+      ? {
+          cefr: scoring.cefr as ScoreCefr,
+          score: scoring.score,
+          toeicMax: scoring.toeicMax,
+          toeicMin: scoring.toeicMin,
         }
-
-        const [score, , cefr, toeicMin, toeicMax] = scoring;
-
-        return {
-          cefr: cefr as ScoreCefr,
-          score,
-          toeicMax,
-          toeicMin,
-        };
-      })()
-    : null;
+      : null;
 
   return (
     <Container py="xl" size="xl">

@@ -39,7 +39,9 @@ const STATUS_LABELS = {
   scoring: "採点中",
 } as const satisfies Record<string, string>;
 
-export function HistoryCard({ essay }: Record<"essay", InstaQLEntity<AppSchema, "essays">>) {
+export function HistoryCard({
+  essay,
+}: Record<"essay", InstaQLEntity<AppSchema, "essays", { scoring: {} }>>) {
   const modeLabel = MODE_LABELS[essay.mode as keyof typeof MODE_LABELS] ?? essay.mode;
   const modeColor = MODE_COLORS[essay.mode as keyof typeof MODE_COLORS] ?? "gray";
   const statusLabel = STATUS_LABELS[essay.status as keyof typeof STATUS_LABELS] ?? essay.status;
@@ -93,19 +95,19 @@ export function HistoryCard({ essay }: Record<"essay", InstaQLEntity<AppSchema, 
             <Badge autoContrast color={statusColor} size="md" variant="dot">
               {statusLabel}
             </Badge>
-            {essay.score && (
+            {essay.scoring?.score && (
               <Badge autoContrast color="blue" size="md" variant="outline">
-                {essay.score}点
+                {essay.scoring.score}点
               </Badge>
             )}
-            {essay.cefr && (
+            {essay.scoring?.cefr && (
               <Badge autoContrast color="teal" size="md" variant="outline">
-                CEFR {essay.cefr}
+                CEFR {essay.scoring.cefr}
               </Badge>
             )}
-            {essay.toeicMin && essay.toeicMax && (
+            {essay.scoring?.toeicMin && essay.scoring?.toeicMax && (
               <Badge autoContrast color="grape" size="md" variant="outline">
-                TOEIC {essay.toeicMin}〜{essay.toeicMax}
+                TOEIC {essay.scoring.toeicMin}〜{essay.scoring.toeicMax}
               </Badge>
             )}
           </Group>

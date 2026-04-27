@@ -4,7 +4,7 @@ import type { AppSchema } from "~/db/instant-schema";
 
 function trimPrompt(
   prompt: NonNullable<InstaQLEntity<AppSchema, "essays">["prompt"]>,
-  max: NonNullable<InstaQLEntity<AppSchema, "essays">["toeicMax"]>,
+  max: number,
 ) {
   return prompt.length > max ? `${prompt.slice(0, max)}…` : prompt;
 }

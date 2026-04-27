@@ -8,6 +8,7 @@ export function useEssayDetail(essayId: InstaQLEntity<AppSchema, "essays">["id"]
     essays: {
       $: { where: { id: essayId } },
       comments: {},
+      scoring: {},
     },
   });
 

@@ -30,6 +30,14 @@ const rules = {
       view: "auth.id != null && auth.id in data.ref('owner.id')",
     },
   },
+  scores: {
+    allow: {
+      create: "auth.id != null",
+      delete: "false",
+      update: "auth.id != null && auth.id in data.ref('essay.owner.id')",
+      view: "auth.id != null && auth.id in data.ref('essay.owner.id')",
+    },
+  },
 } satisfies InstantRules;
 
 export default rules;

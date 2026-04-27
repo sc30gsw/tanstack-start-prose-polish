@@ -6,20 +6,6 @@ export const schema = i.schema({
       email: i.string().unique().indexed(),
       username: i.string().optional(),
     }),
-    essays: i.entity({
-      bodyAfter: i.string().optional().indexed(),
-      bodyBefore: i.string().indexed(),
-      cefr: i.string().optional(),
-      createdAt: i.date().indexed(),
-      mode: i.string().indexed(),
-      prompt: i.string().optional().indexed(),
-      score: i.number().optional(),
-      scoreFeedback: i.string().optional(),
-      status: i.string(),
-      toeicMax: i.number().optional(),
-      toeicMin: i.number().optional(),
-      updatedAt: i.date(),
-    }),
     diffComments: i.entity({
       body: i.string(),
       createdAt: i.date(),
@@ -30,6 +16,22 @@ export const schema = i.schema({
       updatedAt: i.date().optional(),
       userId: i.string().indexed(),
     }),
+    essays: i.entity({
+      bodyAfter: i.string().optional().indexed(),
+      bodyBefore: i.string().indexed(),
+      createdAt: i.date().indexed(),
+      mode: i.string().indexed(),
+      prompt: i.string().optional().indexed(),
+      status: i.string(),
+      updatedAt: i.date(),
+    }),
+    scores: i.entity({
+      cefr: i.string(),
+      score: i.number(),
+      scoreFeedback: i.string(),
+      toeicMax: i.number(),
+      toeicMin: i.number(),
+    }),
   },
   links: {
     essayComments: {
@@ -39,6 +41,10 @@ export const schema = i.schema({
     essayOwner: {
       forward: { has: "one", label: "owner", on: "essays" },
       reverse: { has: "many", label: "essays", on: "$users" },
+    },
+    essayScore: {
+      forward: { has: "one", label: "scoring", on: "essays" },
+      reverse: { has: "one", label: "essay", on: "scores" },
     },
   },
 });
