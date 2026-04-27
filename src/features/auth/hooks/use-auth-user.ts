@@ -1,4 +1,4 @@
-import { db } from "~/lib/instant";
+import { db } from "~/db/instant";
 
 export function useAuthUser() {
   return db.useAuth();

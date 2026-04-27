@@ -3,9 +3,9 @@ import { createServerFn } from "@tanstack/react-start";
 import { Result } from "better-result";
 import * as v from "valibot";
 
+import { adminDb } from "~/db/instant-admin";
+import type { AppSchema } from "~/db/instant-schema";
 import { signUpSchema } from "~/features/auth/schemas/login-schema";
-import { adminDb } from "~/lib/instant-admin";
-import type { AppSchema } from "~/lib/instant-schema";
 
 const checkEmailRegisteredFn = createServerFn({ method: "POST" })
   .inputValidator(v.pick(signUpSchema, ["email"]))

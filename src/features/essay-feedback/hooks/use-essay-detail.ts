@@ -1,7 +1,7 @@
 import type { InstaQLEntity } from "@instantdb/react";
 
-import { db } from "~/lib/instant";
-import type { AppSchema } from "~/lib/instant-schema";
+import { db } from "~/db/instant";
+import type { AppSchema } from "~/db/instant-schema";
 
 export function useEssayDetail(essayId: InstaQLEntity<AppSchema, "essays">["id"]) {
   const { data, error, isLoading } = db.useQuery({

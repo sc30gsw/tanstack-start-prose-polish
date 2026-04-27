@@ -1,8 +1,8 @@
 import type { InstaQLEntity } from "@instantdb/react";
 import { Result } from "better-result";
 
-import { db } from "~/lib/instant";
-import type { AppSchema } from "~/lib/instant-schema";
+import { db } from "~/db/instant";
+import type { AppSchema } from "~/db/instant-schema";
 
 export function sendMagicCode(email: InstaQLEntity<AppSchema, "$users">["email"]) {
   return Result.tryPromise({

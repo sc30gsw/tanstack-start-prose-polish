@@ -1,11 +1,11 @@
 import type { InstaQLEntity } from "@instantdb/react";
 import { Box, Group, Paper, Stack, Text } from "@mantine/core";
 
+import type { AppSchema } from "~/db/instant-schema";
 import { AiCommentBadge } from "~/features/essay-feedback/components/ai-comment-badge";
 import { DiffCommentThread } from "~/features/essay-feedback/components/diff-comment-thread";
 import type { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
 import type { useDiffViewState } from "~/features/essay-feedback/hooks/use-diff-view-state";
-import type { AppSchema } from "~/lib/instant-schema";
 
 type DiffNoHunksViewProps = {
   afterText: InstaQLEntity<AppSchema, "essays">["bodyAfter"];

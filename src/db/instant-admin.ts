@@ -1,6 +1,6 @@
 import { init } from "@instantdb/admin";
 
-import { schema } from "~/lib/instant-schema";
+import schema from "~/db/instant-schema";
 
 export const adminDb = init({
   adminToken: import.meta.env.VITE_INSTANT_APP_ADMIN_TOKEN,

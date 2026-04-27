@@ -14,6 +14,7 @@ import { FileDiff } from "@pierre/diffs/react";
 import { IconPlus } from "@tabler/icons-react";
 import { useCallback, useMemo } from "react";
 
+import type { AppSchema } from "~/db/instant-schema";
 import { AiLineCommentModalBody } from "~/features/essay-feedback/components/ai-line-comment-modal";
 import {
   DiffAnnotationRow,
@@ -23,7 +24,6 @@ import { DiffNoHunksView } from "~/features/essay-feedback/components/diff-no-hu
 import { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
 import { useDiffViewState } from "~/features/essay-feedback/hooks/use-diff-view-state";
 import type { DiffSearchParams } from "~/features/essay-feedback/schemas/search-params/essay-diff-search-params";
-import type { AppSchema } from "~/lib/instant-schema";
 
 type DiffViewProps = {
   afterText: InstaQLEntity<AppSchema, "essays">["bodyAfter"];

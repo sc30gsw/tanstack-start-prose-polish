@@ -1,6 +1,6 @@
 import type { InstaQLEntity } from "@instantdb/react";
 
-import type { AppSchema } from "~/lib/instant-schema";
+import type { AppSchema } from "~/db/instant-schema";
 
 export function getUserDisplayName(
   username: InstaQLEntity<AppSchema, "$users">["username"],

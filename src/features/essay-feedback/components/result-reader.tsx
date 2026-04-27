@@ -15,6 +15,7 @@ import {
 import { useMediaQuery } from "@mantine/hooks";
 import { useState } from "react";
 
+import type { AppSchema } from "~/db/instant-schema";
 import { TtsPlayControls } from "~/features/essay-feedback/components/tts-button";
 import { TtsSyncedText } from "~/features/essay-feedback/components/tts-synced-text";
 import {
@@ -22,7 +23,6 @@ import {
   type TtsDisplayMode,
   useTts,
 } from "~/features/essay-feedback/hooks/use-tts";
-import type { AppSchema } from "~/lib/instant-schema";
 
 const ACCENT_OPTIONS = [
   { value: "american-female", label: "Samantha" },

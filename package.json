@@ -14,8 +14,8 @@
     "fallow:fix": "fallow fix",
     "fallow:health": "fallow health",
     "fix": "vp check --fix",
-    "instant:push-perms": "npx instant-cli push perms --yes",
-    "instant:push-schema": "INSTANT_SCHEMA_FILE_PATH=src/lib/instant-schema.ts npx instant-cli push schema --yes",
+    "instant:push-perms": "INSTANT_PERMS_FILE_PATH=src/db/instant.perms.ts npx instant-cli push perms --yes",
+    "instant:push-schema": "INSTANT_SCHEMA_FILE_PATH=src/db/instant-schema.ts npx instant-cli push schema --yes",
     "preview": "vp preview",
     "test": "vp test"
   },
@@ -23,6 +23,7 @@
     "@instantdb/admin": "^1.0.17",
     "@instantdb/react": "^1.0.17",
     "@lightsound/cn": "^2.0.2",
+    "@mantine/charts": "^9.1.0",
     "@mantine/core": "^9.1.0",
     "@mantine/hooks": "^9.1.0",
     "@mantine/modals": "^9.1.0",
@@ -36,6 +37,7 @@
     "dayjs": "^1.11.20",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
+    "recharts": "^3.8.1",
     "tailwind-merge": "^3.5.0",
     "valibot": "^1.3.1"
   },

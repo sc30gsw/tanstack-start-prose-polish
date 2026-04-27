@@ -1,6 +1,6 @@
 import { init } from "@instantdb/react";
 
-import { schema } from "~/lib/instant-schema";
+import schema from "./instant-schema";
 
 const appId = import.meta.env.VITE_INSTANT_APP_ID;
 

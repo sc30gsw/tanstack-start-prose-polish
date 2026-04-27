@@ -3,7 +3,7 @@ import { Outlet, createFileRoute, useLocation, useNavigate } from "@tanstack/rea
 import { useEffect } from "react";
 
 import { AppShellLayout } from "~/components/app-shell-layout";
-import { db } from "~/lib/instant";
+import { db } from "~/db/instant";
 
 export const Route = createFileRoute("/_authenticated")({
   component: AuthGate,

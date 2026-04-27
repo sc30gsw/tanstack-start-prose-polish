@@ -16,9 +16,9 @@ import dayjs from "dayjs";
 import { useTransition } from "react";
 
 import { MODE_LABELS } from "~/constants";
+import { db } from "~/db/instant";
+import type { AppSchema } from "~/db/instant-schema";
 import { derivePreview, deriveTitle } from "~/features/essay-feedback/utils/histories";
-import { db } from "~/lib/instant";
-import type { AppSchema } from "~/lib/instant-schema";
 
 const MODE_COLORS = {
   diverse: "orange",

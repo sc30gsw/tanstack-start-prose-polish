@@ -3,9 +3,9 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { valibotValidator } from "@tanstack/valibot-adapter";
 import { useEffect } from "react";
 
+import { db } from "~/db/instant";
 import { LoginForm } from "~/features/auth/components/login-form";
 import { loginSearchParamsSchema } from "~/features/auth/schemas/search-params/login-search-params";
-import { db } from "~/lib/instant";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,

@@ -12,12 +12,12 @@ import { modals } from "@mantine/modals";
 import { IconPencil, IconRobot, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
 
+import { db } from "~/db/instant";
+import type { AppSchema } from "~/db/instant-schema";
 import { getUserDisplayName, getUserInitials } from "~/features/auth/utils/user-display-name";
 import { DiffCommentThreadEditForm } from "~/features/essay-feedback/components/diff-thread-edit-form";
 import type { useDiffComments } from "~/features/essay-feedback/hooks/use-diff-comments";
 import type { DiffComment } from "~/features/essay-feedback/schemas/essay-schema";
-import { db } from "~/lib/instant";
-import type { AppSchema } from "~/lib/instant-schema";
 import { formatCommentTimestamp } from "~/utils/format-comment-timestamp";
 
 type DiffCommentThreadProps = {

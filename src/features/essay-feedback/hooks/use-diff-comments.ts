@@ -2,12 +2,12 @@ import { id, type InstaQLEntity } from "@instantdb/react";
 import { useTransition } from "react";
 import * as v from "valibot";
 
+import { db } from "~/db/instant";
+import type { AppSchema } from "~/db/instant-schema";
 import {
   diffCommentInputSchema,
   type DiffCommentInput,
 } from "~/features/essay-feedback/schemas/essay-schema";
-import { db } from "~/lib/instant";
-import type { AppSchema } from "~/lib/instant-schema";
 
 export function useDiffComments(essayId: InstaQLEntity<AppSchema, "essays">["id"]) {
   const [isPending, startTransition] = useTransition();

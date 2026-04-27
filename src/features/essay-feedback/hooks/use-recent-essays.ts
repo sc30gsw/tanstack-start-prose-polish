@@ -1,4 +1,4 @@
-import { db } from "~/lib/instant";
+import { db } from "~/db/instant";
 
 export function useRecentEssays() {
   const { data, error, isLoading } = db.useQuery({

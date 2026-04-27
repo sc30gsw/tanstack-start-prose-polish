@@ -1,8 +1,8 @@
+import { db } from "~/db/instant";
 import type {
   EssaysModeFilter,
   EssaysSearchParams,
 } from "~/features/essay-feedback/schemas/search-params/essays-search-params";
-import { db } from "~/lib/instant";
 
 const ESSAYS_ORDER_DESC = { order: { createdAt: "desc" as const } };
 export const ESSAY_LIST_PAGE_SIZE = 10;

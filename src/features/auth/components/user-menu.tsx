@@ -1,8 +1,8 @@
 import { ActionIcon, Avatar, Button, Group, Menu, Stack, Text, Tooltip } from "@mantine/core";
 import { IconLogout, IconUser } from "@tabler/icons-react";
 
+import { db } from "~/db/instant";
 import { getUserDisplayName, getUserInitials } from "~/features/auth/utils/user-display-name";
-import { db } from "~/lib/instant";
 
 export function UserSidebarFooter() {
   const { user } = db.useAuth();

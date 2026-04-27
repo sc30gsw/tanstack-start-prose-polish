@@ -4,6 +4,7 @@ import { useForm } from "@tanstack/react-form";
 import { getRouteApi } from "@tanstack/react-router";
 import * as v from "valibot";
 
+import { db } from "~/db/instant";
 import { useAuthUser } from "~/features/auth/hooks/use-auth-user";
 import { correctEssay } from "~/features/essay-feedback/api/mock-ai";
 import { DiverseModePrompt } from "~/features/essay-feedback/components/diverse-prompt";
@@ -14,7 +15,6 @@ import {
   essayDraftSchema,
   type EssayDraftInput,
 } from "~/features/essay-feedback/schemas/essay-schema";
-import { db } from "~/lib/instant";
 
 const routeApi = getRouteApi("/_authenticated/essays/new");
 

@@ -6,7 +6,8 @@ import { PageHeader } from "~/components/page-header";
 import { ScoringProgress } from "~/features/essay-feedback/components/scoring-progress";
 import { useEssayDetail } from "~/features/essay-feedback/hooks/use-essay-detail";
 import { useScoringStream } from "~/features/essay-feedback/hooks/use-scoring-stream";
-import type { EssayMode } from "~/features/essay-feedback/schemas/essay-schema";
+import type { EssayMode, Score } from "~/features/essay-feedback/schemas/essay-schema";
+import { isEveryNonNull } from "~/lib/every-non-null";
 
 export const Route = createFileRoute("/_authenticated/essays/$essayId/scoring")({
   component: ScoringPage,
@@ -15,7 +16,7 @@ export const Route = createFileRoute("/_authenticated/essays/$essayId/scoring")(
 function ScoringPage() {
   const { essayId } = Route.useParams();
   const { essay, isLoading } = useEssayDetail(essayId);
-  const { state, start, markFeedbackReady, isPending } = useScoringStream();
+  const { state, start, hydrate, markFeedbackReady, isPending } = useScoringStream();
   const startedRef = useRef(false);
 
   useEffect(() => {
@@ -23,22 +24,39 @@ function ScoringPage() {
       return;
     }
 
-    if (!essay.bodyBefore) {
+    const { bodyBefore, mode, prompt, score, scoreFeedback, cefr, toeicMin, toeicMax } = essay;
+    if (!bodyBefore) {
+      return;
+    }
+
+    const scoring = [score, scoreFeedback, cefr, toeicMin, toeicMax] as const;
+
+    if (isEveryNonNull(scoring)) {
+      const [score, scoreFeedback, cefr, toeicMin, toeicMax] = scoring;
+
+      hydrate({
+        cefr: cefr as Score["cefr"],
+        score,
+        scoreFeedback,
+        toeicMax,
+        toeicMin,
+      });
+
       return;
     }
 
     startedRef.current = true;
     const controller = new AbortController();
 
-    start(essay.bodyBefore, controller.signal, {
-      mode: essay?.mode as EssayMode,
-      prompt: essay?.prompt,
+    start(essayId, bodyBefore, controller.signal, {
+      mode: mode as EssayMode,
+      prompt,
     });
 
     return () => {
       controller.abort();
     };
-  }, [essay, start]);
+  }, [essay, essayId, hydrate, start]);
 
   useEffect(() => {
     if (!essay) {
