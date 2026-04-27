@@ -47,8 +47,11 @@ function ResultPage() {
     <Container py="xl" size="md">
       <Stack gap="xl">
         <PageHeader
-          backHref={`/essays/${essayId}/diff`}
-          backLabel="前後の文章を比較"
+          backLink={
+            <Link to="/essays/$essayId/diff" params={{ essayId }}>
+              前後の文章を比較
+            </Link>
+          }
           title="添削後の文章"
         >
           <Button

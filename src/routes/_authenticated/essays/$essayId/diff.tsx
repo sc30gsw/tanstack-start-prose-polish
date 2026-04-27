@@ -32,7 +32,14 @@ function DiffPage() {
 
   return (
     <Container py="xl" size="xl">
-      <PageHeader backHref="/essays" backLabel="履歴一覧" title="添削結果">
+      <PageHeader
+        backLink={
+          <Link to="/essays/$essayId/scoring" params={{ essayId }}>
+            採点結果を確認
+          </Link>
+        }
+        title="添削結果"
+      >
         <Button
           size="sm"
           variant="filled"
@@ -62,7 +69,7 @@ function DiffPage() {
               <Link to="/essays/$essayId/result" params={{ essayId }} {...props} />
             )}
           >
-            添削後を読む →
+            添削後を読む <IconArrowRight size={16} />
           </Button>
         </Group>
       </Stack>

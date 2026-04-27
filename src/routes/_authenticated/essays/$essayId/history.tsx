@@ -1,5 +1,5 @@
 import { Container, Stack } from "@mantine/core";
-import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
+import { createFileRoute, Link, stripSearchParams } from "@tanstack/react-router";
 import { valibotValidator } from "@tanstack/valibot-adapter";
 
 import { PageHeader } from "~/components/page-header";
@@ -40,7 +40,7 @@ function HistoryPage() {
   return (
     <Container py="xl" size="xl">
       <Stack gap="lg">
-        <PageHeader backHref="/essays" backLabel="履歴一覧" title="学習履歴詳細" />
+        <PageHeader backLink={<Link to="/essays">学習履歴一覧</Link>} title="学習履歴詳細" />
         {summary && <EssayScoringSummaryChart {...summary} />}
         <HistoryDetailTabs />
       </Stack>

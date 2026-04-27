@@ -82,8 +82,7 @@ function ScoringPage() {
   return (
     <Container py="xl" size="md">
       <PageHeader
-        backHref="/"
-        backLabel="履歴一覧"
+        backLink={<Link to="/essays">学習履歴一覧</Link>}
         title={state.stage === "done" ? "採点結果" : "採点中..."}
       />
       <Stack gap="xl">

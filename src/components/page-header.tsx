@@ -1,24 +1,21 @@
-import { Anchor, Group, Stack, Title } from "@mantine/core";
-import { Link } from "@tanstack/react-router";
-import type { ComponentProps, ReactNode } from "react";
-
-import type { FileRoutesByTo } from "~/routeTree.gen";
+import { Anchor, Flex, Group, Stack, Title } from "@mantine/core";
+import { IconArrowLeft } from "@tabler/icons-react";
+import type { ReactNode } from "react";
 
 type PageHeaderProps = {
-  backHref?: keyof FileRoutesByTo | ComponentProps<typeof Link>["to"];
-  backLabel?: string;
+  backLink: ReactNode;
   children?: ReactNode;
   title: string;
 };
 
-export function PageHeader({ title, backHref, backLabel, children }: PageHeaderProps) {
+export function PageHeader({ title, backLink, children }: PageHeaderProps) {
   return (
     <Stack gap="xs" mb="xl">
-      {backHref && (
-        <Anchor component={Link} fw={600} size="md" to={backHref} underline="hover">
-          ← {backLabel ?? "戻る"}
-        </Anchor>
-      )}
+      <Anchor fw={600} size="md" underline="hover">
+        <Flex align="center" gap="xs" wrap="nowrap">
+          <IconArrowLeft size={16} /> {backLink}
+        </Flex>
+      </Anchor>
       {children ? (
         <Group align="center" justify="space-between" wrap="wrap">
           <Title m={0} order={1} size="h2" className="min-w-0">

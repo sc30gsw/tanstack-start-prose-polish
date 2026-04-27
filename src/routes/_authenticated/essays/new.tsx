@@ -1,5 +1,5 @@
 import { Container } from "@mantine/core";
-import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
+import { createFileRoute, Link, stripSearchParams } from "@tanstack/react-router";
 import { valibotValidator } from "@tanstack/valibot-adapter";
 
 import { PageHeader } from "~/components/page-header";
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/_authenticated/essays/new")({
 function EssayNewPage() {
   return (
     <Container py="xl" size="md">
-      <PageHeader backHref="/" backLabel="履歴一覧" title="新しい作文を始める" />
+      <PageHeader backLink={<Link to="/">ホームへ戻る</Link>} title="新しい作文を始める" />
       <EssayNewForm />
     </Container>
   );
