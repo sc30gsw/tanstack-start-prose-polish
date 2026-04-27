@@ -3,14 +3,14 @@ import { createFileRoute, Link, stripSearchParams } from "@tanstack/react-router
 import { valibotValidator } from "@tanstack/valibot-adapter";
 
 import { PageHeader } from "~/components/page-header";
-import { EssayScoringSummaryChart } from "~/features/essay-feedback/components/essay-scoring-summary-chart";
-import { HistoryDetailTabs } from "~/features/essay-feedback/components/history-detail-tabs";
-import { SCORE_CEFR } from "~/features/essay-feedback/constants/essay";
-import { useEssayDetail } from "~/features/essay-feedback/hooks/use-essay-detail";
+import { EssayScoringSummaryChart } from "~/features/essays/components/essay-scoring-summary-chart";
+import { HistoryDetailTabs } from "~/features/essays/components/history-detail-tabs";
+import { SCORE_CEFR } from "~/features/essays/constants/essay";
+import { useEssayDetail } from "~/features/essays/hooks/use-essay-detail";
 import {
   defaultEssayHistoriesSearchParams,
   essayHistoriesSearchSchema,
-} from "~/features/essay-feedback/schemas/search-params/essay-histories-search-params";
+} from "~/features/essays/schemas/search-params/essay-histories-search-params";
 
 type ScoreCefr = (typeof SCORE_CEFR)[number];
 

@@ -23,7 +23,7 @@ import {
 } from "@tabler/icons-react";
 import { ClientOnly, Link, createFileRoute } from "@tanstack/react-router";
 
-import { HomeRecentHistory } from "~/features/essay-feedback/components/home-recent-history";
+import { HomeRecentHistory } from "~/features/essays/components/home-recent-history";
 
 export const Route = createFileRoute("/_authenticated/")({
   component: HomePage,

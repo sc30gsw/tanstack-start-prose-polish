@@ -1,10 +1,9 @@
-import { Button, Container, Stack, Text } from "@mantine/core";
+import { Button, Container, Stack } from "@mantine/core";
 import { IconListDetails } from "@tabler/icons-react";
 import { ClientOnly, createFileRoute, Link } from "@tanstack/react-router";
 
 import { PageHeader } from "~/components/page-header";
-import { ResultReader } from "~/features/essay-feedback/components/result-reader";
-import { useEssayDetail } from "~/features/essay-feedback/hooks/use-essay-detail";
+import { ResultReader } from "~/features/essays/components/result-reader";
 
 export const Route = createFileRoute("/_authenticated/essays/$essayId/result")({
   component: ResultPage,
@@ -12,36 +11,6 @@ export const Route = createFileRoute("/_authenticated/essays/$essayId/result")({
 
 function ResultPage() {
   const { essayId } = Route.useParams();
-  const { essay, isLoading } = useEssayDetail(essayId);
-
-  if (isLoading) {
-    return (
-      <Container py="xl" size="md">
-        <Text>読み込み中...</Text>
-      </Container>
-    );
-  }
-
-  const essayData = essay as {
-    bodyAfter?: null | string;
-    bodyBefore?: string;
-  } | null;
-
-  if (essayData == null || essayData.bodyBefore == null) {
-    return (
-      <Container py="xl" size="md">
-        <Text c="red">エッセイが見つかりませんでした。</Text>
-      </Container>
-    );
-  }
-
-  if (essayData.bodyAfter == null) {
-    return (
-      <Container py="xl" size="md">
-        <Text c="dimmed">添削中です。しばらくお待ちください...</Text>
-      </Container>
-    );
-  }
 
   return (
     <Container py="xl" size="md">
@@ -66,7 +35,7 @@ function ResultPage() {
           </Button>
         </PageHeader>
         <ClientOnly>
-          <ResultReader correctedBody={essayData.bodyAfter} />
+          <ResultReader essayId={essayId} />
         </ClientOnly>
       </Stack>
     </Container>

@@ -10,14 +10,14 @@ import {
 import { valibotValidator } from "@tanstack/valibot-adapter";
 
 import { PageHeader } from "~/components/page-header";
-import { DiffView } from "~/features/essay-feedback/components/diff-view";
-import { DIFF_VIEW_MODE_OPTIONS } from "~/features/essay-feedback/constants/diff-view-ui";
-import { useEssayDetail } from "~/features/essay-feedback/hooks/use-essay-detail";
-import { useResolvedDiffView } from "~/features/essay-feedback/hooks/use-resolved-diff-view";
+import { DiffView } from "~/features/essays/components/diff-view";
+import { DIFF_VIEW_MODE_OPTIONS } from "~/features/essays/constants/diff-view-ui";
+import { useEssayDetail } from "~/features/essays/hooks/use-essay-detail";
+import { useResolvedDiffView } from "~/features/essays/hooks/use-resolved-diff-view";
 import {
   defaultDiffSearchParams,
   diffSearchSchema,
-} from "~/features/essay-feedback/schemas/search-params/essay-diff-search-params";
+} from "~/features/essays/schemas/search-params/essay-diff-search-params";
 
 export const Route = createFileRoute("/_authenticated/essays/$essayId/diff")({
   component: DiffPage,

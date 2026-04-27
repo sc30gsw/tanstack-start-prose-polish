@@ -8,17 +8,14 @@ import {
 } from "@tanstack/react-router";
 import { valibotValidator } from "@tanstack/valibot-adapter";
 
-import { EssaySearch } from "~/features/essay-feedback/components/essay-search";
-import { EssaysPagination } from "~/features/essay-feedback/components/essays-pagination";
-import { HistoryCard } from "~/features/essay-feedback/components/history-card";
-import {
-  ESSAY_LIST_PAGE_SIZE,
-  useEssaysList,
-} from "~/features/essay-feedback/hooks/use-essays-list";
+import { EssaySearch } from "~/features/essays/components/essay-search";
+import { EssaysPagination } from "~/features/essays/components/essays-pagination";
+import { HistoryCard } from "~/features/essays/components/history-card";
+import { ESSAY_LIST_PAGE_SIZE, useEssaysList } from "~/features/essays/hooks/use-essays-list";
 import {
   defaultEssaysSearchParams,
   essaysSearchSchema,
-} from "~/features/essay-feedback/schemas/search-params/essays-search-params";
+} from "~/features/essays/schemas/search-params/essays-search-params";
 
 export const Route = createFileRoute("/_authenticated/essays/")({
   component: EssaysPage,

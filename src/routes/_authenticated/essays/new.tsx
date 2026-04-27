@@ -3,11 +3,11 @@ import { createFileRoute, Link, stripSearchParams } from "@tanstack/react-router
 import { valibotValidator } from "@tanstack/valibot-adapter";
 
 import { PageHeader } from "~/components/page-header";
-import { EssayNewForm } from "~/features/essay-feedback/components/essay-new-form";
+import { EssayNewForm } from "~/features/essays/components/essay-new-form";
 import {
   defaultEssaysNewSearchParams,
   essaysNewSearchSchema,
-} from "~/features/essay-feedback/schemas/search-params/essays-new-search-params";
+} from "~/features/essays/schemas/search-params/essays-new-search-params";
 
 export const Route = createFileRoute("/_authenticated/essays/new")({
   component: EssayNewPage,
