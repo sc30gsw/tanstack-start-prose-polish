@@ -5,6 +5,7 @@ import { HistoryDetailDiffPanel } from "~/features/essays/components/history/his
 import { ResultReader } from "~/features/essays/components/result/result-reader";
 import { useEssayDetail } from "~/features/essays/hooks/use-essay-detail";
 import type { EssayHistoriesSearchParams } from "~/features/essays/schemas/search-params/essay-histories-search-params";
+import type { EssayResultSearchParams } from "~/features/essays/schemas/search-params/essay-result-search-params";
 
 const routeApi = getRouteApi("/_authenticated/essays/$essayId/history");
 
@@ -70,15 +71,15 @@ export function HistoryDetailTabs() {
           </Tabs.Tab>
         </Tabs.List>
 
-        <HistoryDetailBeforePanel bodyBefore={essay.bodyBefore} />
+        <HistoryDetailBeforeSentencePanel bodyBefore={essay.bodyBefore} />
         <HistoryDetailDiffPanel bodyAfter={essay.bodyAfter} bodyBefore={essay.bodyBefore} />
-        <HistoryDetailAfterPanel bodyAfter={essay.bodyAfter} essayId={essayId} />
+        <HistoryDetailResultReaderPanel bodyAfter={essay.bodyAfter} />
       </Tabs>
     </Stack>
   );
 }
 
-function HistoryDetailBeforePanel({
+function HistoryDetailBeforeSentencePanel({
   bodyBefore,
 }: Pick<NonNullable<ReturnType<typeof useEssayDetail>["essay"]>, "bodyBefore">) {
   return (
@@ -92,11 +93,25 @@ function HistoryDetailBeforePanel({
   );
 }
 
-function HistoryDetailAfterPanel({
+function HistoryDetailResultReaderPanel({
   bodyAfter,
-  essayId,
-}: Pick<NonNullable<ReturnType<typeof useEssayDetail>["essay"]>, "bodyAfter"> &
-  Record<"essayId", string>) {
+}: Pick<NonNullable<ReturnType<typeof useEssayDetail>["essay"]>, "bodyAfter">) {
+  const { essayId } = routeApi.useParams();
+  const { accent, mode } = routeApi.useSearch();
+  const navigate = routeApi.useNavigate();
+
+  const handleModeChange = (mode: EssayResultSearchParams["mode"]) => {
+    navigate({
+      search: (prev) => ({ ...prev, mode }),
+    });
+  };
+
+  const handleAccentChange = (accent: EssayResultSearchParams["accent"]) => {
+    navigate({
+      search: (prev) => ({ ...prev, accent }),
+    });
+  };
+
   if (!bodyAfter) {
     return (
       <Tabs.Panel value="after">
@@ -111,7 +126,13 @@ function HistoryDetailAfterPanel({
     <Tabs.Panel value="after">
       <ClientOnly>
         <Stack mt="md">
-          <ResultReader essayId={essayId} />
+          <ResultReader
+            essayId={essayId}
+            accent={accent}
+            onAccentChange={handleAccentChange}
+            mode={mode}
+            onModeChange={handleModeChange}
+          />
         </Stack>
       </ClientOnly>
     </Tabs.Panel>

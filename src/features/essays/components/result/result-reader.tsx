@@ -14,37 +14,43 @@ import {
   type MantineColor,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { useState } from "react";
 
 import type { AppSchema } from "~/db/instant-schema";
 import { TtsPlayControls } from "~/features/essays/components/result/tts-button";
 import { TtsSyncedText } from "~/features/essays/components/result/tts-synced-text";
-import {
-  type TtsAccent,
-  type TtsDisplayMode,
-  useTts,
-} from "~/features/essays/hooks/result/use-tts";
+import { ACCENT_OPTIONS } from "~/features/essays/constants/result-reader";
+import { useTts } from "~/features/essays/hooks/result/use-tts";
 import { useEssayDetail } from "~/features/essays/hooks/use-essay-detail";
-
-const ACCENT_OPTIONS = [
-  { value: "american-female", label: "Samantha" },
-  { value: "british-male", label: "Daniel" },
-] as const satisfies { value: TtsAccent; label: string }[];
+import { type EssayResultSearchParams } from "~/features/essays/schemas/search-params/essay-result-search-params";
 
 const ACCENT_AVATAR = {
-  "american-female": { color: "pink", initials: "S" },
-  "british-male": { color: "indigo", initials: "D" },
-} as const satisfies Record<TtsAccent, { color: MantineColor; initials: string }>;
+  [ACCENT_OPTIONS[0].value]: { color: "pink", initials: "S" },
+  [ACCENT_OPTIONS[1].value]: { color: "indigo", initials: "D" },
+} as const satisfies Record<
+  (typeof ACCENT_OPTIONS)[number]["value"],
+  { color: MantineColor; initials: string }
+>;
+
+type ResultReaderProps = {
+  essayId: NonNullable<InstaQLEntity<AppSchema, "essays">["id"]>;
+  accent: EssayResultSearchParams["accent"];
+  onAccentChange: (accent: EssayResultSearchParams["accent"]) => void;
+  mode: EssayResultSearchParams["mode"];
+  onModeChange: (mode: EssayResultSearchParams["mode"]) => void;
+};
 
 export function ResultReader({
   essayId,
-}: Record<"essayId", NonNullable<InstaQLEntity<AppSchema, "essays">["id"]>>) {
+  accent,
+  onAccentChange,
+  mode,
+  onModeChange,
+}: ResultReaderProps) {
   const { essay, isLoading, error } = useEssayDetail(essayId);
   const theme = useMantineTheme();
   const isSmUp = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`);
-  const ttsFullWidth = isSmUp === false;
+
   const {
-    accent,
     currentWordIndex,
     isPlaybackActive,
     isSupported,
@@ -53,9 +59,7 @@ export function ResultReader({
     playFromStart,
     playbackState,
     resetPlayback,
-    setAccent,
-  } = useTts(essay?.bodyAfter ?? "");
-  const [displayMode, setDisplayMode] = useState<TtsDisplayMode>("aloud");
+  } = useTts({ accent, text: essay?.bodyAfter ?? "" });
 
   if (isLoading) {
     return (
@@ -99,12 +103,16 @@ export function ResultReader({
                 ]}
                 label="表示モード"
                 onChange={(v) => {
-                  if (v == null) return;
-                  setDisplayMode(v as TtsDisplayMode);
+                  if (v == null) {
+                    return;
+                  }
+
+                  onModeChange(v as EssayResultSearchParams["mode"]);
+
                   resetPlayback();
                 }}
                 size="sm"
-                value={displayMode}
+                value={mode}
                 w="100%"
               />
               <Select
@@ -117,12 +125,16 @@ export function ResultReader({
                 }
                 leftSectionWidth={36}
                 onChange={(v) => {
-                  if (v == null) return;
-                  setAccent(v as TtsAccent);
+                  if (v == null) {
+                    return;
+                  }
+
+                  onAccentChange(v as EssayResultSearchParams["accent"]);
                   resetPlayback();
                 }}
                 renderOption={({ option }) => {
-                  const av = ACCENT_AVATAR[option.value as TtsAccent];
+                  const av = ACCENT_AVATAR[option.value as EssayResultSearchParams["accent"]];
+
                   return (
                     <Group gap="xs">
                       <Avatar color={av.color} radius="xl" size={24}>
@@ -138,11 +150,11 @@ export function ResultReader({
               />
               <Box w="100%" className={cn(isSmUp ? "self-end" : "self-stretch")}>
                 <TtsPlayControls
-                  fullWidth={ttsFullWidth}
+                  fullWidth={isSmUp === false}
                   isSupported={isSupported}
-                  onPause={pauseTts}
-                  onPlay={playTts}
-                  onPlayFromStart={playFromStart}
+                  pause={pauseTts}
+                  play={playTts}
+                  playFromStart={playFromStart}
                   playbackState={playbackState}
                 />
               </Box>
@@ -160,7 +172,7 @@ export function ResultReader({
         <Box p="xl">
           <TtsSyncedText
             currentWordIndex={currentWordIndex}
-            displayMode={displayMode}
+            displayMode={mode}
             isPlaying={isPlaybackActive}
             text={essay.bodyAfter}
           />

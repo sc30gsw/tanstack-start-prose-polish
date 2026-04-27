@@ -14,7 +14,7 @@ function AuthGate() {
 
   if (isLoading) {
     return (
-      <Stack align="center" justify="center" style={{ minHeight: "100vh" }}>
+      <Stack align="center" justify="center" className="min-h-dvh">
         <Loader aria-label="読み込み中" />
       </Stack>
     );

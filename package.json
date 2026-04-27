@@ -35,6 +35,7 @@
     "@tanstack/valibot-adapter": "^1.166.9",
     "better-result": "^2.8.2",
     "dayjs": "^1.11.20",
+    "es-toolkit": "^1.46.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "recharts": "^3.8.1",

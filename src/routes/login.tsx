@@ -17,7 +17,7 @@ function LoginPage() {
 
   if (isLoading) {
     return (
-      <Center style={{ minHeight: "100vh" }}>
+      <Center className="min-h-dvh">
         <Loader aria-label="読み込み中" />
       </Center>
     );
@@ -29,7 +29,7 @@ function LoginPage() {
         <SignedInRedirect />
       </db.SignedIn>
       <db.SignedOut>
-        <Center style={{ minHeight: "100vh" }}>
+        <Center className="min-h-dvh">
           <Stack align="center" gap="lg">
             <LoginForm />
           </Stack>

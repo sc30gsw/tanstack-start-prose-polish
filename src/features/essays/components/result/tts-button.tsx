@@ -2,23 +2,20 @@ import { cn } from "@lightsound/cn/tw-merge";
 import { ActionIcon, Box, Button, Group, Tooltip } from "@mantine/core";
 import { IconPlayerPause, IconPlayerPlay, IconRefresh } from "@tabler/icons-react";
 
-import { type TtsPlaybackState, useTts } from "~/features/essays/hooks/result/use-tts";
+import { useTts } from "~/features/essays/hooks/result/use-tts";
 
-type TtsPlayControlsProps = {
-  fullWidth?: boolean;
-  isSupported: boolean;
-  onPause: () => void;
-  onPlay: () => void;
-  onPlayFromStart: () => void;
-  playbackState: TtsPlaybackState;
-};
+type TtsPlayControlsProps = Partial<Record<"fullWidth", boolean>> &
+  Pick<
+    ReturnType<typeof useTts>,
+    "isSupported" | "pause" | "play" | "playFromStart" | "playbackState"
+  >;
 
 export function TtsPlayControls({
   fullWidth = false,
   isSupported,
-  onPause,
-  onPlay,
-  onPlayFromStart,
+  pause,
+  play,
+  playFromStart,
   playbackState,
 }: TtsPlayControlsProps) {
   if (!isSupported) {
@@ -49,7 +46,7 @@ export function TtsPlayControls({
       <ActionIcon
         aria-label="先頭から再生"
         color="gray"
-        onClick={onPlayFromStart}
+        onClick={playFromStart}
         size="input-sm"
         variant="default"
       >
@@ -64,8 +61,8 @@ export function TtsPlayControls({
       color="gray"
       fullWidth={fullWidth}
       leftSection={<IconPlayerPause size={16} />}
-      onClick={onPause}
-      style={fullWidth ? { flex: 1, minWidth: 0 } : undefined}
+      onClick={pause}
+      className={cn(fullWidth ? "min-w-0 flex-1" : undefined)}
       variant="default"
     >
       一時停止
@@ -76,44 +73,23 @@ export function TtsPlayControls({
       color="teal"
       fullWidth={fullWidth}
       leftSection={<IconPlayerPlay size={16} />}
-      onClick={onPlay}
-      style={fullWidth ? { flex: 1, minWidth: 0 } : undefined}
+      onClick={play}
+      className={cn(fullWidth ? "min-w-0 flex-1" : undefined)}
       variant="filled"
     >
       {playLabel}
     </Button>
   );
 
-  if (fullWidth) {
-    return (
-      <Group align="center" gap="sm" w="100%" wrap="nowrap">
-        {mainButton}
-        {refreshButton}
-      </Group>
-    );
-  }
-
-  return (
+  return fullWidth ? (
+    <Group align="center" gap="sm" w="100%" wrap="nowrap">
+      {mainButton}
+      {refreshButton}
+    </Group>
+  ) : (
     <Group gap="sm" wrap="wrap">
       {mainButton}
       {refreshButton}
     </Group>
-  );
-}
-
-type TtsButtonProps = {
-  text: string;
-};
-
-export function TtsButton({ text }: TtsButtonProps) {
-  const { isSupported, pause, play, playFromStart, playbackState } = useTts(text);
-  return (
-    <TtsPlayControls
-      isSupported={isSupported}
-      onPause={pause}
-      onPlay={play}
-      onPlayFromStart={playFromStart}
-      playbackState={playbackState}
-    />
   );
 }

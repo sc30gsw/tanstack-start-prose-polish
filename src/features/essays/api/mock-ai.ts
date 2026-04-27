@@ -1,4 +1,5 @@
 import { Result } from "better-result";
+import { clamp, range, sample, sampleSize } from "es-toolkit";
 
 import type { DiffComment, Score } from "~/features/essays/schemas/essay-schema";
 
@@ -60,8 +61,7 @@ export function askDiverseMode() {
     catch: (e) => e as Error,
     try: async () => {
       await delay(600);
-      const idx = Math.floor(Math.random() * DIVERSE_MODE_SAMPLE_QUESTIONS.length);
-      return DIVERSE_MODE_SAMPLE_QUESTIONS[idx] as string;
+      return sample(DIVERSE_MODE_SAMPLE_QUESTIONS) as string;
     },
   });
 }
@@ -73,7 +73,7 @@ export async function* scoreEssay(
   opts?: EssayOpts,
 ): AsyncGenerator<Partial<Score>, void, unknown> {
   const charCount = text.trim().length;
-  const baseScore = Math.min(95, Math.max(30, 40 + Math.floor(charCount / 200)));
+  const baseScore = clamp(40 + Math.floor(charCount / 200), 30, 95);
 
   await delay(SCORE_STREAM_STEP_MS);
   yield { score: baseScore, scoreFeedback: buildScoreFeedback(baseScore, opts) };
@@ -150,21 +150,12 @@ function applySimpleCorrection(line: string): string {
 
 function generateAiComments(lines: string[], opts?: EssayOpts): DiffComment[] {
   const comments: DiffComment[] = [];
-  const usedLines = new Set<number>();
 
   const targetCount = Math.min(MOCK_CORRECTIONS.length, Math.floor(lines.length / 3) + 1);
+  const lineNumbers = sampleSize(range(1, lines.length + 1), Math.min(targetCount, lines.length));
 
-  for (let i = 0; i < targetCount; i++) {
-    let lineNumber: number;
-    let attempts = 0;
-    do {
-      lineNumber = Math.floor(Math.random() * lines.length) + 1;
-      attempts++;
-    } while (usedLines.has(lineNumber) && attempts < 20);
-
-    if (usedLines.has(lineNumber)) continue;
-    usedLines.add(lineNumber);
-
+  for (let i = 0; i < lineNumbers.length; i++) {
+    const lineNumber = lineNumbers[i]!;
     const correction = MOCK_CORRECTIONS[i % MOCK_CORRECTIONS.length];
     if (correction == null) continue;
 
@@ -179,6 +170,8 @@ function generateAiComments(lines: string[], opts?: EssayOpts): DiffComment[] {
       userId: crypto.randomUUID(),
     });
   }
+
+  const usedLines = new Set(lineNumbers);
 
   if (opts?.mode === "topic" && opts.prompt != null && lines.length > 0) {
     const topicLine = Math.max(1, Math.floor(lines.length / 2));

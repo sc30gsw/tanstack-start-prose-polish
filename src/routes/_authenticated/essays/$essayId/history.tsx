@@ -12,8 +12,6 @@ import {
   essayHistoriesSearchSchema,
 } from "~/features/essays/schemas/search-params/essay-histories-search-params";
 
-type ScoreCefr = (typeof SCORE_CEFR)[number];
-
 export const Route = createFileRoute("/_authenticated/essays/$essayId/history")({
   component: HistoryPage,
   validateSearch: valibotValidator(essayHistoriesSearchSchema),
@@ -30,7 +28,7 @@ function HistoryPage() {
   const summary =
     scoring != null
       ? {
-          cefr: scoring.cefr as ScoreCefr,
+          cefr: scoring.cefr as (typeof SCORE_CEFR)[number],
           score: scoring.score,
           toeicMax: scoring.toeicMax,
           toeicMin: scoring.toeicMin,
