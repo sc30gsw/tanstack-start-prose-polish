@@ -79,7 +79,7 @@ body.ecc-catalog-page {
 }
 
 .catalog-panel-title::after {
-  content: '';
+  content: "";
   display: block;
   height: 2px;
   background: linear-gradient(90deg, var(--primary) 0%, transparent 100%);
@@ -126,49 +126,49 @@ body.ecc-catalog-page {
   font-size: 0.75rem;
 }
 
-.ecc-doc-layout:has(#ecc-cat-1:checked) [data-panel='1'],
-.ecc-doc-layout:has(#ecc-cat-2:checked) [data-panel='2'],
-.ecc-doc-layout:has(#ecc-cat-3:checked) [data-panel='3'],
-.ecc-doc-layout:has(#ecc-cat-4:checked) [data-panel='4'],
-.ecc-doc-layout:has(#ecc-cat-5:checked) [data-panel='5'],
-.ecc-doc-layout:has(#ecc-cat-6:checked) [data-panel='6'],
-.ecc-doc-layout:has(#ecc-cat-7:checked) [data-panel='7'],
-.ecc-doc-layout:has(#ecc-cat-8:checked) [data-panel='8'],
-.ecc-doc-layout:has(#ecc-cat-9:checked) [data-panel='9'],
-.ecc-doc-layout:has(#ecc-cat-10:checked) [data-panel='10'],
-.ecc-doc-layout:has(#ecc-cat-11:checked) [data-panel='11'],
-.ecc-doc-layout:has(#ecc-cat-12:checked) [data-panel='12'],
-.ecc-doc-layout:has(#ecc-cat-13:checked) [data-panel='13'],
-.ecc-doc-layout:has(#ecc-cat-14:checked) [data-panel='14'],
-.ecc-doc-layout:has(#ecc-cat-15:checked) [data-panel='15'],
-.ecc-doc-layout:has(#ecc-cat-16:checked) [data-panel='16'],
-.ecc-doc-layout:has(#ecc-cat-17:checked) [data-panel='17'],
-.ecc-doc-layout:has(#ecc-cat-18:checked) [data-panel='18'],
-.ecc-doc-layout:has(#ecc-cat-19:checked) [data-panel='19'],
-.ecc-doc-layout:has(#ecc-cat-20:checked) [data-panel='20'] {
+.ecc-doc-layout:has(#ecc-cat-1:checked) [data-panel="1"],
+.ecc-doc-layout:has(#ecc-cat-2:checked) [data-panel="2"],
+.ecc-doc-layout:has(#ecc-cat-3:checked) [data-panel="3"],
+.ecc-doc-layout:has(#ecc-cat-4:checked) [data-panel="4"],
+.ecc-doc-layout:has(#ecc-cat-5:checked) [data-panel="5"],
+.ecc-doc-layout:has(#ecc-cat-6:checked) [data-panel="6"],
+.ecc-doc-layout:has(#ecc-cat-7:checked) [data-panel="7"],
+.ecc-doc-layout:has(#ecc-cat-8:checked) [data-panel="8"],
+.ecc-doc-layout:has(#ecc-cat-9:checked) [data-panel="9"],
+.ecc-doc-layout:has(#ecc-cat-10:checked) [data-panel="10"],
+.ecc-doc-layout:has(#ecc-cat-11:checked) [data-panel="11"],
+.ecc-doc-layout:has(#ecc-cat-12:checked) [data-panel="12"],
+.ecc-doc-layout:has(#ecc-cat-13:checked) [data-panel="13"],
+.ecc-doc-layout:has(#ecc-cat-14:checked) [data-panel="14"],
+.ecc-doc-layout:has(#ecc-cat-15:checked) [data-panel="15"],
+.ecc-doc-layout:has(#ecc-cat-16:checked) [data-panel="16"],
+.ecc-doc-layout:has(#ecc-cat-17:checked) [data-panel="17"],
+.ecc-doc-layout:has(#ecc-cat-18:checked) [data-panel="18"],
+.ecc-doc-layout:has(#ecc-cat-19:checked) [data-panel="19"],
+.ecc-doc-layout:has(#ecc-cat-20:checked) [data-panel="20"] {
   display: block;
 }
 
-.ecc-doc-layout:has(#ecc-cat-1:checked) label[for='ecc-cat-1'],
-.ecc-doc-layout:has(#ecc-cat-2:checked) label[for='ecc-cat-2'],
-.ecc-doc-layout:has(#ecc-cat-3:checked) label[for='ecc-cat-3'],
-.ecc-doc-layout:has(#ecc-cat-4:checked) label[for='ecc-cat-4'],
-.ecc-doc-layout:has(#ecc-cat-5:checked) label[for='ecc-cat-5'],
-.ecc-doc-layout:has(#ecc-cat-6:checked) label[for='ecc-cat-6'],
-.ecc-doc-layout:has(#ecc-cat-7:checked) label[for='ecc-cat-7'],
-.ecc-doc-layout:has(#ecc-cat-8:checked) label[for='ecc-cat-8'],
-.ecc-doc-layout:has(#ecc-cat-9:checked) label[for='ecc-cat-9'],
-.ecc-doc-layout:has(#ecc-cat-10:checked) label[for='ecc-cat-10'],
-.ecc-doc-layout:has(#ecc-cat-11:checked) label[for='ecc-cat-11'],
-.ecc-doc-layout:has(#ecc-cat-12:checked) label[for='ecc-cat-12'],
-.ecc-doc-layout:has(#ecc-cat-13:checked) label[for='ecc-cat-13'],
-.ecc-doc-layout:has(#ecc-cat-14:checked) label[for='ecc-cat-14'],
-.ecc-doc-layout:has(#ecc-cat-15:checked) label[for='ecc-cat-15'],
-.ecc-doc-layout:has(#ecc-cat-16:checked) label[for='ecc-cat-16'],
-.ecc-doc-layout:has(#ecc-cat-17:checked) label[for='ecc-cat-17'],
-.ecc-doc-layout:has(#ecc-cat-18:checked) label[for='ecc-cat-18'],
-.ecc-doc-layout:has(#ecc-cat-19:checked) label[for='ecc-cat-19'],
-.ecc-doc-layout:has(#ecc-cat-20:checked) label[for='ecc-cat-20'] {
+.ecc-doc-layout:has(#ecc-cat-1:checked) label[for="ecc-cat-1"],
+.ecc-doc-layout:has(#ecc-cat-2:checked) label[for="ecc-cat-2"],
+.ecc-doc-layout:has(#ecc-cat-3:checked) label[for="ecc-cat-3"],
+.ecc-doc-layout:has(#ecc-cat-4:checked) label[for="ecc-cat-4"],
+.ecc-doc-layout:has(#ecc-cat-5:checked) label[for="ecc-cat-5"],
+.ecc-doc-layout:has(#ecc-cat-6:checked) label[for="ecc-cat-6"],
+.ecc-doc-layout:has(#ecc-cat-7:checked) label[for="ecc-cat-7"],
+.ecc-doc-layout:has(#ecc-cat-8:checked) label[for="ecc-cat-8"],
+.ecc-doc-layout:has(#ecc-cat-9:checked) label[for="ecc-cat-9"],
+.ecc-doc-layout:has(#ecc-cat-10:checked) label[for="ecc-cat-10"],
+.ecc-doc-layout:has(#ecc-cat-11:checked) label[for="ecc-cat-11"],
+.ecc-doc-layout:has(#ecc-cat-12:checked) label[for="ecc-cat-12"],
+.ecc-doc-layout:has(#ecc-cat-13:checked) label[for="ecc-cat-13"],
+.ecc-doc-layout:has(#ecc-cat-14:checked) label[for="ecc-cat-14"],
+.ecc-doc-layout:has(#ecc-cat-15:checked) label[for="ecc-cat-15"],
+.ecc-doc-layout:has(#ecc-cat-16:checked) label[for="ecc-cat-16"],
+.ecc-doc-layout:has(#ecc-cat-17:checked) label[for="ecc-cat-17"],
+.ecc-doc-layout:has(#ecc-cat-18:checked) label[for="ecc-cat-18"],
+.ecc-doc-layout:has(#ecc-cat-19:checked) label[for="ecc-cat-19"],
+.ecc-doc-layout:has(#ecc-cat-20:checked) label[for="ecc-cat-20"] {
   background: var(--primary-light);
   color: var(--primary);
   font-weight: 700;

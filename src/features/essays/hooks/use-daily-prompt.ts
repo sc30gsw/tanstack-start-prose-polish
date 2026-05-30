@@ -45,7 +45,7 @@ export function useDailyPrompt(mode: DailyPromptMode) {
     if (mode === "topic") {
       const result = await generateTopics();
       result.match({
-        err: (e: Error) => {
+        err: async (e: Error) => {
           setError(e.message);
           generatingRef.current = false;
           setIsGenerating(false);
@@ -64,7 +64,7 @@ export function useDailyPrompt(mode: DailyPromptMode) {
 
     const result = await askDiverse();
     result.match({
-      err: (e: Error) => {
+      err: async (e: Error) => {
         setError(e.message);
         generatingRef.current = false;
         setIsGenerating(false);

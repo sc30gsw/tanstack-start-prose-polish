@@ -47,25 +47,25 @@
 
 現在コミットされている主要な top-level skill は次のとおりです（外部由来・プロジェクト同梱を含む。一覧の詳細は [README.md](../README.md) の「インストール済みスキル一覧」を参照）。
 
-| ディレクトリ                                | skill 名                      | 主用途                                                  |
-| ------------------------------------------- | ----------------------------- | ------------------------------------------------------- |
-| `.claude/skills/agent-browser/`             | `agent-browser`               | ブラウザ操作、自動入力、スクリーンショット、Web UI 検証 |
-| `.claude/skills/better-result-adopt/`       | `better-result-adopt`         | `try/catch` から `better-result` への移行               |
-| `.claude/skills/composition-patterns/`      | `vercel-composition-patterns` | compound components、boolean prop 削減、React 19 構成   |
-| `.claude/skills/doc-coauthoring/`           | `doc-coauthoring`             | 提案書・仕様書・技術文書の共著ワークフロー              |
-| `.claude/skills/find-docs/`                 | `find-docs`                   | ライブラリや SDK の最新ドキュメント確認                 |
-| `.claude/skills/find-skills/`               | `find-skills`                 | 使える skill の探索と導入判断                           |
-| `.claude/skills/frontend-design/`           | `frontend-design`             | UI 実装、見た目の作り込み、画面デザイン                 |
-| `.claude/skills/git-pr/`                    | `git-pr`                      | PR 本文・ドラフト PR・レビュー負荷スコア・Mermaid       |
-| `.claude/skills/grill-me/`                  | `grill-me`                    | 計画・設計の徹底ヒアリング                              |
-| `.claude/skills/grill-with-docs/`           | `grill-with-docs`             | ドメイン文書と照らした計画のストレステスト              |
-| `.claude/skills/mantine-custom-components/` | `mantine-custom-components`   | Mantine Factory / Styles API 対応コンポーネント         |
-| `.claude/skills/mantine-form/`              | `mantine-form`                | `@mantine/form` を使ったフォーム設計                    |
-| `.claude/skills/react-doctor/`              | `react-doctor`                | React 健全性診断とスコア回帰チェック                    |
+| ディレクトリ                                | skill 名                      | 主用途                                                                  |
+| ------------------------------------------- | ----------------------------- | ----------------------------------------------------------------------- |
+| `.claude/skills/agent-browser/`             | `agent-browser`               | ブラウザ操作、自動入力、スクリーンショット、Web UI 検証                 |
+| `.claude/skills/better-result-adopt/`       | `better-result-adopt`         | `try/catch` から `better-result` への移行                               |
+| `.claude/skills/composition-patterns/`      | `vercel-composition-patterns` | compound components、boolean prop 削減、React 19 構成                   |
+| `.claude/skills/doc-coauthoring/`           | `doc-coauthoring`             | 提案書・仕様書・技術文書の共著ワークフロー                              |
+| `.claude/skills/find-docs/`                 | `find-docs`                   | ライブラリや SDK の最新ドキュメント確認                                 |
+| `.claude/skills/find-skills/`               | `find-skills`                 | 使える skill の探索と導入判断                                           |
+| `.claude/skills/frontend-design/`           | `frontend-design`             | UI 実装、見た目の作り込み、画面デザイン                                 |
+| `.claude/skills/git-pr/`                    | `git-pr`                      | PR 本文・ドラフト PR・レビュー負荷スコア・Mermaid                       |
+| `.claude/skills/grill-me/`                  | `grill-me`                    | 計画・設計の徹底ヒアリング                                              |
+| `.claude/skills/grill-with-docs/`           | `grill-with-docs`             | ドメイン文書と照らした計画のストレステスト                              |
+| `.claude/skills/mantine-custom-components/` | `mantine-custom-components`   | Mantine Factory / Styles API 対応コンポーネント                         |
+| `.claude/skills/mantine-form/`              | `mantine-form`                | `@mantine/form` を使ったフォーム設計                                    |
+| `.claude/skills/react-doctor/`              | `react-doctor`                | React 健全性診断とスコア回帰チェック                                    |
 | `.claude/skills/sdd-design/` ほか `sdd-*`   | `sdd-steering` 〜 `sdd-pr`    | Spec-Driven Development（[SDD ガイド](./sdd-workflow/sdd-workflow.md)） |
-| `.claude/skills/skill-creator/`             | `skill-creator`               | 新規 skill 作成、改善、評価                             |
-| `.claude/skills/web-design-guidelines/`     | `web-design-guidelines`       | UI レビュー、アクセシビリティ・UX ガイドライン確認      |
-| `.claude/skills/webapp-testing/`            | `webapp-testing`              | Playwright ベースのローカル Web アプリ検証              |
+| `.claude/skills/skill-creator/`             | `skill-creator`               | 新規 skill 作成、改善、評価                                             |
+| `.claude/skills/web-design-guidelines/`     | `web-design-guidelines`       | UI レビュー、アクセシビリティ・UX ガイドライン確認                      |
+| `.claude/skills/webapp-testing/`            | `webapp-testing`              | Playwright ベースのローカル Web アプリ検証                              |
 
 ### 現在の `hooks` 一覧
 

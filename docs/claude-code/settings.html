@@ -1,62 +1,113 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>settings.json — Claude Code 設定ガイド</title>
-<link rel="stylesheet" href="./assets/styles.css" />
-</head>
-<body>
-<div class="layout">
-  <aside class="sidebar">
-    <h1>Claude Code 設定</h1>
-    <div class="sub">tanstack-start-prose-polish</div>
-    <nav class="nav">
-        <a href="./index.html" class="">概要</a>
-        <a href="./skills.html" class="">Skills<span class="n">39</span></a>
-        <a href="./rules.html" class="">Rules<span class="n">9</span></a>
-        <a href="./hooks.html" class="">Hooks<span class="n">8</span></a>
-        <a href="./settings.html" class="active">settings.json</a>
-        <a href="./plugin.html" class="">Plugin (ECC)<span class="n">386</span></a>
-    </nav>
-  </aside>
-  <main class="main">
-    <div class="page-head">
-      <h2>settings.json</h2>
-      <div class="meta">生成日:  ・ 実データ（.claude/ 配下の実ファイル）から自動生成</div>
-    </div>
-    <div class="toolbar">
-        <input id="q" type="search" placeholder="このページ内を検索…" autocomplete="off" />
-        <button class="btn" id="expand-all">すべて展開</button>
-        <button class="btn" id="collapse-all">すべて折りたたみ</button>
-      </div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>settings.json — Claude Code 設定ガイド</title>
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <h1>Claude Code 設定</h1>
+        <div class="sub">tanstack-start-prose-polish</div>
+        <nav class="nav">
+          <a href="./index.html" class="">概要</a>
+          <a href="./skills.html" class="">Skills<span class="n">39</span></a>
+          <a href="./rules.html" class="">Rules<span class="n">9</span></a>
+          <a href="./hooks.html" class="">Hooks<span class="n">8</span></a>
+          <a href="./settings.html" class="active">settings.json</a>
+          <a href="./plugin.html" class="">Plugin (ECC)<span class="n">386</span></a>
+        </nav>
+      </aside>
+      <main class="main">
+        <div class="page-head">
+          <h2>settings.json</h2>
+          <div class="meta">生成日: ・ 実データ（.claude/ 配下の実ファイル）から自動生成</div>
+        </div>
+        <div class="toolbar">
+          <input id="q" type="search" placeholder="このページ内を検索…" autocomplete="off" />
+          <button class="btn" id="expand-all">すべて展開</button>
+          <button class="btn" id="collapse-all">すべて折りたたみ</button>
+        </div>
 
-<h3>env</h3>
-<table><thead><tr><th style="width:40%">キー</th><th>値</th></tr></thead><tbody>
-      <tr data-search="claude_code_experimental_agent_teams 1"><td><code>CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS</code></td><td><code>1</code></td></tr>
-      <tr data-search="enable_tool_search true"><td><code>ENABLE_TOOL_SEARCH</code></td><td><code>true</code></td></tr>
-      <tr data-search="claude_code_new_init 1"><td><code>CLAUDE_CODE_NEW_INIT</code></td><td><code>1</code></td></tr>
-</tbody></table>
+        <h3>env</h3>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 40%">キー</th>
+              <th>値</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-search="claude_code_experimental_agent_teams 1">
+              <td><code>CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS</code></td>
+              <td><code>1</code></td>
+            </tr>
+            <tr data-search="enable_tool_search true">
+              <td><code>ENABLE_TOOL_SEARCH</code></td>
+              <td><code>true</code></td>
+            </tr>
+            <tr data-search="claude_code_new_init 1">
+              <td><code>CLAUDE_CODE_NEW_INIT</code></td>
+              <td><code>1</code></td>
+            </tr>
+          </tbody>
+        </table>
 
-<h3 style="margin-top:32px">permissions.deny <span class="badge ok">.env 保護</span></h3>
-<table><thead><tr><th>拒否ルール</th></tr></thead><tbody>
-      <tr data-search="read(.env*)"><td><code>Read(.env*)</code></td></tr>
-      <tr data-search="edit(.env*)"><td><code>Edit(.env*)</code></td></tr>
-      <tr data-search="bash(cat .env*)"><td><code>Bash(cat .env*)</code></td></tr>
-      <tr data-search="bash(head .env*)"><td><code>Bash(head .env*)</code></td></tr>
-      <tr data-search="bash(tail .env*)"><td><code>Bash(tail .env*)</code></td></tr>
-      <tr data-search="bash(less .env*)"><td><code>Bash(less .env*)</code></td></tr>
-      <tr data-search="bash(more .env*)"><td><code>Bash(more .env*)</code></td></tr>
-</tbody></table>
+        <h3 style="margin-top: 32px">permissions.deny <span class="badge ok">.env 保護</span></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>拒否ルール</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-search="read(.env*)">
+              <td><code>Read(.env*)</code></td>
+            </tr>
+            <tr data-search="edit(.env*)">
+              <td><code>Edit(.env*)</code></td>
+            </tr>
+            <tr data-search="bash(cat .env*)">
+              <td><code>Bash(cat .env*)</code></td>
+            </tr>
+            <tr data-search="bash(head .env*)">
+              <td><code>Bash(head .env*)</code></td>
+            </tr>
+            <tr data-search="bash(tail .env*)">
+              <td><code>Bash(tail .env*)</code></td>
+            </tr>
+            <tr data-search="bash(less .env*)">
+              <td><code>Bash(less .env*)</code></td>
+            </tr>
+            <tr data-search="bash(more .env*)">
+              <td><code>Bash(more .env*)</code></td>
+            </tr>
+          </tbody>
+        </table>
 
-<h3 style="margin-top:32px">enabledPlugins</h3>
-<table><thead><tr><th>プラグイン ID</th></tr></thead><tbody>
-      <tr data-search="ecc@ecc"><td><code>ecc@ecc</code></td></tr>
-</tbody></table>
+        <h3 style="margin-top: 32px">enabledPlugins</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>プラグイン ID</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-search="ecc@ecc">
+              <td><code>ecc@ecc</code></td>
+            </tr>
+          </tbody>
+        </table>
 
-<h3 style="margin-top:32px">settings.json 全文</h3>
-<div class="cards"><article class="card" data-search="settings json raw">
-  <details open><summary>全文を表示 / 折りたたみ</summary><pre class="md">{
+        <h3 style="margin-top: 32px">settings.json 全文</h3>
+        <div class="cards">
+          <article class="card" data-search="settings json raw">
+            <details open>
+              <summary>全文を表示 / 折りたたみ</summary>
+              <pre class="md">
+{
   &quot;env&quot;: {
     &quot;CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS&quot;: &quot;1&quot;,
     &quot;ENABLE_TOOL_SEARCH&quot;: &quot;true&quot;,
@@ -148,13 +199,24 @@
     &quot;ecc@ecc&quot;: true
   }
 }
-</pre></details>
-</article></div>
-    <footer style="margin-top:48px;color:var(--muted);font-size:12px;border-top:1px solid var(--border);padding-top:16px">
-      Generated by the <code>claude-code-docs</code> workflow ・
-    </footer>
-  </main>
-</div>
-<script src="./assets/app.js"></script>
-</body>
+</pre
+              >
+            </details>
+          </article>
+        </div>
+        <footer
+          style="
+            margin-top: 48px;
+            color: var(--muted);
+            font-size: 12px;
+            border-top: 1px solid var(--border);
+            padding-top: 16px;
+          "
+        >
+          Generated by the <code>claude-code-docs</code> workflow ・
+        </footer>
+      </main>
+    </div>
+    <script src="./assets/app.js"></script>
+  </body>
 </html>
