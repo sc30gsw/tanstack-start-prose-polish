@@ -4,10 +4,20 @@ import { generateText, Output } from "ai";
 import { Result } from "better-result";
 import * as v from "valibot";
 
-import { mockCorrect, type CorrectionResult } from "~/features/essays/api/mock-ai";
+import {
+  mockCorrectBody,
+  mockGenerateComments,
+  type CorrectionComment,
+} from "~/features/essays/api/mock-ai";
 import { MAX_ESSAY_BODY_CHARS } from "~/features/essays/constants/essay";
-import { aiCorrectionSchema, type AiCorrection } from "~/features/essays/schemas/ai-schema";
+import {
+  aiCommentsSchema,
+  aiCorrectedBodySchema,
+  type AiComments,
+} from "~/features/essays/schemas/ai-schema";
 import { AI_MODEL, isAiEnabled } from "~/lib/ai/model";
+
+const MAX_AI_COMMENTS = 8;
 
 const correctInputSchema = v.object({
   mode: v.optional(v.string()),
@@ -15,19 +25,60 @@ const correctInputSchema = v.object({
   text: v.pipe(v.string(), v.minLength(1), v.maxLength(MAX_ESSAY_BODY_CHARS)),
 });
 
-const CORRECT_SYSTEM = [
+const commentsInputSchema = v.object({
+  correctedBody: v.pipe(v.string(), v.minLength(1), v.maxLength(MAX_ESSAY_BODY_CHARS)),
+  mode: v.optional(v.string()),
+  prompt: v.optional(v.string()),
+  text: v.pipe(v.string(), v.minLength(1), v.maxLength(MAX_ESSAY_BODY_CHARS)),
+});
+
+const CORRECT_BODY_SYSTEM = [
   "You are an English writing proofreader for Japanese learners.",
   "Correct grammar, word choice, and clarity while preserving the writer's meaning and line/paragraph structure.",
-  "Return the full corrected essay text, plus a list of comments.",
-  "Each comment includes: snippet (a substring copied verbatim from the corrected text, at most one line), body (the issue, in English), and suggestion (how to improve, in English).",
-  "Never invent line numbers; only copy snippets verbatim so they can be located.",
+  "Return only the full corrected essay text.",
 ].join(" ");
 
-const correctEssayFn = createServerFn({ method: "POST" })
+const COMMENTS_SYSTEM = [
+  "You are an English writing tutor for Japanese learners.",
+  `Return at most ${MAX_AI_COMMENTS} comments for the most important issues only.`,
+  "Each comment includes: snippet (a substring copied verbatim from the CORRECTED text, at most one line), body (the issue, in English), and suggestion (how to improve, in English).",
+  "Never invent line numbers; only copy snippets verbatim from the corrected essay.",
+].join(" ");
+
+const correctEssayBodyFn = createServerFn({ method: "POST" })
   .inputValidator(correctInputSchema)
-  .handler(async ({ data }): Promise<CorrectionResult> => {
+  .handler(async ({ data }): Promise<{ correctedBody: string }> => {
     if (!isAiEnabled()) {
-      return mockCorrect(data.text, { mode: data.mode, prompt: data.prompt });
+      return mockCorrectBody(data.text, { mode: data.mode, prompt: data.prompt });
+    }
+
+    const topicNote =
+      data.mode === "topic" && data.prompt
+        ? ` The essay should address this topic: "${data.prompt}".`
+        : "";
+
+    const { output } = await generateText({
+      maxOutputTokens: estimateBodyOutputTokens(data.text.length),
+      model: AI_MODEL,
+      output: Output.object({ schema: valibotSchema(aiCorrectedBodySchema) }),
+      prompt: `Proofread the following English essay.${topicNote}\n\n---\n${data.text}\n---`,
+      system: CORRECT_BODY_SYSTEM,
+      temperature: 0.3,
+    });
+
+    return {
+      correctedBody: normalizeCorrectedBody(output.correctedBody, data.text),
+    };
+  });
+
+const generateEssayCommentsFn = createServerFn({ method: "POST" })
+  .inputValidator(commentsInputSchema)
+  .handler(async ({ data }): Promise<{ comments: CorrectionComment[] }> => {
+    if (!isAiEnabled()) {
+      return mockGenerateComments(data.text, data.correctedBody, {
+        mode: data.mode,
+        prompt: data.prompt,
+      });
     }
 
     const topicNote =
@@ -36,27 +87,47 @@ const correctEssayFn = createServerFn({ method: "POST" })
         : "";
 
     const { output } = await generateText({
-      maxOutputTokens: 8000,
+      maxOutputTokens: 2048,
       model: AI_MODEL,
-      output: Output.object({ schema: valibotSchema(aiCorrectionSchema) }),
-      prompt: `Proofread the following English essay.${topicNote}\n\n---\n${data.text}\n---`,
-      system: CORRECT_SYSTEM,
+      output: Output.object({ schema: valibotSchema(aiCommentsSchema) }),
+      prompt: [
+        `Review the original and corrected essays.${topicNote}`,
+        "Identify the most important remaining teaching points.",
+        "",
+        "ORIGINAL:",
+        "---",
+        data.text,
+        "---",
+        "",
+        "CORRECTED:",
+        "---",
+        data.correctedBody,
+        "---",
+      ].join("\n"),
+      system: COMMENTS_SYSTEM,
       temperature: 0.3,
     });
 
-    return resolveComments(output, data.text);
+    return {
+      comments: resolveComments(output, data.correctedBody),
+    };
   });
 
-/** snippet を correctedBody の行に照合して lineNumber を確定する（LLM の行番号は信用しない） */
-function resolveComments(object: AiCorrection, originalText: string): CorrectionResult {
+function estimateBodyOutputTokens(charCount: number) {
+  return Math.min(8000, Math.max(1024, charCount * 2));
+}
+
+function normalizeCorrectedBody(correctedBody: string, originalText: string) {
   // 前後完全一致だと @pierre/diffs の hunk が 0 になり本文が描画されない
-  const correctedBody =
-    object.correctedBody === originalText ? `${object.correctedBody}\n` : object.correctedBody;
+  return correctedBody === originalText ? `${correctedBody}\n` : correctedBody;
+}
 
+/** snippet を correctedBody の行に照合して lineNumber を確定する（LLM の行番号は信用しない） */
+function resolveComments(object: AiComments, correctedBody: string): CorrectionComment[] {
   const lines = correctedBody.split("\n");
-  const comments: CorrectionResult["comments"] = [];
+  const comments: CorrectionComment[] = [];
 
-  for (const comment of object.comments) {
+  for (const comment of object.comments.slice(0, MAX_AI_COMMENTS)) {
     const snippet = comment.snippet.trim();
     if (!snippet) {
       continue;
@@ -76,14 +147,23 @@ function resolveComments(object: AiCorrection, originalText: string): Correction
     });
   }
 
-  return { comments, correctedBody };
+  return comments;
 }
 
 type CorrectEssayParams = { mode?: string; prompt?: string; text: string };
 
-export function correctEssay(params: CorrectEssayParams) {
+type GenerateCommentsParams = CorrectEssayParams & { correctedBody: string };
+
+export function correctEssayBody(params: CorrectEssayParams) {
   return Result.tryPromise({
     catch: (e) => e as Error,
-    try: () => correctEssayFn({ data: params }),
+    try: () => correctEssayBodyFn({ data: params }),
+  });
+}
+
+export function generateEssayComments(params: GenerateCommentsParams) {
+  return Result.tryPromise({
+    catch: (e) => e as Error,
+    try: () => generateEssayCommentsFn({ data: params }),
   });
 }

@@ -53,7 +53,7 @@ function ScoringPage() {
       return;
     }
 
-    if (essay.status === "reviewed") {
+    if (essay.bodyAfter != null || essay.status === "reviewed") {
       markFeedbackReady();
     }
   }, [essay, markFeedbackReady]);

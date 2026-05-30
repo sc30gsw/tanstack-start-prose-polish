@@ -73,7 +73,7 @@ export function mockScore(text: string, opts?: EssayOpts): Score {
   } satisfies Score;
 }
 
-export function mockCorrect(text: string, opts?: EssayOpts): CorrectionResult {
+export function mockCorrectBody(text: string, _opts?: EssayOpts): { correctedBody: string } {
   const lines = text.split("\n");
   const correctedLines = lines.map((line) => applySimpleCorrection(line));
   let correctedBody = correctedLines.join("\n");
@@ -82,7 +82,24 @@ export function mockCorrect(text: string, opts?: EssayOpts): CorrectionResult {
     correctedBody = `${text}\n`;
   }
 
-  return { comments: generateMockComments(lines, opts), correctedBody };
+  return { correctedBody };
+}
+
+export function mockGenerateComments(
+  _text: string,
+  correctedBody: string,
+  opts?: EssayOpts,
+): { comments: CorrectionComment[] } {
+  return {
+    comments: generateMockComments(correctedBody.split("\n"), opts),
+  };
+}
+
+export function mockCorrect(text: string, opts?: EssayOpts): CorrectionResult {
+  const { correctedBody } = mockCorrectBody(text, opts);
+  const { comments } = mockGenerateComments(text, correctedBody, opts);
+
+  return { comments, correctedBody };
 }
 
 function buildScoreFeedback(score: number, opts?: EssayOpts): string {
