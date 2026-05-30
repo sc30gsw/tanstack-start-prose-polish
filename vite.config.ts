@@ -33,7 +33,7 @@ export default defineConfig({
     },
     overrides: [
       {
-        files: ["src/router.tsx", "*.config.ts"],
+        files: ["src/router.tsx", "*.config.ts", "instant-schema.ts", "instant.perms.ts"],
         rules: {
           "no-default-export": "off",
         },

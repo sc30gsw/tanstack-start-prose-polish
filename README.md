@@ -1,4 +1,6 @@
-# e-value-management-frontend
+# tanstack-start-poc-with-harness
+
+`package.json` の `name` は **`tanstack-start-start`**（プライベート、ESM）です。
 
 ## 目次
 
@@ -22,34 +24,41 @@
 > Windows: irm https://vite.plus/ps1 | iex
 
 ```bash
-git clone git@github.com:enechange/e_value_management_admin.git
-cd e_value_management_admin/frontend
+git clone <このリポジトリのURL>
+cd tanstack-start-poc-with-harness
+# .env を用意し VITE_INSTANT_APP_ID 等を設定（Instant を使う場合）
 vp install
 vp dev
 
-open http://localhost:5173 # ブラウザでURLを表示
+# 既定は http://localhost:5173（起動ログを確認）
 ```
 
 ## 構成
 
-主に以下のようなライブラリを用いて開発しています。
+主に以下のライブラリで開発しています（`dependencies` / `devDependencies` は [package.json](./package.json) を正とする）。
 
-| カテゴリ           | 技術                                                                                                                                                              |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
-| フレームワーク     | [TanStack Start](https://tanstack.com/start) / [React](https://react.dev) 19 + [React Compiler](https://react.dev/learn/react-compiler)                           |
-| ランタイム/ビルド  | [Vite+](https://viteplus.dev) (`vp`)                                                                                                                              |
-| ルーティング       | [TanStack Router](https://tanstack.com/router)（file-based）                                                                                                      |
-| データ取得         | [TanStack React Query](https://tanstack.com/query)                                                                                                                |     |
-| コンポーネント     | [Mantine 9](https://mantine.dev) / [Tailwind CSS v4](https://tailwindcss.com)（[`tailwind-preset-mantine`](https://github.com/Songkeys/tailwind-preset-mantine)） |
-| バリデーション     | [Valibot](https://valibot.dev)                                                                                                                                    |
-| エラーハンドリング | [`better-result`](https://github.com/dmmulroy/better-result)                                                                                                      |
-| テスト             | [Vitest](https://vitest.dev)（Vite+ 内蔵）                                                                                                                        |
-| 静的解析・自動整形 | [oxlint](https://oxc.rs/docs/guide/usage/linter.html) / [oxfmt](https://oxc.rs/docs/guide/usage/formatter.html)（Vite+ 内蔵）                                     |
-| 補助ツール         | [fallow](https://github.com/fallow-rs/fallow) / [react-doctor](https://github.com/millionco/react-doctor) / [react-grab](https://github.com/aidenybai/react-grab) |
+| カテゴリ               | 技術                                                                                                                                                                                                                                  |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| フレームワーク         | [TanStack Start](https://tanstack.com/start) / [React 19](https://react.dev) + [React Compiler](https://react.dev/learn/react-compiler)（[`babel-plugin-react-compiler`](https://www.npmjs.com/package/babel-plugin-react-compiler)） |
+| ランタイム/ビルド      | [Vite+](https://viteplus.dev)（`vp` CLI、`vite` は `@voidzero-dev/vite-plus-core` 経由）                                                                                                                                              |
+| ルーティング           | [TanStack Router](https://tanstack.com/router)（file-based）                                                                                                                                                                          |
+| 永続化・クライアントDB | [InstantDB](https://www.instantdb.com)（[`@instantdb/react`](https://www.npmjs.com/package/@instantdb/react)）。スキーマ: `src/lib/instant-schema.ts`、初期化: `src/lib/instant.ts`                                                   |
+| フォーム/アダプター    | [TanStack React Form](https://tanstack.com/form) + [@tanstack/valibot-adapter](https://tanstack.com/form/v1/docs/framework/react/guides/validation#valibot)                                                                           |
+| UI / スタイル          | [Mantine 9](https://mantine.dev)（`@mantine/core` ほか）/ [Tailwind CSS v4](https://tailwindcss.com) + [`tailwind-preset-mantine`](https://github.com/Songkeys/tailwind-preset-mantine)                                               |
+| 差分表示               | [`@pierre/diffs`](https://www.npmjs.com/package/@pierre/diffs)                                                                                                                                                                        |
+| バリデーション         | [Valibot](https://valibot.dev)                                                                                                                                                                                                        |
+| エラーハンドリング     | [better-result](https://github.com/dmmulroy/better-result)                                                                                                                                                                            |
+| テスト                 | [Vitest](https://vitest.dev)（Vite+ バンドルに同梱されたランナー経由。`overrides` は `package.json` の `pnpm` を参照）                                                                                                                |
+| 補助ツール（開発）     | [fallow](https://github.com/fallow-rs/fallow) / [react-doctor](https://github.com/millionco/react-doctor) / [react-grab](https://github.com/aidenybai/react-grab) ほか [package.json](./package.json) 参照                            |
 
-パッケージ管理には Vite+ が内包する pnpm を利用しています（`vp install` / `vp add` / `vp remove`）。
+`packageManager` は [Corepack](https://nodejs.org/api/corepack.html) 用に **`pnpm@10.32.1`**（`package.json` 記載）。Vite+ が pnpm を使う想定のため、依存操作は原則 **`vp install` / `vp add` / `vp remove`（経由: pnpm）** とし、**npm / yarn 直叩きはしない**方針です（[CLAUDE.md](./CLAUDE.md) と同趣旨）。
 
-Mantine は v9 を利用しています。フォームバリデーションは `@mantine/form` の `schemaResolver` と Valibot を組み合わせる前提です。
+Mantine は v9 前提。フォームは Valibot との併用がコードベース上の定番です（`@mantine/form` の `schemaResolver` 等—必要に応じ [CODING_GUIDELINES.md](./CODING_GUIDELINES.md) 参照）。
+
+### InstantDB 運用（要点）
+
+- **App ID** は `VITE_INSTANT_APP_ID`（`.env` / デプロイ先のシークレット）で渡す。
+- スキーマをクラウドに反映するとき: `npx instant-cli login` 後、**`vp run instant:push-schema`**（[package.json](./package.json) の `instant:push-schema`）。`INSTANT_SCHEMA_FILE_PATH=src/lib/instant-schema.ts` を付与しています。フィルタ/並び替えに使う属性はスキーマで **indexed** が必須です（[Instant ドキュメント](https://www.instantdb.com/docs/modeling-data.md)）。
 
 ### コーディング・コミット
 
@@ -59,13 +68,12 @@ Mantine は v9 を利用しています。フォームバリデーションは `
 
 ## ドキュメント
 
-| ファイル                                                                                      | 説明                                                                                                           |
-| --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| [CODING_GUIDELINES.md](./CODING_GUIDELINES.md)                                                | コーディング規約（命名規則、型定義、React パターン等）                                                         |
-| [CLAUDE.md](./CLAUDE.md)                                                                      | AI アシスタント向けガイダンス（Vite+ 利用ルール、注意事項等）                                                  |
-| [claude-code-guide.md](./docs/claude-code-guide.md)                                           | `.claude/` ディレクトリのガイド（`rules/`、`skills/`、`settings.json` の役割と更新方針）                       |
-| [everything-claude-code-guide.md](./docs/claude-code-plugins/everything-claude-code-guide.md) | Claude Code 用：`everything-claude-code` プラグインの本プロジェクト向けリファレンス（Command / Agent / Skill） |
-| [design-md-guide.md](./docs/design-md-guide.md)                                               | `DESIGN.md` の役割・参考リポジトリ・本プロジェクトでの配置                                                     |
+| ファイル                                       | 説明                                                          |
+| ---------------------------------------------- | ------------------------------------------------------------- |
+| [CODING_GUIDELINES.md](./CODING_GUIDELINES.md) | コーディング規約（命名規則、型定義、React パターン等）        |
+| [CLAUDE.md](./CLAUDE.md)                       | AI アシスタント向けガイダンス（Vite+ 利用ルール、注意事項等） |
+
+|
 
 ### Claude Code 用リソース
 
@@ -77,8 +85,6 @@ Mantine は v9 を利用しています。フォームバリデーションは `
 | `.claude/skills/`       | タスク単位で使うスキル定義                                 |
 | `.claude/hooks/`        | `settings.json` から呼び出す補助スクリプト                 |
 | `.claude/settings.json` | フック、推奨プラグイン設定、Claude Code のプロジェクト設定 |
-
-詳細は [docs/claude-code-guide.md](./docs/claude-code-guide.md) を参照してください。
 
 ### Claude Code スキル
 
@@ -188,7 +194,11 @@ gh skill install <org>/<repo> --pin <tag>
 
 ## 環境変数
 
-現在、環境変数は定義されていません。追加する際は `.env.sample` とこのセクションを同時に更新してください。
+| 変数名                | 必須   | 説明                                                                                                                                                        |
+| --------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `VITE_INSTANT_APP_ID` | 実運用 | [Instant](https://www.instantdb.com) の App ID。未設定の場合、クライアント初期化は [src/lib/instant.ts](./src/lib/instant.ts) どおり `appId` なしになり得る |
+
+新規の環境変数を追加する際は、**`.env.example`（存在する場合）** と本セクション、および参照コードを同時に更新してください。
 
 ## コマンド
 
@@ -196,22 +206,21 @@ Vite+ (`vp`) を通じてすべての操作を行います。`pnpm`・`npm`・`y
 
 > **注意**: `vp` 組み込みコマンドと `package.json` の `scripts` が衝突する場合は `vp run <script>` で実行してください。
 
-| コマンド                    | 内容                                                                                                        |
-| --------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `vp install`                | 依存インストール（lock ファイル更新含む）                                                                   |
-| `vp dev`                    | 開発サーバー起動                                                                                            |
-| `vp build`                  | 本番ビルド                                                                                                  |
-| `vp preview`                | ビルド成果物のローカル確認                                                                                  |
-| `vp check`                  | oxlint + oxfmt + 型チェックを一括実行                                                                       |
-| `vp check --fix` / `vp fix` | 自動修正付きチェック                                                                                        |
-| `vp lint`                   | oxlint のみ実行                                                                                             |
-| `vp test`                   | Vitest 実行                                                                                                 |
-| `vp run generate:api`       | `openapi.yml` から TS 型/SDK/Valibot スキーマ/TanStack Query オプションを生成（→ `src/lib/api/generated/`） |
-| `vp run fallow`             | 未使用コード・重複・循環依存・複雑度を検出（`.fallowrc.json` 設定）                                         |
-| `vp run fallow:dead-code`   | 未使用ファイル・依存・エクスポートのみ検出（旧 knip 相当）                                                  |
-| `vp run fallow:audit`       | 変更ファイル対象の品質ゲート（PR 前確認用）                                                                 |
-| `vp run fallow:health`      | 複雑度・保守性スコアを表示                                                                                  |
-| `vp run doctor`             | react-doctor による React 健全性診断                                                                        |
+次表は、よく使う Vite+ コマンドと、**[package.json](./package.json) の `scripts` に定義してある**コマンドです。`vp` にないタスクは `vp run <script名>` です（`dev` など衝突時の公式回避）。
+
+| コマンド                      | 内容                                                                                                                                  |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `vp install`                  | 依存インストール（`pnpm` 相当）                                                                                                       |
+| `vp dev`                      | 開発サーバー起動                                                                                                                      |
+| `vp build`                    | 本番ビルド（`package.json` の `build`）                                                                                               |
+| `vp preview`                  | プレビュー（`package.json` の `preview`）                                                                                             |
+| `vp check` / `vp check --fix` | リント + 整形 + 型（`package.json` の `check` / `fix`）                                                                               |
+| `vp lint`                     | oxlint のみ                                                                                                                           |
+| `vp test`                     | テスト（`package.json` の `test`）                                                                                                    |
+| `vp run check:skills`         | `npx @tanstack/intent@latest list`（同梱スキル一覧。`package.json` の `check:skills`）                                                |
+| `vp run instant:push-schema`  | `instant-cli` で Instant スキーマを push（`INSTANT_SCHEMA_FILE_PATH=src/lib/instant-schema.ts` 指定済み。要 `npx instant-cli login`） |
+| `vp run fallow` ほか          | 未使用・監査等（`fallow:*` 系。`package.json` 参照）                                                                                  |
+| `vp run doctor`               | `react-doctor`（`package.json` の `doctor`）                                                                                          |
 
 ## 開発者ツール
 
