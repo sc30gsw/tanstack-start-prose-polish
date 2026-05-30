@@ -10,6 +10,14 @@ interface ImportMetaEnv {
   // その他の環境変数...
 }
 
+type ServerProcessEnv = {
+  readonly AI_GATEWAY_API_KEY?: string;
+};
+
+declare const process: {
+  readonly env: ServerProcessEnv;
+};
+
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
