@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rules — Claude Code 設定ガイド</title>
+<link rel="stylesheet" href="./assets/styles.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h1>Claude Code 設定</h1>
+    <div class="sub">tanstack-start-prose-polish</div>
+    <nav class="nav">
+        <a href="./index.html" class="">概要</a>
+        <a href="./skills.html" class="">Skills<span class="n">37</span></a>
+        <a href="./rules.html" class="active">Rules<span class="n">9</span></a>
+        <a href="./hooks.html" class="">Hooks<span class="n">8</span></a>
+        <a href="./settings.html" class="">settings.json</a>
+        <a href="./plugin.html" class="">Plugin (ECC)<span class="n">386</span></a>
+    </nav>
+  </aside>
+  <main class="main">
+    <div class="page-head">
+      <h2>Rules</h2>
+      <div class="meta">生成日:  ・ 実データ（.claude/ 配下の実ファイル）から自動生成</div>
+    </div>
+    <div class="toolbar">
+        <input id="q" type="search" placeholder="このページ内を検索…" autocomplete="off" />
+        <button class="btn" id="expand-all">すべて展開</button>
+        <button class="btn" id="collapse-all">すべて折りたたみ</button>
+      </div>
+    <div class="cards">
+<article class="card" data-search="coding-style.md .claude/rules/common/coding-style.md ts・tsx・js・jsx すべてに常時適用される基本コーディング規約。命名規則、不変性、ファイルサイズ上限、相対インポート・interface・console.log・default export の禁止などをまとめ、postooluse フックでも一部強制される。 core coding style — naming, comments, import order, file size, immutability **/*.{ts,tsx,js,jsx}">
+  <div class="card-head"><h3>coding-style.md</h3><span class="badge">**/*.{ts,tsx,js,jsx}</span><span class="badge ok">alwaysApply</span></div>
+  <p class="explain"><strong>解説:</strong> ts・tsx・js・jsx すべてに常時適用される基本コーディング規約。命名規則、不変性、ファイルサイズ上限、相対インポート・interface・console.log・default export の禁止などをまとめ、PostToolUse フックでも一部強制される。</p>
+  <p class="desc">Core coding style — naming, comments, import order, file size, immutability</p>
+  <p class="when"><code>.claude/rules/common/coding-style.md</code></p>
+  <details><summary>ルール全文を表示</summary><pre class="md">---
+description: Core coding style — naming, comments, import order, file size, immutability
+globs: [&quot;**/*.{ts,tsx,js,jsx}&quot;]
+alwaysApply: true
+---
+
+# Coding Style
+
+Full conventions are in [CODING_GUIDELINES.md](/CODING_GUIDELINES.md) §コードスタイル and §React/TypeScript規約. The rules below highlight the most critical points and those enforced by hooks.
+
+## Immutability
+
+ALWAYS return new values; NEVER mutate in place:
+
+```typescript
+// CORRECT: return new copy
+const updated = { ...user, name: &quot;new name&quot; };
+
+// WRONG: mutates original
+user.name = &quot;new name&quot;;
+```
+
+## File size
+
+- 200–400 lines typical
+- 800 lines maximum — extract utilities when approaching this limit
+- One primary responsibility per file
+
+## Naming
+
+| Target         | Convention       | Example                      |
+| -------------- | ---------------- | ---------------------------- |
+| Variables / fn | lowerCamelCase   | `userName`, `getProducts`    |
+| Components     | UpperCamelCase   | `ProductList`, `LoginForm`   |
+| Types          | UpperCamelCase   | `Product`, `CreateUserInput` |
+| Constants      | UPPER_SNAKE_CASE | `MAX_RETRY_COUNT`            |
+| Files          | kebab-case       | `product-list.tsx`           |
+
+## Hook-backed bans
+
+The following are also caught by PostToolUse hooks in `.claude/settings.json`:
+
+&gt; Also enforced by PostToolUse hook in `.claude/settings.json`
+
+- **No `console.log`** in committed code
+- **No `interface`** — use `type` everywhere
+- **No relative imports** — always use the `~/` alias, even for files in the same directory or adjacent directories
+
+```typescript
+// WRONG: relative paths, even when the file is right next to you
+import { tenantsFixture } from &quot;./tenants-fixture&quot;;
+import { helper } from &quot;../utils/helper&quot;;
+
+// CORRECT: always ~
+import { tenantsFixture } from &quot;~/features/tenants/mocks/tenants-fixture&quot;;
+import { helper } from &quot;~/features/tenants/utils/helper&quot;;
+```
+
+- **No `export default`** outside `src/routes/**` and `*.config.ts`
+</pre></details>
+</article>
+<article class="card" data-search="development-workflow.md .claude/rules/common/development-workflow.md 開発操作はすべて vite+（vp）経由で行うことを定めたワークフロー規約。pnpm・npm・yarn の直接実行や vite/vitest からの直接インポートを禁止し、pr 提出前のチェック手順を示す。常時適用ではなく作業フローの参照用。 vite+ (vp) command conventions, forbidden alternatives, pr pre-check flow ">
+  <div class="card-head"><h3>development-workflow.md</h3></div>
+  <p class="explain"><strong>解説:</strong> 開発操作はすべて Vite+（vp）経由で行うことを定めたワークフロー規約。pnpm・npm・yarn の直接実行や vite/vitest からの直接インポートを禁止し、PR 提出前のチェック手順を示す。常時適用ではなく作業フローの参照用。</p>
+  <p class="desc">Vite+ (vp) command conventions, forbidden alternatives, PR pre-check flow</p>
+  <p class="when"><code>.claude/rules/common/development-workflow.md</code></p>
+  <details><summary>ルール全文を表示</summary><pre class="md">---
+description: Vite+ (vp) command conventions, forbidden alternatives, PR pre-check flow
+globs: []
+alwaysApply: false
+---
+
+# Development Workflow
+
+## Commands
+
+All development operations go through **`vp`** (Vite+). Never call `pnpm`, `npm`, or `yarn` directly.
+
+| Command                   | Purpose                                                          |
+| ------------------------- | ---------------------------------------------------------------- |
+| `vp dev`                  | Start dev server                                                 |
+| `vp build`                | Production build                                                 |
+| `vp check`                | Format + lint + typecheck (add `--fix` to auto-fix)              |
+| `vp fix`                  | Auto-fix format and lint issues                                  |
+| `vp test`                 | Run tests (Vitest)                                               |
+| `vp lint`                 | Lint only (oxlint)                                               |
+| `vp install`              | Install dependencies                                             |
+| `vp add &lt;pkg&gt;`            | Add a dependency                                                 |
+| `vp remove &lt;pkg&gt;`         | Remove a dependency                                              |
+| `vp run generate:api`     | Regenerate API client from OpenAPI spec                          |
+| `vp run fallow`           | Detect unused code, duplication, circular deps, and complexity   |
+| `vp run fallow:dead-code` | Detect unused files, exports, and dependencies (knip equivalent) |
+| `vp run doctor`           | React-focused health checks                                      |
+
+## Forbidden
+
+```
+// WRONG: direct package manager calls
+pnpm install
+npm run build
+
+// WRONG: vp subcommands that do not exist
+vp vitest
+vp oxlint
+
+// WRONG: importing from vite or vitest directly
+import { defineConfig } from 'vite'
+import { expect } from 'vitest'
+
+// CORRECT: import from vite-plus
+import { defineConfig } from 'vite-plus'
+import { expect } from 'vite-plus/test'
+```
+
+Use `vp dlx` instead of `npx` or `pnpm dlx`.
+
+## PR pre-check
+
+Before opening a PR, run:
+
+```bash
+vp check          # format + lint + typecheck
+vp test           # all unit tests
+vp run fallow:dead-code  # when removing or renaming exports
+vp build          # confirms production build succeeds
+```
+</pre></details>
+</article>
+<article class="card" data-search="security.md .claude/rules/common/security.md ts・tsx に常時適用されるセキュリティ規約。シークレットのハードコード禁止と環境変数からの読み込み、valibot による境界での入力バリデーション、dangerouslysetinnerhtml を避ける xss 対策を定める。 secret handling, input validation via valibot, xss safety **/*.{ts,tsx}">
+  <div class="card-head"><h3>security.md</h3><span class="badge">**/*.{ts,tsx}</span><span class="badge ok">alwaysApply</span></div>
+  <p class="explain"><strong>解説:</strong> ts・tsx に常時適用されるセキュリティ規約。シークレットのハードコード禁止と環境変数からの読み込み、Valibot による境界での入力バリデーション、dangerouslySetInnerHTML を避ける XSS 対策を定める。</p>
+  <p class="desc">Secret handling, input validation via Valibot, XSS safety</p>
+  <p class="when"><code>.claude/rules/common/security.md</code></p>
+  <details><summary>ルール全文を表示</summary><pre class="md">---
+description: Secret handling, input validation via Valibot, XSS safety
+globs: [&quot;**/*.{ts,tsx}&quot;]
+alwaysApply: true
+---
+
+# Security
+
+## Secrets
+
+NEVER hardcode secrets, tokens, or credentials in source files.
+
+```typescript
+// CORRECT: read from environment at startup
+const apiKey = import.meta.env.VITE_API_KEY;
+if (!apiKey) throw new Error(&quot;VITE_API_KEY is required&quot;);
+
+// WRONG: hardcoded secret
+const apiKey = &quot;sk-abc123...&quot;;
+```
+
+- Store secrets in `.env.local` (never commit it)
+- Prefix client-side env vars with `VITE_`
+- Fail fast on startup if a required variable is missing
+
+## Input validation
+
+ALWAYS validate user input and external API data at system boundaries using Valibot. See [typescript/valibot-validation.md](../typescript/valibot-validation.md) for schema patterns.
+
+```typescript
+// CORRECT: validate before use
+const result = v.safeParse(ProductSchema, rawInput);
+if (!result.success) throw new ValidationError(result.issues);
+
+// WRONG: trusting unvalidated external data
+const product = rawApiResponse.data as Product;
+```
+
+## XSS
+
+Avoid `dangerouslySetInnerHTML`. If HTML rendering is unavoidable, sanitize the input first with a trusted library.
+</pre></details>
+</article>
+<article class="card" data-search="testing.md .claude/rules/common/testing.md テストファイルに常時適用されるテスト方針。ユーザー視点で role/text クエリを優先し data-testid を禁止、テストユーティリティは vite-plus/test から取り込み vp test で実行することを定める。 test user-visible behavior — role/text queries, no data-testid, vitest via vite-plus **/*.{test,spec}.{ts,tsx}">
+  <div class="card-head"><h3>testing.md</h3><span class="badge">**/*.{test,spec}.{ts,tsx}</span><span class="badge ok">alwaysApply</span></div>
+  <p class="explain"><strong>解説:</strong> テストファイルに常時適用されるテスト方針。ユーザー視点で role/text クエリを優先し data-testid を禁止、テストユーティリティは vite-plus/test から取り込み vp test で実行することを定める。</p>
+  <p class="desc">Test user-visible behavior — role/text queries, no data-testid, Vitest via vite-plus</p>
+  <p class="when"><code>.claude/rules/common/testing.md</code></p>
+  <details><summary>ルール全文を表示</summary><pre class="md">---
+description: Test user-visible behavior — role/text queries, no data-testid, Vitest via vite-plus
+globs: [&quot;**/*.{test,spec}.{ts,tsx}&quot;]
+alwaysApply: true
+---
+
+# Testing
+
+Full guidance is in [CODING_GUIDELINES.md](../CODING_GUIDELINES.md) §テストを念頭に入れたコーディング.
+
+## Philosophy
+
+Write tests from the user's perspective. Assert on what the user sees and can interact with, not implementation details.
+
+## Query priority
+
+Prefer queries in this order:
+
+1. **`getByRole`** — most accessible, matches semantic HTML
+2. **`getByText`** — for visible text content
+3. **`getByLabelText`** / **`getByPlaceholderText`** — for form fields
+4. **`getByAltText`** — for images
+
+```typescript
+// CORRECT: role-based query
+const button = screen.getByRole(&quot;button&quot;, { name: &quot;送信&quot; });
+expect(screen.getByRole(&quot;heading&quot;, { name: &quot;ユーザー一覧&quot; })).toBeInTheDocument();
+
+// WRONG: testId or DOM selectors
+const button = screen.getByTestId(&quot;submit-button&quot;);
+const heading = document.querySelector(&quot;.heading-text&quot;);
+```
+
+**`data-testid` is forbidden.** If an element has no accessible role or text, add an `aria-label` instead.
+
+## Vitest setup
+
+Import test utilities from `vite-plus/test`, not from `vitest` directly:
+
+```typescript
+// CORRECT
+import { expect, test, vi } from &quot;vite-plus/test&quot;;
+
+// WRONG: direct vitest import
+import { expect, test } from &quot;vitest&quot;;
+```
+
+Run tests with `vp test`, not `vp run vitest`.
+
+## Related skills
+
+- `webapp-testing` — testing patterns and helpers for this project
+</pre></details>
+</article>
+<article class="card" data-search="better-result.md .claude/rules/typescript/better-result.md src 配下の ts・tsx に常時適用される better-result の運用規約。期待される失敗の境界で result.try/trypromise を使い、taggederror で型付けし、result.gen で合成、シリアライズ境界では result を素のオブジェクトへ変換することを求める。 better-result best practices for typed errors, composition, and boundaries src/**/*.ts, src/**/*.tsx">
+  <div class="card-head"><h3>better-result.md</h3><span class="badge">src/**/*.ts, src/**/*.tsx</span><span class="badge ok">alwaysApply</span></div>
+  <p class="explain"><strong>解説:</strong> src 配下の ts・tsx に常時適用される better-result の運用規約。期待される失敗の境界で Result.try/tryPromise を使い、TaggedError で型付けし、Result.gen で合成、シリアライズ境界では Result を素のオブジェクトへ変換することを求める。</p>
+  <p class="desc">better-result best practices for typed errors, composition, and boundaries</p>
+  <p class="when"><code>.claude/rules/typescript/better-result.md</code></p>
+  <details><summary>ルール全文を表示</summary><pre class="md">---
+description: better-result best practices for typed errors, composition, and boundaries
+globs: [&quot;src/**/*.ts&quot;, &quot;src/**/*.tsx&quot;]
+alwaysApply: true
+---
+
+# Best Practices
+
+https://better-result.dev/advanced/best-practices
+
+# better-result
+
+Follow the official better-result best practices when introducing or changing Result-based code.
+
+## Use Result at expected-failure boundaries
+
+- Use `Result` for expected business or integration failures such as validation, not found, auth, API, parsing, and I/O failures.
+- Wrap throwing third-party or generated-client calls at the boundary with `Result.try` or `Result.tryPromise`.
+- Keep truly exceptional programmer defects as throws or framework control flow. Do not convert every throw blindly.
+
+```typescript
+const result = await Result.tryPromise({
+  try: () =&gt; generatedApiCall(options),
+  catch: (cause) =&gt; new ApiError({ cause, message: &quot;API call failed&quot; }),
+});
+```
+
+## Prefer typed, discriminated errors
+
+- Use `TaggedError` for domain or infrastructure errors that cross function boundaries.
+- Keep useful context on errors: `message`, `cause`, ids, status, operation, reason, and retryability when relevant.
+- Use `matchError` when the error union has multiple tagged variants and exhaustive handling matters.
+- Avoid `Result&lt;T, any&gt;`.
+
+```typescript
+class AuthError extends TaggedError(&quot;AuthError&quot;)&lt;{
+  cause?: unknown;
+  message: string;
+  reason: &quot;expired&quot; | &quot;invalid&quot; | &quot;missing&quot;;
+}&gt;() {}
+```
+
+## Compose without premature unwrapping
+
+- Use `Result.gen` for multi-step flows so failures short-circuit naturally.
+- In async generators, yield promise results with `yield* Result.await(...)`.
+- Keep values inside the Result context until the boundary where a plain response is required.
+- Use `Result.isError` / `Result.isOk` type guards or `.match(...)`; both are valid. Do not require `.match(...)` when a type guard is clearer.
+
+```typescript
+const result = await Result.gen(async function* () {
+  const user = yield* Result.await(fetchUser(id));
+  const session = yield* createSession(user);
+  return Result.ok(session);
+});
+```
+
+## Do not leak Result over serialization boundaries
+
+- Server functions, RPC handlers, and route loaders that require serializable data must not return `Ok`, `Err`, `TaggedError`, `Error`, `Response`, or other class instances directly.
+- Convert internal Result values to plain objects at the boundary.
+- Let TypeScript infer public return types unless inference becomes `unknown`/`any` or the function is an explicit public API boundary.
+
+```typescript
+if (Result.isError(result)) {
+  return { error: true as const, message: result.error.message };
+}
+
+return { error: false as const, data: result.value };
+```
+
+## Avoid anti-patterns
+
+- Do not call `.unwrap()` unless the result has already been checked or the throw is intentional and documented.
+- Do not mix Result-returning expected failures with ordinary throws in the same domain flow.
+- Do not ignore Result errors. Handle, propagate, or log them intentionally.
+- Do not add Result wrappers inside tight loops when parsing or validation can be done first and wrapped once at the boundary.
+
+## Testing
+
+- Test success and error paths for Result-returning code.
+- In tests, use `Result.isError` / `Result.isOk` to narrow before asserting variant-specific fields.
+- For composed flows, include at least one test that verifies short-circuit or representative error propagation.
+
+## Related skills
+
+- `better-result-adopt` — use when migrating modules or reviewing Result patterns.
+</pre></details>
+</article>
+<article class="card" data-search="project-structure.md .claude/rules/typescript/project-structure.md src 配下の ts・tsx に常時適用される bulletproof react のディレクトリ構造規約。features/* の機能別レイアウト、~ エイリアス必須（相対パス禁止）、feature 間の直接依存禁止、ルートファイルの例外を定める。 bulletproof react features/* layout, ~ alias, feature inter-dependencies src/**/*.{ts,tsx}">
+  <div class="card-head"><h3>project-structure.md</h3><span class="badge">src/**/*.{ts,tsx}</span><span class="badge ok">alwaysApply</span></div>
+  <p class="explain"><strong>解説:</strong> src 配下の ts・tsx に常時適用される Bulletproof React のディレクトリ構造規約。features/* の機能別レイアウト、~ エイリアス必須（相対パス禁止）、feature 間の直接依存禁止、ルートファイルの例外を定める。</p>
+  <p class="desc">Bulletproof React features/* layout, ~ alias, feature inter-dependencies</p>
+  <p class="when"><code>.claude/rules/typescript/project-structure.md</code></p>
+  <details><summary>ルール全文を表示</summary><pre class="md">---
+description: Bulletproof React features/* layout, ~ alias, feature inter-dependencies
+globs: [&quot;src/**/*.{ts,tsx}&quot;]
+alwaysApply: true
+---
+
+# Project Structure
+
+&gt; This rule extends [CODING_GUIDELINES.md](../CODING_GUIDELINES.md) §プロジェクト構造.
+
+## Feature layout
+
+```
+src/
+├── features/          # Business logic — one module per domain
+│   └── [feature]/
+│       ├── api/       # Query/mutation wrappers (wraps generated SDK)
+│       ├── components/
+│       ├── hooks/
+│       ├── schemas/   # Valibot schemas
+│       ├── stores/    # Jotai atoms
+│       ├── types/     # Type definitions (derived from generated types)
+│       └── mocks/     # MSW handlers for tests
+├── routes/            # TanStack Router file-based routing (minimal logic)
+├── lib/
+│   ├── api/
+│   │   ├── client.ts       # ky configuration (centralized)
+│   │   └── generated/      # Auto-generated — NEVER edit manually
+│   └── theme.ts
+└── styles.css
+```
+
+`src/components/`, `src/hooks/`, `src/stores/`, `src/utils/` are created on demand when something is genuinely shared across features.
+
+## `~` alias (relative paths forbidden)
+
+&gt; Also enforced by PostToolUse hook in `.claude/settings.json`
+
+```typescript
+// CORRECT
+import { useProducts } from &quot;~/features/products/hooks/use-products&quot;;
+import type { Product } from &quot;~/features/products/types/product&quot;;
+
+// WRONG: relative paths — forbidden even within the same directory
+import { useProducts } from &quot;../hooks/use-products&quot;;
+import { helper } from &quot;./helper&quot;;
+```
+
+## Feature inter-dependencies forbidden
+
+```typescript
+// WRONG: feature importing directly from another feature
+// src/features/orders/components/order-form.tsx
+import { UserSelect } from &quot;~/features/users/components/user-select&quot;;
+
+// CORRECT: extract to src/components/
+import { UserSelect } from &quot;~/components/user-select&quot;;
+```
+
+## Routes exception
+
+Route files (`src/routes/**/*.tsx`) use `export const Route = createFileRoute(...)`. The oxlint `no-default-export` rule is overridden for this path in `vite.config.ts`.
+
+```typescript
+// src/routes/products.tsx — named export is sufficient, no default export needed
+export const Route = createFileRoute(&quot;/products&quot;)({
+  loader: ({ context: { queryClient } }) =&gt;
+    queryClient.ensureQueryData(getProductsOptions({ query: { limit: 20 } })),
+  component: ProductsPage,
+});
+```
+</pre></details>
+</article>
+<article class="card" data-search="react-conventions.md .claude/rules/typescript/react-conventions.md src 配下の tsx とフックに常時適用される react/typescript 規約。named export のみ、コンポーネント・フックは関数宣言で書く、props は utility 型を活用、定数は as const satisfies、react-compiler 前提で手動メモ化を避けることを定める。 named exports, function declarations, utility-type props, as const satisfies, react-compiler src/**/*.tsx, src/**/hooks/*.ts">
+  <div class="card-head"><h3>react-conventions.md</h3><span class="badge">src/**/*.tsx, src/**/hooks/*.ts</span><span class="badge ok">alwaysApply</span></div>
+  <p class="explain"><strong>解説:</strong> src 配下の tsx とフックに常時適用される React/TypeScript 規約。named export のみ、コンポーネント・フックは関数宣言で書く、props は Utility 型を活用、定数は as const satisfies、react-compiler 前提で手動メモ化を避けることを定める。</p>
+  <p class="desc">Named exports, function declarations, Utility-type props, as const satisfies, react-compiler</p>
+  <p class="when"><code>.claude/rules/typescript/react-conventions.md</code></p>
+  <details><summary>ルール全文を表示</summary><pre class="md">---
+description: Named exports, function declarations, Utility-type props, as const satisfies, react-compiler
+globs: [&quot;src/**/*.tsx&quot;, &quot;src/**/hooks/*.ts&quot;]
+alwaysApply: true
+---
+
+# React Conventions
+
+&gt; This rule extends [CODING_GUIDELINES.md](../CODING_GUIDELINES.md) §React/TypeScript規約.
+
+## Named exports only
+
+&gt; Also enforced by PostToolUse hook in `.claude/settings.json`
+
+```typescript
+// CORRECT
+export function ProductList({ products }: ProductListProps) { ... }
+
+// WRONG: default export (except src/routes/ and *.config.ts)
+export default function ProductList({ products }: ProductListProps) { ... }
+```
+
+## Function declarations (not arrow functions)
+
+Components and custom hooks must use `function` declaration syntax:
+
+```typescript
+// CORRECT
+export function ProductCard({ name }: Pick&lt;Product, 'name'&gt;) {
+  return &lt;div&gt;{name}&lt;/div&gt;
+}
+
+export function useProducts({ limit }: UseProductsOptions) {
+  return useSuspenseQuery(getProductsOptions({ query: { limit } }))
+}
+
+// WRONG
+export const ProductCard = ({ name }: Pick&lt;Product, 'name'&gt;) =&gt; &lt;div&gt;{name}&lt;/div&gt;
+```
+
+## Utility-type props
+
+- **1–2 props**: skip a dedicated type; use `Pick`, `Omit`, or `Record` inline
+- **3+ props**: define a named `type` near the component
+
+```typescript
+// CORRECT: 1 prop → inline Record
+export function Container({ children }: Record&lt;'children', ReactNode&gt;) {
+  return &lt;div className=&quot;container&quot;&gt;{children}&lt;/div&gt;
+}
+
+// CORRECT: derived from existing type
+export function UserName({ name }: Pick&lt;User, 'name'&gt;) {
+  return &lt;span&gt;{name}&lt;/span&gt;
+}
+
+// CORRECT: 3+ props → named type
+type ProductCardProps = {
+  isLoading?: boolean
+  onDelete: (id: string) =&gt; void
+  product: Product
+}
+export function ProductCard({ product, onDelete, isLoading }: ProductCardProps) { ... }
+```
+
+## `as const satisfies` for constants
+
+```typescript
+// CORRECT: literal types preserved + type-checked
+const STATUS_LABELS = {
+  active: '有効',
+  inactive: '無効',
+  pending: '保留中',
+} as const satisfies Record&lt;UserStatus, string&gt;
+
+// WRONG: widened to string
+const STATUS_LABELS: Record&lt;UserStatus, string&gt; = { ... }
+```
+
+## react-compiler
+
+This project runs the React Compiler babel plugin. Do **not** add manual memoization without a measured reason:
+
+```typescript
+// WRONG: unnecessary — compiler handles this
+const memoizedValue = useMemo(() =&gt; computeValue(a, b), [a, b]);
+const stableCallback = useCallback(() =&gt; handleClick(), []);
+
+// CORRECT: write plain code; compiler optimizes automatically
+const value = computeValue(a, b);
+```
+
+Only add `useMemo` / `useCallback` when you have a profiler measurement showing a real bottleneck.
+
+## Prefer type inference
+
+Let TypeScript infer return types whenever possible. Only annotate when inference produces `unknown`/`any`, or at explicit public API boundaries.
+
+```typescript
+// WRONG: explicit return type when TypeScript can infer
+export const fetchTenantsServer = createServerFn().handler(
+  async (): Promise&lt;Tenant[]&gt; =&gt; [...tenantsFixture],
+);
+
+// CORRECT: let TypeScript infer
+export const fetchTenantsServer = createServerFn().handler(async () =&gt; [...tenantsFixture]);
+```
+
+## Related skills
+
+- `react-best-practices` — patterns and architecture
+- `react-doctor` — React health checks (`vp run doctor`)
+</pre></details>
+</article>
+<article class="card" data-search="valibot-validation.md .claude/rules/typescript/valibot-validation.md スキーマファイルとフォームコンポーネントに常時適用される valibot 規約。スキーマは features/*/schemas/ に置き、inferoutput や生成型からの pick で型を派生、tanstack form アダプタと連携し、バリデーションは入力・api 応答などの境界に限ることを定める。 valibot schemas — placement under features/*/schemas/, inferoutput, tanstack form adapter src/features/**/schemas/*.ts, src/features/**/components/*-form.tsx">
+  <div class="card-head"><h3>valibot-validation.md</h3><span class="badge">src/features/**/schemas/*.ts, src/features/**/components/*-form.tsx</span><span class="badge ok">alwaysApply</span></div>
+  <p class="explain"><strong>解説:</strong> スキーマファイルとフォームコンポーネントに常時適用される Valibot 規約。スキーマは features/*/schemas/ に置き、InferOutput や生成型からの Pick で型を派生、TanStack Form アダプタと連携し、バリデーションは入力・API 応答などの境界に限ることを定める。</p>
+  <p class="desc">Valibot schemas — placement under features/*/schemas/, InferOutput, TanStack Form adapter</p>
+  <p class="when"><code>.claude/rules/typescript/valibot-validation.md</code></p>
+  <details><summary>ルール全文を表示</summary><pre class="md">---
+description: Valibot schemas — placement under features/*/schemas/, InferOutput, TanStack Form adapter
+globs: [&quot;src/features/**/schemas/*.ts&quot;, &quot;src/features/**/components/*-form.tsx&quot;]
+alwaysApply: true
+---
+
+# Valibot Validation
+
+## Placement: `features/*/schemas/`
+
+Each feature owns its schemas. Place them in `features/[feature]/schemas/[name].ts`:
+
+```
+src/features/products/schemas/
+├── create-product-schema.ts    # form schema for creation
+└── product-schema.ts           # data validation schema
+```
+
+## Derive types with `InferOutput`
+
+Align form/schema types with generated API types by deriving from schemas:
+
+```typescript
+import * as v from &quot;valibot&quot;;
+
+export const CreateProductSchema = v.object({
+  description: v.optional(v.string()),
+  name: v.pipe(v.string(), v.minLength(1, &quot;名前は必須です&quot;)),
+  price: v.pipe(v.number(), v.minValue(0, &quot;価格は0以上で入力してください&quot;)),
+});
+
+export type CreateProductInput = v.InferOutput&lt;typeof CreateProductSchema&gt;;
+```
+
+When the generated `types.gen.ts` already defines a matching type, use `Pick` to align:
+
+```typescript
+// Prefer picking from generated type to stay in sync with the API contract
+export type CreateProductInput = Pick&lt;Product, &quot;description&quot; | &quot;name&quot; | &quot;price&quot;&gt;;
+```
+
+## TanStack Form + `@tanstack/valibot-adapter`
+
+Connect Valibot schemas to TanStack Form using the adapter:
+
+```typescript
+import { useForm } from '@tanstack/react-form'
+import { valibotValidator } from '@tanstack/valibot-adapter'
+import { CreateProductSchema } from '~/features/products/schemas/create-product-schema'
+
+export function ProductForm({ onSuccess }: Record&lt;'onSuccess', () =&gt; void&gt;) {
+  const form = useForm({
+    defaultValues: { description: '', name: '', price: 0 },
+    onSubmit: async ({ value }) =&gt; { ... },
+    validatorAdapter: valibotValidator(),
+    validators: {
+      onChange: CreateProductSchema,
+    },
+  })
+
+  return (
+    &lt;form onSubmit={(e) =&gt; { e.preventDefault(); form.handleSubmit() }}&gt;
+      &lt;form.Field name=&quot;name&quot;&gt;
+        {(field) =&gt; (
+          &lt;&gt;
+            &lt;TextInput
+              error={field.state.meta.errors[0]}
+              onBlur={field.handleBlur}
+              onChange={(e) =&gt; field.handleChange(e.target.value)}
+              value={field.state.value}
+            /&gt;
+          &lt;/&gt;
+        )}
+      &lt;/form.Field&gt;
+    &lt;/form&gt;
+  )
+}
+```
+
+## Boundaries only
+
+Validate at system boundaries (user input, API responses). Do NOT add Valibot validation to pure internal data transformations.
+
+## Related rules
+
+- [common/security.md](../common/security.md) — why boundary validation matters
+</pre></details>
+</article>
+<article class="card" data-search="mantine-tailwind.md .claude/rules/web/mantine-tailwind.md src 配下の tsx と theme.ts に常時適用される mantine 9 と tailwind v4 の共存規約。まず mantine のコンポーネント・props を使い、tailwind はラッパー/レイアウト要素で cn() を介して用い、ハードコード値ではなく mantine のテーマトークンを優先することを定める。 mantine 9 + tailwind v4 coexistence — default to mantine, cn() for layout, theme tokens src/**/*.tsx, src/lib/theme.ts">
+  <div class="card-head"><h3>mantine-tailwind.md</h3><span class="badge">src/**/*.tsx, src/lib/theme.ts</span><span class="badge ok">alwaysApply</span></div>
+  <p class="explain"><strong>解説:</strong> src 配下の tsx と theme.ts に常時適用される Mantine 9 と Tailwind v4 の共存規約。まず Mantine のコンポーネント・props を使い、Tailwind はラッパー/レイアウト要素で cn() を介して用い、ハードコード値ではなく Mantine のテーマトークンを優先することを定める。</p>
+  <p class="desc">Mantine 9 + Tailwind v4 coexistence — default to Mantine, cn() for layout, theme tokens</p>
+  <p class="when"><code>.claude/rules/web/mantine-tailwind.md</code></p>
+  <details><summary>ルール全文を表示</summary><pre class="md">---
+description: Mantine 9 + Tailwind v4 coexistence — default to Mantine, cn() for layout, theme tokens
+globs: [&quot;src/**/*.tsx&quot;, &quot;src/lib/theme.ts&quot;]
+alwaysApply: true
+---
+
+# Mantine + Tailwind Coexistence
+
+## Default: Mantine first
+
+Use Mantine components and props before reaching for Tailwind utilities.
+
+```tsx
+// CORRECT: Mantine spacing/color props
+&lt;Button color=&quot;blue&quot; mt=&quot;md&quot; size=&quot;sm&quot;&gt;
+  送信
+&lt;/Button&gt;
+
+// WRONG: Tailwind overriding Mantine props that already exist
+&lt;Button className=&quot;mt-4 text-blue-600 text-sm&quot;&gt;
+  送信
+&lt;/Button&gt;
+```
+
+## `cn()` boundary
+
+Use `cn()` (from `~/lib/utils`) to compose Tailwind classes on **wrapper / layout elements** around Mantine components. Do NOT use Tailwind to override Mantine component internals via arbitrary selectors.
+
+```tsx
+import { cn } from &quot;~/lib/utils&quot;;
+
+// CORRECT: Tailwind for layout on a container, Mantine for the component itself
+export function FormSection({ children, className }: { children: ReactNode; className?: string }) {
+  return &lt;section className={cn(&quot;flex flex-col gap-4&quot;, className)}&gt;{children}&lt;/section&gt;;
+}
+
+// WRONG: fighting Mantine internals with Tailwind
+&lt;Button className=&quot;[&amp;_.mantine-Button-label]:text-red-500&quot;&gt;...&lt;/Button&gt;;
+```
+
+## Theme tokens
+
+Prefer Mantine theme tokens over hardcoded values. `tailwind-preset-mantine` syncs Mantine's color scale into Tailwind:
+
+```tsx
+// CORRECT: consistent with design system
+&lt;div className=&quot;bg-primary-6 text-white&quot;&gt;   // Tailwind class from Mantine's primary palette
+&lt;Box bg=&quot;blue.6&quot; c=&quot;white&quot;&gt;                 // Mantine prop equivalent
+
+// WRONG: hardcoded values that bypass the design system
+&lt;div style={{ backgroundColor: '#228BE6' }}&gt;
+```
+
+Access theme values in code via `useMantineTheme()` or `rem()`:
+
+```tsx
+import { rem, useMantineTheme } from &quot;@mantine/core&quot;;
+
+const theme = useMantineTheme();
+const primaryColor = theme.colors[theme.primaryColor][6];
+const spacing = rem(16);
+```
+
+## Related skills
+
+- `mantine-custom-components` — building Mantine-based components
+- `frontend-design` — design patterns for this admin UI
+</pre></details>
+</article>
+</div>
+    <footer style="margin-top:48px;color:var(--muted);font-size:12px;border-top:1px solid var(--border);padding-top:16px">
+      Generated by the <code>claude-code-docs</code> workflow ・
+    </footer>
+  </main>
+</div>
+<script src="./assets/app.js"></script>
+</body>
+</html>

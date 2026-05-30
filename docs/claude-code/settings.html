@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>settings.json — Claude Code 設定ガイド</title>
+<link rel="stylesheet" href="./assets/styles.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h1>Claude Code 設定</h1>
+    <div class="sub">tanstack-start-prose-polish</div>
+    <nav class="nav">
+        <a href="./index.html" class="">概要</a>
+        <a href="./skills.html" class="">Skills<span class="n">37</span></a>
+        <a href="./rules.html" class="">Rules<span class="n">9</span></a>
+        <a href="./hooks.html" class="">Hooks<span class="n">8</span></a>
+        <a href="./settings.html" class="active">settings.json</a>
+        <a href="./plugin.html" class="">Plugin (ECC)<span class="n">386</span></a>
+    </nav>
+  </aside>
+  <main class="main">
+    <div class="page-head">
+      <h2>settings.json</h2>
+      <div class="meta">生成日:  ・ 実データ（.claude/ 配下の実ファイル）から自動生成</div>
+    </div>
+    <div class="toolbar">
+        <input id="q" type="search" placeholder="このページ内を検索…" autocomplete="off" />
+        <button class="btn" id="expand-all">すべて展開</button>
+        <button class="btn" id="collapse-all">すべて折りたたみ</button>
+      </div>
+
+<h3>env</h3>
+<table><thead><tr><th style="width:40%">キー</th><th>値</th></tr></thead><tbody>
+      <tr data-search="claude_code_experimental_agent_teams 1"><td><code>CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS</code></td><td><code>1</code></td></tr>
+      <tr data-search="enable_tool_search true"><td><code>ENABLE_TOOL_SEARCH</code></td><td><code>true</code></td></tr>
+      <tr data-search="claude_code_new_init 1"><td><code>CLAUDE_CODE_NEW_INIT</code></td><td><code>1</code></td></tr>
+</tbody></table>
+
+<h3 style="margin-top:32px">permissions.deny <span class="badge ok">.env 保護</span></h3>
+<table><thead><tr><th>拒否ルール</th></tr></thead><tbody>
+      <tr data-search="read(.env*)"><td><code>Read(.env*)</code></td></tr>
+      <tr data-search="edit(.env*)"><td><code>Edit(.env*)</code></td></tr>
+      <tr data-search="bash(cat .env*)"><td><code>Bash(cat .env*)</code></td></tr>
+      <tr data-search="bash(head .env*)"><td><code>Bash(head .env*)</code></td></tr>
+      <tr data-search="bash(tail .env*)"><td><code>Bash(tail .env*)</code></td></tr>
+      <tr data-search="bash(less .env*)"><td><code>Bash(less .env*)</code></td></tr>
+      <tr data-search="bash(more .env*)"><td><code>Bash(more .env*)</code></td></tr>
+</tbody></table>
+
+<h3 style="margin-top:32px">enabledPlugins</h3>
+<table><thead><tr><th>プラグイン ID</th></tr></thead><tbody>
+      <tr data-search="ecc@ecc"><td><code>ecc@ecc</code></td></tr>
+</tbody></table>
+
+<h3 style="margin-top:32px">settings.json 全文</h3>
+<div class="cards"><article class="card" data-search="settings json raw">
+  <details open><summary>全文を表示 / 折りたたみ</summary><pre class="md">{
+  &quot;env&quot;: {
+    &quot;CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS&quot;: &quot;1&quot;,
+    &quot;ENABLE_TOOL_SEARCH&quot;: &quot;true&quot;,
+    &quot;CLAUDE_CODE_NEW_INIT&quot;: &quot;1&quot;
+  },
+  &quot;permissions&quot;: {
+    &quot;deny&quot;: [
+      &quot;Read(.env*)&quot;,
+      &quot;Edit(.env*)&quot;,
+      &quot;Bash(cat .env*)&quot;,
+      &quot;Bash(head .env*)&quot;,
+      &quot;Bash(tail .env*)&quot;,
+      &quot;Bash(less .env*)&quot;,
+      &quot;Bash(more .env*)&quot;
+    ]
+  },
+  &quot;hooks&quot;: {
+    &quot;PostToolUse&quot;: [
+      {
+        &quot;matcher&quot;: &quot;Edit|Write&quot;,
+        &quot;hooks&quot;: [
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;#!/bin/bash\ninput=$(cat)\nfile=$(echo \&quot;$input\&quot; | jq -r '.tool_input.file_path // \&quot;\&quot;')\nif [[ \&quot;$file\&quot; =~ \\.(ts|tsx|js|jsx|json|css)$ ]] &amp;&amp; [ -f \&quot;$file\&quot; ]; then\n  proj=$(git -C \&quot;$(dirname \&quot;$file\&quot;)\&quot; rev-parse --show-toplevel 2&gt;/dev/null)\n  if [ -n \&quot;$proj\&quot; ]; then\n    cd \&quot;$proj\&quot; &amp;&amp; vp fmt \&quot;$file\&quot; &gt;/dev/null 2&gt;&amp;1 || true\n  fi\nfi&quot;
+          }
+        ]
+      },
+      {
+        &quot;matcher&quot;: &quot;Edit|Write&quot;,
+        &quot;hooks&quot;: [
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;#!/bin/bash\ninput=$(cat)\nstatus=0\nfile=$(echo \&quot;$input\&quot; | jq -r '.tool_input.file_path // \&quot;\&quot;')\nif [[ \&quot;$file\&quot; =~ \\.(ts|tsx)$ ]] &amp;&amp; [ -f \&quot;$file\&quot; ]; then\n  proj=$(git -C \&quot;$(dirname \&quot;$file\&quot;)\&quot; rev-parse --show-toplevel 2&gt;/dev/null)\n  if [ -n \&quot;$proj\&quot; ]; then\n    cd \&quot;$proj\&quot; &amp;&amp; vp check &gt;&amp;2 || echo \&quot;[Hook] vp check failed — run 'vp check' to see details\&quot; &gt;&amp;2\n  fi\nfi\nexit 0&quot;
+          }
+        ]
+      },
+      {
+        &quot;matcher&quot;: &quot;Edit|Write&quot;,
+        &quot;hooks&quot;: [
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;#!/bin/bash\n# Relative import check — ~ alias required\ninput=$(cat)\nfile_path=$(echo \&quot;$input\&quot; | jq -r '.tool_input.file_path // \&quot;\&quot;')\nif [ -n \&quot;$file_path\&quot; ] &amp;&amp; [ -f \&quot;$file_path\&quot; ]; then\n  relative_imports=$(grep -nE \&quot;from ['\\\&quot;]\\.\\.?/\&quot; \&quot;$file_path\&quot; 2&gt;/dev/null || true)\n  if [ -n \&quot;$relative_imports\&quot; ]; then\n    echo \&quot;[Hook] WARNING: Relative import detected in $file_path\&quot; &gt;&amp;2\n    echo \&quot;$relative_imports\&quot; | head -5 &gt;&amp;2\n    echo \&quot;[Hook] Use '~/' alias instead of relative paths\&quot; &gt;&amp;2\n  fi\nfi&quot;
+          }
+        ]
+      },
+      {
+        &quot;matcher&quot;: &quot;Edit|Write&quot;,
+        &quot;hooks&quot;: [
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;#!/bin/bash\n# interface keyword check — use type instead\ninput=$(cat)\nfile_path=$(echo \&quot;$input\&quot; | jq -r '.tool_input.file_path // \&quot;\&quot;')\nif [ -n \&quot;$file_path\&quot; ] &amp;&amp; [ -f \&quot;$file_path\&quot; ]; then\n  interfaces=$(grep -nE \&quot;^[[:space:]]*(export )?interface \&quot; \&quot;$file_path\&quot; 2&gt;/dev/null || true)\n  if [ -n \&quot;$interfaces\&quot; ]; then\n    echo \&quot;[Hook] WARNING: 'interface' found in $file_path — use 'type' instead\&quot; &gt;&amp;2\n    echo \&quot;$interfaces\&quot; | head -5 &gt;&amp;2\n  fi\nfi&quot;
+          }
+        ]
+      },
+      {
+        &quot;matcher&quot;: &quot;Edit|Write&quot;,
+        &quot;hooks&quot;: [
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;#!/bin/bash\n# export default check — forbidden outside src/routes/ directory\ninput=$(cat)\nfile_path=$(echo \&quot;$input\&quot; | jq -r '.tool_input.file_path // \&quot;\&quot;')\nif [ -n \&quot;$file_path\&quot; ] &amp;&amp; [ -f \&quot;$file_path\&quot; ]; then\n  if [[ ! \&quot;$file_path\&quot; =~ /routes/ ]]; then\n    defaults=$(grep -n \&quot;export default\&quot; \&quot;$file_path\&quot; 2&gt;/dev/null || true)\n    if [ -n \&quot;$defaults\&quot; ]; then\n      echo \&quot;[Hook] WARNING: 'export default' found in $file_path\&quot; &gt;&amp;2\n      echo \&quot;$defaults\&quot; | head -5 &gt;&amp;2\n      echo \&quot;[Hook] Use named exports. Default exports are only allowed in src/routes/ files.\&quot; &gt;&amp;2\n    fi\n  fi\nfi&quot;
+          }
+        ]
+      },
+      {
+        &quot;matcher&quot;: &quot;Edit|Write&quot;,
+        &quot;hooks&quot;: [
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;#!/bin/bash\n# try-catch check — use better-result pattern instead\ninput=$(cat)\nfile_path=$(echo \&quot;$input\&quot; | jq -r '.tool_input.file_path // \&quot;\&quot;')\nif [ -n \&quot;$file_path\&quot; ] &amp;&amp; [ -f \&quot;$file_path\&quot; ]; then\n  # Exclude test files\n  if [[ ! \&quot;$file_path\&quot; =~ \\.(test|spec)\\.(ts|tsx)$ ]]; then\n    trycatch=$(grep -nE \&quot;(\\} catch|try \\{)\&quot; \&quot;$file_path\&quot; 2&gt;/dev/null || true)\n    if [ -n \&quot;$trycatch\&quot; ]; then\n      echo \&quot;[Hook] WARNING: try-catch found in $file_path\&quot; &gt;&amp;2\n      echo \&quot;$trycatch\&quot; | head -5 &gt;&amp;2\n      echo \&quot;[Hook] Use better-result pattern (Result.tryPromise / result.match) instead\&quot; &gt;&amp;2\n    fi\n  fi\nfi&quot;
+          }
+        ]
+      }
+    ],
+    &quot;Stop&quot;: [
+      {
+        &quot;matcher&quot;: &quot;*&quot;,
+        &quot;hooks&quot;: [
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;bash \&quot;${CLAUDE_PROJECT_DIR}/.claude/hooks/claude-doctor-continuous.sh\&quot; 2&gt;/dev/null || true&quot;,
+            &quot;timeout&quot;: 30,
+            &quot;async&quot;: true
+          }
+        ]
+      }
+    ]
+  },
+  &quot;enabledPlugins&quot;: {
+    &quot;ecc@ecc&quot;: true
+  }
+}
+</pre></details>
+</article></div>
+    <footer style="margin-top:48px;color:var(--muted);font-size:12px;border-top:1px solid var(--border);padding-top:16px">
+      Generated by the <code>claude-code-docs</code> workflow ・
+    </footer>
+  </main>
+</div>
+<script src="./assets/app.js"></script>
+</body>
+</html>

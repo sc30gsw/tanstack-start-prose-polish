@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hooks — Claude Code 設定ガイド</title>
+<link rel="stylesheet" href="./assets/styles.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h1>Claude Code 設定</h1>
+    <div class="sub">tanstack-start-prose-polish</div>
+    <nav class="nav">
+        <a href="./index.html" class="">概要</a>
+        <a href="./skills.html" class="">Skills<span class="n">37</span></a>
+        <a href="./rules.html" class="">Rules<span class="n">9</span></a>
+        <a href="./hooks.html" class="active">Hooks<span class="n">8</span></a>
+        <a href="./settings.html" class="">settings.json</a>
+        <a href="./plugin.html" class="">Plugin (ECC)<span class="n">386</span></a>
+    </nav>
+  </aside>
+  <main class="main">
+    <div class="page-head">
+      <h2>Hooks</h2>
+      <div class="meta">生成日:  ・ 実データ（.claude/ 配下の実ファイル）から自動生成</div>
+    </div>
+    <div class="toolbar">
+        <input id="q" type="search" placeholder="このページ内を検索…" autocomplete="off" />
+        <button class="btn" id="expand-all">すべて展開</button>
+        <button class="btn" id="collapse-all">すべて折りたたみ</button>
+      </div>
+
+<p class="desc"><code>settings.json</code> の <code>hooks</code> で定義された自動化です。<code>Edit|Write</code> 後に走るチェックと、<code>Stop</code> 時の継続診断があります。</p>
+<table>
+  <thead><tr><th>イベント</th><th>マッチャ</th><th>実行</th><th>動作</th></tr></thead>
+  <tbody>
+      <tr data-search="posttooluse edit|write 編集または作成されたファイルが .ts/.tsx/.js/.jsx/.json/.css なら、そのファイルが属する git プロジェクトルートに移動して `vp fmt &lt;file&gt;` を実行し、対象ファイルを自動フォーマットする。"><td><code>PostToolUse</code></td><td><code>Edit|Write</code></td><td>—</td><td>編集または作成されたファイルが .ts/.tsx/.js/.jsx/.json/.css なら、そのファイルが属する Git プロジェクトルートに移動して `vp fmt &lt;file&gt;` を実行し、対象ファイルを自動フォーマットする。</td></tr>
+      <tr data-search="posttooluse edit|write 編集または作成されたファイルが .ts/.tsx なら、そのプロジェクトルートで `vp check` を実行し、フォーマット・lint・型チェックを行い、失敗時は stderr に警告メッセージを出す（exit 0 で常に正常終了）。"><td><code>PostToolUse</code></td><td><code>Edit|Write</code></td><td>—</td><td>編集または作成されたファイルが .ts/.tsx なら、そのプロジェクトルートで `vp check` を実行し、フォーマット・Lint・型チェックを行い、失敗時は stderr に警告メッセージを出す（exit 0 で常に正常終了）。</td></tr>
+      <tr data-search="posttooluse edit|write 対象ファイル内に相対パスインポート（`from './' や '../'`）が含まれていないか grep で検査し、見つかった場合は該当行を stderr に表示して `~/` エイリアスを使うよう警告する。"><td><code>PostToolUse</code></td><td><code>Edit|Write</code></td><td>—</td><td>対象ファイル内に相対パスインポート（`from './' や '../'`）が含まれていないか grep で検査し、見つかった場合は該当行を stderr に表示して `~/` エイリアスを使うよう警告する。</td></tr>
+      <tr data-search="posttooluse edit|write 対象ファイル内に `interface` 宣言が含まれていないか grep で検査し、見つかった場合は該当行を stderr に表示して `type` を使うよう警告する。"><td><code>PostToolUse</code></td><td><code>Edit|Write</code></td><td>—</td><td>対象ファイル内に `interface` 宣言が含まれていないか grep で検査し、見つかった場合は該当行を stderr に表示して `type` を使うよう警告する。</td></tr>
+      <tr data-search="posttooluse edit|write 対象ファイルが /routes/ ディレクトリ外にある場合に `export default` が含まれていないか grep で検査し、見つかった場合は該当行を stderr に表示して named export を使うよう警告する（default export は src/routes/ のみ許可）。"><td><code>PostToolUse</code></td><td><code>Edit|Write</code></td><td>—</td><td>対象ファイルが /routes/ ディレクトリ外にある場合に `export default` が含まれていないか grep で検査し、見つかった場合は該当行を stderr に表示して named export を使うよう警告する（default export は src/routes/ のみ許可）。</td></tr>
+      <tr data-search="posttooluse edit|write 対象ファイル（テストファイルを除く）に try/catch 構文が含まれていないか grep で検査し、見つかった場合は該当行を stderr に表示して better-result パターン（result.trypromise / result.match）を使うよう警告する。"><td><code>PostToolUse</code></td><td><code>Edit|Write</code></td><td>—</td><td>対象ファイル（テストファイルを除く）に try/catch 構文が含まれていないか grep で検査し、見つかった場合は該当行を stderr に表示して better-result パターン（Result.tryPromise / result.match）を使うよう警告する。</td></tr>
+      <tr data-search="stop * ターンの終了時に `${claude_project_dir}/.claude/hooks/claude-doctor-continuous.sh` をバックグラウンドで実行し、claude-doctor によるアンチパターン検出とルール候補レポートの生成を行う。"><td><code>Stop</code></td><td><code>*</code></td><td><span class="badge ok">async</span></td><td>ターンの終了時に `${CLAUDE_PROJECT_DIR}/.claude/hooks/claude-doctor-continuous.sh` をバックグラウンドで実行し、claude-doctor によるアンチパターン検出とルール候補レポートの生成を行う。</td></tr>
+  </tbody>
+</table>
+<h3 style="margin-top:32px">フックスクリプト</h3>
+<div class="cards">
+<article class="card" data-search=".claude/hooks/claude-doctor-continuous.sh stop フックとして各ターン終了時に呼び出され、10分間のスロットリングを挟みつつ claude-doctor をバックグラウンドで実行し、アンチパターン検出結果とルール候補をタイムスタンプ付きの json/ログとして .claude/claude-doctor-reports/ に蓄積する。perl の alarm を使った macos 互換のタイムアウト(120秒)で claude-doctor を起動し、claude code の ux を妨げないよう完全にデタッチして実行する。">
+  <div class="card-head"><h3>claude-doctor-continuous.sh</h3><span class="badge">.claude/hooks/claude-doctor-continuous.sh</span></div>
+  <p class="desc">Stop フックとして各ターン終了時に呼び出され、10分間のスロットリングを挟みつつ claude-doctor をバックグラウンドで実行し、アンチパターン検出結果とルール候補をタイムスタンプ付きの JSON/ログとして .claude/claude-doctor-reports/ に蓄積する。perl の alarm を使った macOS 互換のタイムアウト(120秒)で claude-doctor を起動し、Claude Code の UX を妨げないよう完全にデタッチして実行する。</p>
+  <details><summary>スクリプト全文を表示</summary><pre class="md">#!/bin/bash
+# claude-doctor-continuous.sh
+#
+# Stop hook: At end of each turn, run claude-doctor to detect anti-patterns and emit rule candidates.
+# Throttling (10 minutes) and background execution avoid impacting Claude Code UX.
+#
+# Operations workflow:
+#   1. While you work, the hook quietly accumulates reports in the background
+#   2. Periodically inspect the latest report: ls -lt .claude/claude-doctor-reports/ | head
+#   3. Pick rules to adopt and append them to ~/.claude/CLAUDE.md or each project's CLAUDE.md
+#   4. Remove old reports: find .claude/claude-doctor-reports -mtime +30 -delete
+
+# Discard stdin so the hook runtime does not wait for the pipe to close
+cat &gt; /dev/null
+
+HOOK_DIR=&quot;$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)&quot; &amp;&amp; pwd)&quot;
+PROJECT_ROOT=&quot;${CLAUDE_PROJECT_DIR:-$(cd &quot;$HOOK_DIR/../..&quot; &amp;&amp; pwd)}&quot;
+
+LAST_RUN_FILE=&quot;$PROJECT_ROOT/.claude/.cache/claude-doctor-last-run&quot;
+REPORTS_DIR=&quot;$PROJECT_ROOT/.claude/claude-doctor-reports&quot;
+
+# Ensure directories exist
+mkdir -p &quot;$(dirname &quot;$LAST_RUN_FILE&quot;)&quot; &quot;$REPORTS_DIR&quot; || true
+
+# Skip if we already ran within the last 10 minutes
+if [ -f &quot;$LAST_RUN_FILE&quot; ] &amp;&amp; find &quot;$LAST_RUN_FILE&quot; -mmin -10 2&gt;/dev/null | grep -q .; then
+  exit 0
+fi
+
+# Record run time for the next throttle check
+touch &quot;$LAST_RUN_FILE&quot; || true
+
+# Output paths with timestamp
+TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+REPORT_JSON=&quot;$REPORTS_DIR/${TIMESTAMP}.json&quot;
+REPORT_LOG=&quot;$REPORTS_DIR/${TIMESTAMP}.log&quot;
+
+# Run claude-doctor in the background (close stdin for full detachment)
+# Use perl alarm as a macOS-compatible timeout (no GNU coreutils required)
+{
+  cd &quot;$PROJECT_ROOT&quot; || exit 0
+  perl -e 'alarm 120; exec @ARGV' -- \
+    npx -y claude-doctor@latest --project &quot;$PROJECT_ROOT&quot; --rules --save --json \
+    &gt; &quot;$REPORT_JSON&quot; \
+    2&gt; &quot;$REPORT_LOG&quot; \
+    || true
+} &lt;/dev/null &amp;
+disown
+
+exit 0
+</pre></details>
+</article>
+</div>
+    <footer style="margin-top:48px;color:var(--muted);font-size:12px;border-top:1px solid var(--border);padding-top:16px">
+      Generated by the <code>claude-code-docs</code> workflow ・
+    </footer>
+  </main>
+</div>
+<script src="./assets/app.js"></script>
+</body>
+</html>
