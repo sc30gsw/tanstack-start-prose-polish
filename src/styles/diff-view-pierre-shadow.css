@@ -1,0 +1,7 @@
+[data-column-number]:has([data-gutter-utility-slot]) [data-line-number-content] {
+  visibility: hidden;
+}
+
+[data-column-number]:has([data-gutter-utility-slot]) [data-gutter-utility-slot] {
+  right: 0.5ch;
+}
