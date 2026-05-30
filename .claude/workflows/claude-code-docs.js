@@ -21,7 +21,7 @@ const OUT = `${PROJECT}/docs/claude-code`
 // the script or a writer prompt, because a single ~300KB verbatim-write prompt is
 // unreliable (this was the original skills.html failure mode).
 const SKILL_DIRS = [
-  'accessibility', 'agent-browser', 'better-result-adopt', 'caveman', 'composition-patterns',
+  'accessibility', 'agent-browser', 'ai-sdk', 'better-result-adopt', 'caveman', 'composition-patterns',
   'diagnose', 'doc-coauthoring', 'find-docs', 'find-skills', 'frontend-design',
   'git-guardrails-claude-code', 'grill-me', 'grill-with-docs', 'handoff',
   'improve-codebase-architecture', 'instantdb', 'mantine-custom-components', 'mantine-form',
