@@ -1,13 +1,5 @@
 import type { InstaQLEntity } from "@instantdb/react";
-import {
-  ActionIcon,
-  Box,
-  Group,
-  Modal,
-  Text,
-  UnstyledButton,
-  useComputedColorScheme,
-} from "@mantine/core";
+import { ActionIcon, Box, Group, Modal, Text, useComputedColorScheme } from "@mantine/core";
 import type { FileDiffOptions, GetHoveredLineResult } from "@pierre/diffs";
 import { parseDiffFromFile } from "@pierre/diffs";
 import { FileDiff } from "@pierre/diffs/react";
@@ -74,7 +66,9 @@ export function DiffView({
   const renderGutterUtility = useCallback(
     (getHoveredLine: () => GetHoveredLineResult<"diff"> | undefined) => {
       return (
-        <UnstyledButton
+        <ActionIcon
+          aria-label="行にコメントを追加"
+          color="blue"
           disabled={isPending}
           onClick={() => {
             const hovered = getHoveredLine();
@@ -88,18 +82,13 @@ export function DiffView({
               side: hovered.side,
             });
           }}
+          radius="xl"
+          size="sm"
+          title="コメントを追加"
+          variant="light"
         >
-          <ActionIcon
-            aria-label="行にコメントを追加"
-            color="blue"
-            radius="xl"
-            size="sm"
-            title="コメントを追加"
-            variant="light"
-          >
-            <IconPlus size={14} />
-          </ActionIcon>
-        </UnstyledButton>
+          <IconPlus size={14} />
+        </ActionIcon>
       );
     },
     [isPending, setPendingComment],

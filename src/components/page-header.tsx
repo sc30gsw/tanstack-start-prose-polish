@@ -11,7 +11,7 @@ type PageHeaderProps = {
 export function PageHeader({ title, backLink, children }: PageHeaderProps) {
   return (
     <Stack gap="xs" mb="xl">
-      <Anchor fw={600} size="md" underline="hover">
+      <Anchor component="span" fw={600} size="md" underline="hover">
         <Flex align="center" gap="xs" wrap="nowrap">
           <IconArrowLeft size={16} /> {backLink}
         </Flex>

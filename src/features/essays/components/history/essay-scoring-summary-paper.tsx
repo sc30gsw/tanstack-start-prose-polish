@@ -31,9 +31,11 @@ export function EssayScoringSummaryPaper() {
       </Group>
       <Collapse expanded={opened}>
         <Stack gap="md" mt="md">
-          <ClientOnly fallback={<Skeleton height={280} radius="md" />}>
-            <EssayScoringSummaryContainer />
-          </ClientOnly>
+          {opened && (
+            <ClientOnly fallback={<Skeleton height={280} radius="md" />}>
+              <EssayScoringSummaryContainer />
+            </ClientOnly>
+          )}
           <Divider />
           <Group gap={4} wrap="wrap">
             <Text c="dimmed" size="sm">
