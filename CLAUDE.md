@@ -74,7 +74,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 - **Data**: TanStack React Query v5 + `@hey-api/openapi-ts` (OpenAPI-generated client)
 - **State**: Jotai
 - **Validation**: Valibot
-- **Error handling**: `better-result` — always use `result.match()`, not `result.isErr()` chains
+- **Error handling**: `better-result` — use `Result.try` / `Result.tryPromise` at throwing boundaries, `Result.gen` for composition, `TaggedError` for typed failures, and either `.match(...)` or `Result.isError` / `Result.isOk` type guards as appropriate. Do not return Result or Error instances across serialization boundaries.
 
 **Feature-based structure (Bulletproof React):** `src/features/[feature]/{api,components,hooks,schemas,stores,types,mocks,index.ts}`
 
@@ -122,3 +122,17 @@ Not part of `vp check`. Use `vp run` so installs stay routed through Vite+.
 
 - **fallow** (`vp run fallow`) — unused code, duplication, cycles, complexity, and architecture drift. `.fallowrc.json` configures ignores. Subcommands: `vp run fallow:dead-code` / `vp run fallow:audit` / `vp run fallow:health` / `vp run fallow:fix`. The Agent Skill is in `node_modules/fallow/skills/fallow/` and is discoverable via `pnpm run check:skills`. To enable MCP integration, add `{"mcpServers":{"fallow":{"command":"fallow-mcp"}}}` to `.mcp.json`.
 - **react-doctor** (`vp run doctor`) — React-focused health checks. The script uses `--no-lint`; keep ordinary linting on `vp lint`.
+
+## Agent skills
+
+### Issue tracker
+
+Issues live in GitHub Issues (`sc30gsw/tanstack-start-prose-polish`). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default five-label vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout — `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.

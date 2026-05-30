@@ -1,0 +1,1297 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>everything-claude-code — Commands 一覧</title>
+    <link rel="stylesheet" href="../../style.css" />
+    <link rel="stylesheet" href="ecc-commands-style.css" />
+    <link rel="stylesheet" href="ecc-catalog-layout.css" />
+  </head>
+  <body class="ecc-catalog-page">
+    <div class="ecc-doc-layout">
+      <input type="radio" name="ecc-category" id="ecc-cat-1" class="ecc-category-input" checked />
+      <input type="radio" name="ecc-category" id="ecc-cat-2" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-3" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-4" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-5" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-6" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-7" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-8" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-9" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-10" class="ecc-category-input" />
+      <main class="main ecc-catalog-main">
+        <header class="page-header">
+          <h1 class="page-title">everything-claude-code — Commands 一覧</h1>
+          <p class="page-subtitle">76 Commands / 10カテゴリ。スナップショット: 2026-05-28</p>
+        </header>
+
+        <nav class="quick-links" aria-label="ページナビゲーション">
+          <a href="ecc-index.html">インデックス</a>
+          <a href="ecc-usage.html">呼び出し方</a>
+          <a href="ecc-agents.html">Agents (61)</a>
+          <a href="ecc-commands.html" class="current">Commands (76)</a>
+          <a href="ecc-skills.html">Skills (246)</a>
+        </nav>
+
+        <nav class="ecc-category-tabs" aria-label="カテゴリ">
+          <label for="ecc-cat-1" class="ecc-category-label"
+            >ECC/メタツール<span class="ecc-category-count">11 コマンド</span></label
+          >
+          <label for="ecc-cat-2" class="ecc-category-label"
+            >計画/設計/アーキテクチャ<span class="ecc-category-count">5 コマンド</span></label
+          >
+          <label for="ecc-cat-3" class="ecc-category-label"
+            >コード品質/レビュー/リファクタ<span class="ecc-category-count"
+              >10 コマンド</span
+            ></label
+          >
+          <label for="ecc-cat-4" class="ecc-category-label"
+            >ビルド復旧<span class="ecc-category-count">7 コマンド</span></label
+          >
+          <label for="ecc-cat-5" class="ecc-category-label"
+            >テスト/検証/品質ゲート<span class="ecc-category-count">8 コマンド</span></label
+          >
+          <label for="ecc-cat-6" class="ecc-category-label"
+            >セキュリティ/コンプライアンス<span class="ecc-category-count">1 コマンド</span></label
+          >
+          <label for="ecc-cat-7" class="ecc-category-label"
+            >AIエージェント/自律化<span class="ecc-category-count">10 コマンド</span></label
+          >
+          <label for="ecc-cat-8" class="ecc-category-label"
+            >ドキュメント/ナレッジ/リサーチ<span class="ecc-category-count">3 コマンド</span></label
+          >
+          <label for="ecc-cat-9" class="ecc-category-label"
+            >GitHub/プロジェクト運用/セッション<span class="ecc-category-count"
+              >11 コマンド</span
+            ></label
+          >
+          <label for="ecc-cat-10" class="ecc-category-label"
+            >その他/専門領域<span class="ecc-category-count">10 コマンド</span></label
+          >
+        </nav>
+
+        <section class="catalog-panel" data-panel="1" aria-labelledby="catalog-heading-1">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-1">ECC/メタツール</h2>
+            <p class="catalog-panel-desc">
+              ECC
+              自体の案内、インストール、スキル棚卸し、hooks、instinct、コンテキストやコスト管理。
+            </p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">11 コマンド</span></p>
+            <p class="catalog-panel-hint">
+              Command名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Command</th>
+                  <th>ID</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>/auto-update</code></td>
+                  <td><code>auto-update</code></td>
+                  <td>
+                    ECC リポジトリの最新変更を取得し、現在管理対象のターゲットを再インストールする。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/auto-update.md"
+                      >commands/auto-update.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/cost-report</code></td>
+                  <td><code>cost-report</code></td>
+                  <td>
+                    cost-tracker SQLite データベースから Claude Code
+                    のローカルコストレポートを生成する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/cost-report.md"
+                      >commands/cost-report.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/evolve</code></td>
+                  <td><code>evolve</code></td>
+                  <td>関連するinstinctsをスキル、コマンド、またはエージェントにクラスター化</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/evolve.md"
+                      >commands/evolve.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/harness-audit</code></td>
+                  <td><code>harness-audit</code></td>
+                  <td>
+                    リポジトリのハーネス監査を決定的に実行し、優先順位付けされたスコアカードを返す。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/harness-audit.md"
+                      >commands/harness-audit.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/hookify</code></td>
+                  <td><code>hookify</code></td>
+                  <td>
+                    会話分析または明示的な指示から、望ましくない動作を防止するフックを作成する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/hookify.md"
+                      >commands/hookify.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/learn</code></td>
+                  <td><code>learn</code></td>
+                  <td>
+                    現在のセッションから再利用可能なパターンを抽出し、候補スキルまたはガイダンスとして保存する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/learn.md"
+                      >commands/learn.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/model-route</code></td>
+                  <td><code>model-route</code></td>
+                  <td>
+                    複雑さ、リスク、予算に基づいて、現在のタスクに最適なモデルティアを推奨する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/model-route.md"
+                      >commands/model-route.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/projects</code></td>
+                  <td><code>projects</code></td>
+                  <td>既知のプロジェクトとその instinct 統計を一覧表示する。</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/projects.md"
+                      >commands/projects.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/promote</code></td>
+                  <td><code>promote</code></td>
+                  <td>プロジェクトスコープの instinct をグローバルスコープに昇格させる。</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/promote.md"
+                      >commands/promote.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/prune</code></td>
+                  <td><code>prune</code></td>
+                  <td>30日以上経過し、一度も昇格されなかった保留中の instinct を削除する。</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/prune.md"
+                      >commands/prune.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/setup-pm</code></td>
+                  <td><code>setup-pm</code></td>
+                  <td>優先するパッケージマネージャーを設定（npm/pnpm/yarn/bun）</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/setup-pm.md"
+                      >commands/setup-pm.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="2" aria-labelledby="catalog-heading-2">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-2">計画/設計/アーキテクチャ</h2>
+            <p class="catalog-panel-desc">
+              実装前の計画、構造設計、ADR、プロダクト要求から設計への変換。
+            </p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">5 コマンド</span></p>
+            <p class="catalog-panel-hint">
+              Command名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Command</th>
+                  <th>ID</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>/feature-dev</code></td>
+                  <td><code>feature-dev</code></td>
+                  <td>コードベースの理解とアーキテクチャに重点を置いた、ガイド付き機能開発。</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/feature-dev.md"
+                      >commands/feature-dev.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/plan</code></td>
+                  <td><code>plan</code></td>
+                  <td>
+                    要件を再確認し、リスクを評価し、段階的な実装計画を作成する。コードに触れる前にユーザーの
+                    CONFIRM を待つ。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/plan.md"
+                      >commands/plan.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/plan-prd</code></td>
+                  <td><code>plan-prd</code></td>
+                  <td>シンプルで問題先行型の PRD を生成し、/plan に実装計画を引き渡す。</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/plan-prd.md"
+                      >commands/plan-prd.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/prp-plan</code></td>
+                  <td><code>prp-plan</code></td>
+                  <td>コードベース分析とパターン抽出を伴う包括的な機能実装計画を作成する。</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/prp-plan.md"
+                      >commands/prp-plan.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/prp-prd</code></td>
+                  <td><code>prp-prd</code></td>
+                  <td>
+                    インタラクティブな PRD ジェネレータ —
+                    問題先行型、仮説駆動型の製品仕様を双方向の質問で作成する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/prp-prd.md"
+                      >commands/prp-prd.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="3" aria-labelledby="catalog-heading-3">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-3">
+              コード品質/レビュー/リファクタ
+            </h2>
+            <p class="catalog-panel-desc">
+              コードレビュー、保守性、コメント、型設計、デッドコード整理。
+            </p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">10 コマンド</span></p>
+            <p class="catalog-panel-hint">
+              Command名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Command</th>
+                  <th>ID</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>/code-review</code></td>
+                  <td><code>code-review</code></td>
+                  <td>
+                    コードレビュー — ローカルの未コミット変更または GitHub PR（PR モードは PR
+                    番号/URL を指定）
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/code-review.md"
+                      >commands/code-review.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/cpp-review</code></td>
+                  <td><code>cpp-review</code></td>
+                  <td>
+                    メモリ安全性、モダン C++ 慣用句、並行処理、セキュリティに関する包括的な C++
+                    コードレビュー。cpp-reviewer エージェントを呼び出す。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/cpp-review.md"
+                      >commands/cpp-review.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/fastapi-review</code></td>
+                  <td><code>fastapi-review</code></td>
+                  <td>
+                    FastAPI
+                    アプリケーションのアーキテクチャ、非同期処理の正確性、依存性注入、Pydantic
+                    スキーマ、セキュリティ、パフォーマンス、テスト容易性をレビューする。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/fastapi-review.md"
+                      >commands/fastapi-review.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/flutter-review</code></td>
+                  <td><code>flutter-review</code></td>
+                  <td>
+                    Flutter/Dart
+                    コードの慣用的パターン、ウィジェットのベストプラクティス、状態管理、パフォーマンス、アクセシビリティ、セキュリティをレビューする。flutter-reviewer
+                    エージェントを呼び出す。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/flutter-review.md"
+                      >commands/flutter-review.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/go-review</code></td>
+                  <td><code>go-review</code></td>
+                  <td>
+                    慣用的なパターン、並行性の安全性、エラーハンドリング、セキュリティについての包括的なGoコードレビュー。go-reviewerエージェントを呼び出します。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/go-review.md"
+                      >commands/go-review.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/kotlin-review</code></td>
+                  <td><code>kotlin-review</code></td>
+                  <td>
+                    慣用的パターン、null 安全性、コルーチン安全性、セキュリティに関する包括的な
+                    Kotlin コードレビュー。kotlin-reviewer エージェントを呼び出す。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/kotlin-review.md"
+                      >commands/kotlin-review.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/python-review</code></td>
+                  <td><code>python-review</code></td>
+                  <td>
+                    PEP
+                    8準拠、型ヒント、セキュリティ、Pythonic慣用句についての包括的なPythonコードレビュー。python-reviewerエージェントを呼び出します。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/python-review.md"
+                      >commands/python-review.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/refactor-clean</code></td>
+                  <td><code>refactor-clean</code></td>
+                  <td>各変更後に検証を行いながら、デッドコードを安全に特定して削除する。</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/refactor-clean.md"
+                      >commands/refactor-clean.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/review-pr</code></td>
+                  <td><code>review-pr</code></td>
+                  <td>専門エージェントを使用した包括的な PR レビュー。</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/review-pr.md"
+                      >commands/review-pr.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/rust-review</code></td>
+                  <td><code>rust-review</code></td>
+                  <td>
+                    所有権、ライフタイム、エラーハンドリング、unsafe
+                    使用、慣用的パターンに関する包括的な Rust コードレビュー。rust-reviewer
+                    エージェントを呼び出す。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/rust-review.md"
+                      >commands/rust-review.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="4" aria-labelledby="catalog-heading-4">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-4">ビルド復旧</h2>
+            <p class="catalog-panel-desc">コンパイル、型チェック、依存関係、ビルド失敗の復旧。</p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">7 コマンド</span></p>
+            <p class="catalog-panel-hint">
+              Command名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Command</th>
+                  <th>ID</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>/build-fix</code></td>
+                  <td><code>build-fix</code></td>
+                  <td>
+                    プロジェクトのビルドシステムを検出し、最小限の安全な変更でビルド/型エラーを段階的に修正する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/build-fix.md"
+                      >commands/build-fix.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/cpp-build</code></td>
+                  <td><code>cpp-build</code></td>
+                  <td>
+                    C++ ビルドエラー、CMake
+                    問題、リンカー問題を段階的に修正する。最小限の外科的修正のために
+                    cpp-build-resolver エージェントを呼び出す。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/cpp-build.md"
+                      >commands/cpp-build.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/flutter-build</code></td>
+                  <td><code>flutter-build</code></td>
+                  <td>
+                    Dart analyzer エラーと Flutter
+                    ビルド失敗を段階的に修正する。最小限の外科的修正のために dart-build-resolver
+                    エージェントを呼び出す。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/flutter-build.md"
+                      >commands/flutter-build.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/go-build</code></td>
+                  <td><code>go-build</code></td>
+                  <td>
+                    Goビルドエラー、go
+                    vet警告、リンター問題を段階的に修正します。最小限の外科的修正のためにgo-build-resolverエージェントを呼び出します。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/go-build.md"
+                      >commands/go-build.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/gradle-build</code></td>
+                  <td><code>gradle-build</code></td>
+                  <td>Android および KMP プロジェクトの Gradle ビルドエラーを修正する。</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/gradle-build.md"
+                      >commands/gradle-build.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/kotlin-build</code></td>
+                  <td><code>kotlin-build</code></td>
+                  <td>
+                    Kotlin/Gradle
+                    ビルドエラー、コンパイラ警告、依存関係の問題を段階的に修正する。最小限の外科的修正のために
+                    kotlin-build-resolver エージェントを呼び出す。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/kotlin-build.md"
+                      >commands/kotlin-build.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/rust-build</code></td>
+                  <td><code>rust-build</code></td>
+                  <td>
+                    Rust
+                    ビルドエラー、借用チェッカー問題、依存関係の問題を段階的に修正する。最小限の外科的修正のために
+                    rust-build-resolver エージェントを呼び出す。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/rust-build.md"
+                      >commands/rust-build.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="5" aria-labelledby="catalog-heading-5">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-5">テスト/検証/品質ゲート</h2>
+            <p class="catalog-panel-desc">TDD、E2E、カバレッジ、品質ゲート、リリース前検証。</p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">8 コマンド</span></p>
+            <p class="catalog-panel-hint">
+              Command名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Command</th>
+                  <th>ID</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>/checkpoint</code></td>
+                  <td><code>checkpoint</code></td>
+                  <td>
+                    検証チェック実行後に、ワークフローのチェックポイントを作成、検証、または一覧表示する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/checkpoint.md"
+                      >commands/checkpoint.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/cpp-test</code></td>
+                  <td><code>cpp-test</code></td>
+                  <td>
+                    C++ の TDD ワークフローを適用する。GoogleTest
+                    テストを先に記述し、その後実装する。gcov/lcov でカバレッジを確認する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/cpp-test.md"
+                      >commands/cpp-test.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/flutter-test</code></td>
+                  <td><code>flutter-test</code></td>
+                  <td>
+                    Flutter/Dart
+                    テストを実行し、失敗を報告し、テスト問題を段階的に修正する。ユニット、ウィジェット、ゴールデン、統合テストに対応。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/flutter-test.md"
+                      >commands/flutter-test.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/go-test</code></td>
+                  <td><code>go-test</code></td>
+                  <td>
+                    Goのテスト駆動開発(TDD)ワークフローを適用します。テーブル駆動テストを最初に記述し、その後実装します。go
+                    test -coverで80%以上のカバレッジを確認します。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/go-test.md"
+                      >commands/go-test.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/kotlin-test</code></td>
+                  <td><code>kotlin-test</code></td>
+                  <td>
+                    Kotlin の TDD ワークフローを適用する。Kotest
+                    テストを先に記述し、その後実装する。Kover で 80% 以上のカバレッジを確認する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/kotlin-test.md"
+                      >commands/kotlin-test.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/quality-gate</code></td>
+                  <td><code>quality-gate</code></td>
+                  <td>
+                    ファイルまたはプロジェクトスコープで ECC
+                    品質パイプラインを実行し、修復手順を報告する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/quality-gate.md"
+                      >commands/quality-gate.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/rust-test</code></td>
+                  <td><code>rust-test</code></td>
+                  <td>
+                    Rust の TDD
+                    ワークフローを適用する。テストを先に記述し、その後実装する。cargo-llvm-cov で
+                    80% 以上のカバレッジを確認する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/rust-test.md"
+                      >commands/rust-test.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/test-coverage</code></td>
+                  <td><code>test-coverage</code></td>
+                  <td>
+                    カバレッジを分析し、ギャップを特定し、目標閾値に向けて不足テストを生成する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/test-coverage.md"
+                      >commands/test-coverage.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="6" aria-labelledby="catalog-heading-6">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-6">
+              セキュリティ/コンプライアンス
+            </h2>
+            <p class="catalog-panel-desc">脆弱性、認証認可、秘密情報、PHI/HIPAA、規制・安全性。</p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">1 コマンド</span></p>
+            <p class="catalog-panel-hint">
+              Command名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Command</th>
+                  <th>ID</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>/security-scan</code></td>
+                  <td><code>security-scan</code></td>
+                  <td>
+                    agent、hook、MCP、permission、secret 各サーフェスに対して AgentShield
+                    を実行する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/security-scan.md"
+                      >commands/security-scan.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="7" aria-labelledby="catalog-heading-7">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-7">AIエージェント/自律化</h2>
+            <p class="catalog-panel-desc">
+              自律ループ、マルチエージェント、評価ハーネス、AI 実行基盤。
+            </p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">10 コマンド</span></p>
+            <p class="catalog-panel-hint">
+              Command名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Command</th>
+                  <th>ID</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>/gan-build</code></td>
+                  <td><code>gan-build</code></td>
+                  <td>
+                    実装タスク向けに、反復回数とスコアリング付きのジェネレータ/エバリュエータビルドループを実行する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/gan-build.md"
+                      >commands/gan-build.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/gan-design</code></td>
+                  <td><code>gan-design</code></td>
+                  <td>
+                    フロントエンドまたはビジュアル作業向けに、反復回数とスコアリング付きのジェネレータ/エバリュエータデザインループを実行する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/gan-design.md"
+                      >commands/gan-design.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/loop-start</code></td>
+                  <td><code>loop-start</code></td>
+                  <td>
+                    安全なデフォルト設定と明示的な停止条件付きで、管理された自律ループパターンを開始する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/loop-start.md"
+                      >commands/loop-start.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/loop-status</code></td>
+                  <td><code>loop-status</code></td>
+                  <td>アクティブなループの状態、進捗、失敗シグナル、推奨される介入を確認する。</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/loop-status.md"
+                      >commands/loop-status.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/multi-backend</code></td>
+                  <td><code>multi-backend</code></td>
+                  <td>
+                    API、アルゴリズム、データ、ビジネスロジック向けのバックエンド特化マルチモデルワークフローを実行する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/multi-backend.md"
+                      >commands/multi-backend.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/multi-execute</code></td>
+                  <td><code>multi-execute</code></td>
+                  <td>
+                    Claude
+                    を唯一のファイルシステム書き込み主体として維持しながら、マルチモデル実装計画を実行する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/multi-execute.md"
+                      >commands/multi-execute.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/multi-frontend</code></td>
+                  <td><code>multi-frontend</code></td>
+                  <td>
+                    コンポーネント、レイアウト、アニメーション、UI
+                    仕上げ向けのフロントエンド特化マルチモデルワークフローを実行する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/multi-frontend.md"
+                      >commands/multi-frontend.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/multi-plan</code></td>
+                  <td><code>multi-plan</code></td>
+                  <td>本番コードを変更せずに、マルチモデル実装計画を作成する。</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/multi-plan.md"
+                      >commands/multi-plan.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/multi-workflow</code></td>
+                  <td><code>multi-workflow</code></td>
+                  <td>
+                    調査、計画、実行、最適化、レビューを含む完全なマルチモデル開発ワークフローを実行する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/multi-workflow.md"
+                      >commands/multi-workflow.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/santa-loop</code></td>
+                  <td><code>santa-loop</code></td>
+                  <td>
+                    敵対的デュアルレビュー収束ループ —
+                    2つの独立したモデルレビュアーが両方とも承認するまでコードは出荷されない。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/santa-loop.md"
+                      >commands/santa-loop.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="8" aria-labelledby="catalog-heading-8">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-8">
+              ドキュメント/ナレッジ/リサーチ
+            </h2>
+            <p class="catalog-panel-desc">
+              ドキュメント更新、最新情報調査、ナレッジ管理、コードベース理解。
+            </p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">3 コマンド</span></p>
+            <p class="catalog-panel-hint">
+              Command名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Command</th>
+                  <th>ID</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>/ecc-guide</code></td>
+                  <td><code>ecc-guide</code></td>
+                  <td>
+                    ライブリポジトリから ECC の現在の
+                    agents、skills、commands、hooks、インストールプロファイル、ドキュメントを参照する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/ecc-guide.md"
+                      >commands/ecc-guide.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/update-codemaps</code></td>
+                  <td><code>update-codemaps</code></td>
+                  <td>
+                    プロジェクト構造をスキャンし、トークン効率の良いアーキテクチャ codemap
+                    を生成する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/update-codemaps.md"
+                      >commands/update-codemaps.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/update-docs</code></td>
+                  <td><code>update-docs</code></td>
+                  <td>
+                    scripts、schemas、routes、exports
+                    などのソースオブトゥルースファイルからドキュメントを同期する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/update-docs.md"
+                      >commands/update-docs.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="9" aria-labelledby="catalog-heading-9">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-9">
+              GitHub/プロジェクト運用/セッション
+            </h2>
+            <p class="catalog-panel-desc">
+              PR、セッション保存、チェックポイント、プロジェクト運用。
+            </p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">11 コマンド</span></p>
+            <p class="catalog-panel-hint">
+              Command名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Command</th>
+                  <th>ID</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>/aside</code></td>
+                  <td><code>aside</code></td>
+                  <td>
+                    現在のタスクのコンテキストを中断または失うことなく、簡単なサイド質問に回答する。回答後に自動的に作業を再開する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/aside.md"
+                      >commands/aside.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/jira</code></td>
+                  <td><code>jira</code></td>
+                  <td>
+                    Jira
+                    チケットを取得し、要件を分析し、ステータスを更新するかコメントを追加する。jira-integration
+                    skill と MCP または REST API を使用する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/jira.md"
+                      >commands/jira.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/pm2</code></td>
+                  <td><code>pm2</code></td>
+                  <td>
+                    プロジェクトを分析し、検出されたフロントエンド、バックエンド、データベースサービス向けの
+                    PM2 サービスコマンドを生成する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/pm2.md"
+                      >commands/pm2.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/pr</code></td>
+                  <td><code>pr</code></td>
+                  <td>
+                    未プッシュコミットを含む現在のブランチから GitHub PR を作成する —
+                    テンプレートを検出し、変更を分析し、プッシュする。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/pr.md"
+                      >commands/pr.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/project-init</code></td>
+                  <td><code>project-init</code></td>
+                  <td>
+                    プロジェクトのスタックを検出し、リポジトリのインストールマニフェストとスタックマッピングを使用して
+                    ECC オンボーディング計画のドライランを作成する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/project-init.md"
+                      >commands/project-init.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/prp-commit</code></td>
+                  <td><code>prp-commit</code></td>
+                  <td>
+                    自然言語によるファイル指定でクイックコミット —
+                    コミット対象を平易な英語で記述する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/prp-commit.md"
+                      >commands/prp-commit.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/prp-implement</code></td>
+                  <td><code>prp-implement</code></td>
+                  <td>厳密な検証ループ付きで実装計画を実行する。</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/prp-implement.md"
+                      >commands/prp-implement.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/prp-pr</code></td>
+                  <td><code>prp-pr</code></td>
+                  <td>
+                    未プッシュコミットを含む現在のブランチから GitHub PR を作成する —
+                    テンプレートを検出し、変更を分析し、プッシュする。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/prp-pr.md"
+                      >commands/prp-pr.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/resume-session</code></td>
+                  <td><code>resume-session</code></td>
+                  <td>
+                    ~/.claude/session-data/
+                    から最新のセッションファイルを読み込み、前回セッション終了地点の完全なコンテキストで作業を再開する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/resume-session.md"
+                      >commands/resume-session.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/save-session</code></td>
+                  <td><code>save-session</code></td>
+                  <td>
+                    現在のセッション状態を ~/.claude/session-data/
+                    に日付付きファイルとして保存し、将来のセッションで完全なコンテキストで作業を再開できるようにする。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/save-session.md"
+                      >commands/save-session.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/sessions</code></td>
+                  <td><code>sessions</code></td>
+                  <td>Claude Code セッション履歴、エイリアス、セッションメタデータを管理する。</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/sessions.md"
+                      >commands/sessions.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="10" aria-labelledby="catalog-heading-10">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-10">その他/専門領域</h2>
+            <p class="catalog-panel-desc">上記に明確に入らない専門用途。</p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">10 コマンド</span></p>
+            <p class="catalog-panel-hint">
+              Command名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Command</th>
+                  <th>ID</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>/hookify-configure</code></td>
+                  <td><code>hookify-configure</code></td>
+                  <td>hookify ルールをインタラクティブに有効化または無効化する。</td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/commands/hookify-configure.md"
+                      >commands/hookify-configure.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/marketing-campaign</code></td>
+                  <td><code>marketing-campaign</code></td>
+                  <td>
+                    プロダクトブリーフを起点にエンドツーエンドのマーケティングキャンペーンを計画・実行する。ポジショニング、LP
+                    コピー、メールシーケンス、SNS
+                    投稿、広告バリアント、動画スクリプト、コンテンツカレンダーを返す。既存コピーのレビューにも対応。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/commands/marketing-campaign.md"
+                      >commands/marketing-campaign.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/marketing-campaign</code></td>
+                  <td><code>marketing-campaign</code></td>
+                  <td>
+                    プロダクトブリーフを起点にエンドツーエンドのマーケティングキャンペーンを計画・実行する。ポジショニング、LP
+                    コピー、メールシーケンス、SNS
+                    投稿、広告バリアント、動画スクリプト、コンテンツカレンダーを返す。既存コピーのレビューにも対応。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/commands/marketing-campaign.md"
+                      >commands/marketing-campaign.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/hookify-help</code></td>
+                  <td><code>hookify-help</code></td>
+                  <td>hookify システムのヘルプを表示する。</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/hookify-help.md"
+                      >commands/hookify-help.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/hookify-list</code></td>
+                  <td><code>hookify-list</code></td>
+                  <td>設定済みの hookify ルールをすべて一覧表示する。</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/hookify-list.md"
+                      >commands/hookify-list.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/instinct-export</code></td>
+                  <td><code>instinct-export</code></td>
+                  <td>
+                    チームメイトや他のプロジェクトと共有するためにインスティンクトをエクスポート
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/instinct-export.md"
+                      >commands/instinct-export.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/instinct-import</code></td>
+                  <td><code>instinct-import</code></td>
+                  <td>
+                    チームメイト、Skill Creator、その他のソースからインスティンクトをインポート
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/instinct-import.md"
+                      >commands/instinct-import.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/instinct-status</code></td>
+                  <td><code>instinct-status</code></td>
+                  <td>すべての学習済みインスティンクトと信頼度レベルを表示</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/instinct-status.md"
+                      >commands/instinct-status.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/learn-eval</code></td>
+                  <td><code>learn-eval</code></td>
+                  <td>
+                    セッションから再利用可能なパターンを抽出し、保存前に品質を自己評価し、適切な保存先（Global
+                    vs Project）を決定する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/learn-eval.md"
+                      >commands/learn-eval.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/skill-create</code></td>
+                  <td><code>skill-create</code></td>
+                  <td>
+                    ローカルのgit履歴を分析してコーディングパターンを抽出し、SKILL.mdファイルを生成します。Skill
+                    Creator GitHub Appのローカル版です。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/skill-create.md"
+                      >commands/skill-create.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>/skill-health</code></td>
+                  <td><code>skill-health</code></td>
+                  <td>
+                    チャートとアナリティクス付きのスキルポートフォリオヘルスダッシュボードを表示する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/commands/skill-health.md"
+                      >commands/skill-health.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>everything-claude-code — 呼び出し方</title>
+    <link rel="stylesheet" href="../../style.css" />
+    <link rel="stylesheet" href="ecc-usage-style.css" />
+  </head>
+  <body>
+    <main class="main">
+      <header class="page-header">
+        <h1 class="page-title">everything-claude-code — 呼び出し方</h1>
+        <p class="page-subtitle">
+          Agent / Command / Skill それぞれの呼び出し方、命名規則、スコープ、MCP
+          サーバーとの関係。スナップショット: 2026-05-28
+        </p>
+      </header>
+
+      <nav class="quick-links" aria-label="ページナビゲーション">
+        <a href="ecc-index.html">インデックス</a>
+        <a href="ecc-usage.html" class="current">呼び出し方</a>
+        <a href="ecc-agents.html">Agents (61)</a>
+        <a href="ecc-commands.html">Commands (76)</a>
+        <a href="ecc-skills.html">Skills (246)</a>
+      </nav>
+
+      <div class="section-card">
+        <h2>種別ごとの呼び出し方</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>種別</th>
+                <th>呼び出し方</th>
+                <th>例</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Agent</td>
+                <td>自然言語で依頼、または subagent として指定</td>
+                <td><code>typescript-reviewer で差分をレビューして</code></td>
+              </tr>
+              <tr>
+                <td>Command</td>
+                <td>チャットに <code>/command-name</code> と入力</td>
+                <td><code>/plan 新しい画面の実装計画を作って</code></td>
+              </tr>
+              <tr>
+                <td>Skill</td>
+                <td>自動発動、またはスキル名を明示</td>
+                <td><code>tdd-workflow スキルを使って進めて</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <h2>Agent の使い方</h2>
+        <p class="lead-small">
+          Agent は Claude Code の
+          <code>subagent_type</code> パラメータで指定するか、自然言語で「<code
+            >〇〇 agent を使って</code
+          >」と依頼する。
+        </p>
+
+        <details class="catalog-group" open>
+          <summary>指定方法 <strong>2パターン</strong></summary>
+          <div class="inner-pad">
+            <pre><code># 自然言語での依頼
+typescript-reviewer で最近変更したファイルをレビューして
+
+# subagent としての明示指定
+subagent_type: "everything-claude-code:typescript-reviewer" で差分をレビューする</code></pre>
+          </div>
+        </details>
+
+        <details class="catalog-group" open>
+          <summary>命名規則 <strong>everything-claude-code: プレフィックス</strong></summary>
+          <p>
+            ECC のすべての Agent は
+            <code>everything-claude-code:</code> プレフィックス付きで登録されている。例:
+          </p>
+          <div class="inner-pad">
+            <ul>
+              <li><code>everything-claude-code:typescript-reviewer</code></li>
+              <li><code>everything-claude-code:tdd-guide</code></li>
+              <li><code>everything-claude-code:security-reviewer</code></li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="catalog-group" open>
+          <summary>いつ使うか <strong>主な用途</strong></summary>
+          <div class="inner-pad">
+            <ul>
+              <li>特定の専門知識が必要なレビューや調査タスク</li>
+              <li>プロジェクト全体に影響するアーキテクチャ設計</li>
+              <li>ビルドエラーや型エラーの修復</li>
+              <li>E2E テスト / TDD の実施</li>
+            </ul>
+            <p>→ 一覧は <a href="ecc-agents.html">ecc-agents.html</a> を参照。</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="section-card">
+        <h2>Command の使い方</h2>
+        <p class="lead-small">
+          Command はチャットで <code>/command-name</code> と入力して起動する。
+        </p>
+
+        <details class="catalog-group" open>
+          <summary>指定方法 <strong>3パターン</strong></summary>
+          <div class="inner-pad">
+            <pre><code># 基本
+/plan 新しいダッシュボード画面の設計を立案して
+
+# 引数あり
+/code-review 12345  （PR 番号を渡して GitHub PR をレビュー）
+
+# 引数なし（インタラクティブ）
+/hookify</code></pre>
+          </div>
+        </details>
+
+        <details class="catalog-group" open>
+          <summary>命名規則 <strong>kebab-case</strong></summary>
+          <p>
+            Command のスラッシュコマンド名は kebab-case。ID (<code>command-name</code> 部分)
+            はファイル名から自動解決される。
+          </p>
+        </details>
+
+        <details class="catalog-group" open>
+          <summary>いつ使うか <strong>主な用途</strong></summary>
+          <div class="inner-pad">
+            <ul>
+              <li>実装計画の策定 (<code>/plan</code>, <code>/prp-plan</code>)</li>
+              <li>コードレビューの起動 (<code>/code-review</code>, <code>/review-pr</code>)</li>
+              <li>
+                ビルド修復のワンショット起動 (<code>/build-fix</code>, <code>/rust-build</code>)
+              </li>
+              <li>テストカバレッジ改善 (<code>/test-coverage</code>, <code>/tdd</code>)</li>
+              <li>
+                セッションの保存・復元 (<code>/save-session</code>, <code>/resume-session</code>)
+              </li>
+            </ul>
+            <p>→ 一覧は <a href="ecc-commands.html">ecc-commands.html</a> を参照。</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="section-card">
+        <h2>Skill の使い方</h2>
+        <p class="lead-small">
+          Skill
+          はタスク内容に応じて<strong>自動発動</strong>するか、明示的にスキル名を指定して使う。
+        </p>
+
+        <details class="catalog-group" open>
+          <summary>指定方法 <strong>2パターン</strong></summary>
+          <div class="inner-pad">
+            <pre><code># スキル名を明示
+tdd-workflow スキルを使って、この機能のテストを先に書いて
+
+# トリガーワードによる自動発動（各スキルの TRIGGER 定義に従う）
+"optimize prompt" → prompt-optimizer スキルが自動発動
+"ユーザー認証の設計をしたい" → blueprint, product-capability などが候補に</code></pre>
+          </div>
+        </details>
+
+        <details class="catalog-group" open>
+          <summary>命名規則とスコープ <strong>グローバル / プロジェクト</strong></summary>
+          <p>
+            Skill のディレクトリ名 = スキル名。<code>~/.claude/skills/</code> または
+            <code>.claude/skills/</code> 配下に配置する。
+          </p>
+          <div class="inner-pad">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>スコープ</th>
+                    <th>配置先</th>
+                    <th>効果範囲</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>グローバル</td>
+                    <td><code>~/.claude/skills/</code></td>
+                    <td>全プロジェクト</td>
+                  </tr>
+                  <tr>
+                    <td>プロジェクト</td>
+                    <td><code>.claude/skills/</code></td>
+                    <td>そのリポジトリのみ</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+
+        <details class="catalog-group" open>
+          <summary>いつ使うか <strong>主な用途</strong></summary>
+          <div class="inner-pad">
+            <ul>
+              <li>
+                フレームワーク固有のパターンが必要なとき (<code>nextjs-turbopack</code>,
+                <code>frontend-patterns</code>)
+              </li>
+              <li>
+                セキュリティ要件の確認 (<code>security-review</code>, <code>hipaa-compliance</code>)
+              </li>
+              <li>
+                AI エージェントのオーケストレーション (<code>agentic-engineering</code>,
+                <code>autonomous-loops</code>)
+              </li>
+              <li>
+                ドキュメント生成・ナレッジ管理 (<code>codebase-onboarding</code>,
+                <code>documentation-lookup</code>)
+              </li>
+            </ul>
+            <p>→ 一覧は <a href="ecc-skills.html">ecc-skills.html</a> を参照。</p>
+          </div>
+        </details>
+      </div>
+    </main>
+  </body>
+</html>

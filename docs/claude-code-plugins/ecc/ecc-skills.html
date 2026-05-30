@@ -1,0 +1,4142 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>everything-claude-code — Skills 一覧</title>
+    <link rel="stylesheet" href="../../style.css" />
+    <link rel="stylesheet" href="ecc-skills-style.css" />
+    <link rel="stylesheet" href="ecc-catalog-layout.css" />
+  </head>
+  <body class="ecc-catalog-page">
+    <div class="ecc-doc-layout">
+      <input type="radio" name="ecc-category" id="ecc-cat-1" class="ecc-category-input" checked />
+      <input type="radio" name="ecc-category" id="ecc-cat-2" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-3" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-4" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-5" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-6" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-7" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-8" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-9" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-10" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-11" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-12" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-13" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-14" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-15" class="ecc-category-input" />
+      <input type="radio" name="ecc-category" id="ecc-cat-16" class="ecc-category-input" />
+      <main class="main ecc-catalog-main">
+        <header class="page-header">
+          <h1 class="page-title">everything-claude-code — Skills 一覧</h1>
+          <p class="page-subtitle">246 Skills / 16カテゴリ。スナップショット: 2026-05-28</p>
+        </header>
+
+        <nav class="quick-links" aria-label="ページナビゲーション">
+          <a href="ecc-index.html">インデックス</a>
+          <a href="ecc-usage.html">呼び出し方</a>
+          <a href="ecc-agents.html">Agents (61)</a>
+          <a href="ecc-commands.html">Commands (76)</a>
+          <a href="ecc-skills.html" class="current">Skills (246)</a>
+        </nav>
+
+        <p class="lead-small">
+          Skill はタスク内容に応じて自動発動するか、明示的にスキル名を指定して使う。
+        </p>
+
+        <nav class="ecc-category-tabs" aria-label="カテゴリ">
+          <label for="ecc-cat-1" class="ecc-category-label"
+            >ECC/メタツール<span class="ecc-category-count">22 Skills</span></label
+          >
+          <label for="ecc-cat-2" class="ecc-category-label"
+            >計画/設計/アーキテクチャ<span class="ecc-category-count">6 Skills</span></label
+          >
+          <label for="ecc-cat-3" class="ecc-category-label"
+            >コード品質/レビュー/リファクタ<span class="ecc-category-count">2 Skills</span></label
+          >
+          <label for="ecc-cat-4" class="ecc-category-label"
+            >テスト/検証/品質ゲート<span class="ecc-category-count">9 Skills</span></label
+          >
+          <label for="ecc-cat-5" class="ecc-category-label"
+            >フロントエンド/UI/デザイン<span class="ecc-category-count">25 Skills</span></label
+          >
+          <label for="ecc-cat-6" class="ecc-category-label"
+            >バックエンド/API/データ<span class="ecc-category-count">28 Skills</span></label
+          >
+          <label for="ecc-cat-7" class="ecc-category-label"
+            >言語/フレームワーク別<span class="ecc-category-count">26 Skills</span></label
+          >
+          <label for="ecc-cat-8" class="ecc-category-label"
+            >セキュリティ/コンプライアンス<span class="ecc-category-count">22 Skills</span></label
+          >
+          <label for="ecc-cat-9" class="ecc-category-label"
+            >DevOps/インフラ/ネットワーク<span class="ecc-category-count">19 Skills</span></label
+          >
+          <label for="ecc-cat-10" class="ecc-category-label"
+            >AIエージェント/自律化<span class="ecc-category-count">20 Skills</span></label
+          >
+          <label for="ecc-cat-11" class="ecc-category-label"
+            >ドキュメント/ナレッジ/リサーチ<span class="ecc-category-count">7 Skills</span></label
+          >
+          <label for="ecc-cat-12" class="ecc-category-label"
+            >GitHub/プロジェクト運用/セッション<span class="ecc-category-count"
+              >2 Skills</span
+            ></label
+          >
+          <label for="ecc-cat-13" class="ecc-category-label"
+            >ビジネス/オペレーション<span class="ecc-category-count">24 Skills</span></label
+          >
+          <label for="ecc-cat-14" class="ecc-category-label"
+            >メディア/コンテンツ<span class="ecc-category-count">14 Skills</span></label
+          >
+          <label for="ecc-cat-15" class="ecc-category-label"
+            >科学/データ/ML<span class="ecc-category-count">15 Skills</span></label
+          >
+          <label for="ecc-cat-16" class="ecc-category-label"
+            >その他/専門領域<span class="ecc-category-count">5 Skills</span></label
+          >
+        </nav>
+
+        <section class="catalog-panel" data-panel="1" aria-labelledby="catalog-heading-1">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-1">ECC/メタツール</h2>
+            <p class="catalog-panel-desc">
+              ECC
+              自体の案内、インストール、スキル棚卸し、hooks、instinct、コンテキストやコスト管理。
+            </p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">22 Skills</span></p>
+            <p class="catalog-panel-hint">
+              Skill名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Directory</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>agent-sort</code></td>
+                  <td><code>agent-sort</code></td>
+                  <td>
+                    リポジトリを横断した並列レビューで skills・commands・rules・hooks・extras を
+                    DAILY / LIBRARY に分類し、根拠付きの ECC
+                    インストール計画を作成する。フルバンドルではなくプロジェクトに必要なものだけに絞りたいときに使用。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/agent-sort/SKILL.md"
+                      >skills/agent-sort/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>ck</code></td>
+                  <td><code>ck</code></td>
+                  <td>
+                    Claude Code
+                    向けのプロジェクト単位の永続メモリ。セッション開始時にプロジェクトコンテキストを自動読み込みし、git
+                    アクティビティと連動してセッションを追跡し、ネイティブメモリへ書き込む。コマンドは決定論的な
+                    Node.js
+                    スクリプトで実行され、モデルバージョンに依存しない一貫した動作を保証する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/ck/SKILL.md"
+                      >skills/ck/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>configure-ecc</code></td>
+                  <td><code>configure-ecc</code></td>
+                  <td>
+                    Everything Claude Code のインタラクティブなインストーラー —
+                    スキルとルールの選択とインストールをユーザーレベルまたはプロジェクトレベルのディレクトリへガイドし、パスを検証し、必要に応じてインストールされたファイルを最適化します。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/configure-ecc/SKILL.md"
+                      >skills/configure-ecc/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>context-budget</code></td>
+                  <td><code>context-budget</code></td>
+                  <td>
+                    agents・skills・MCP サーバー・rules にわたる Claude Code
+                    のコンテキストウィンドウ消費を監査する。肥大化や冗長コンポーネントを特定し、優先度付きのトークン削減提案を出力する。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/context-budget/SKILL.md"
+                      >skills/context-budget/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>cost-tracking</code></td>
+                  <td><code>cost-tracking</code></td>
+                  <td>
+                    ローカルのコスト追跡 DB から Claude Code
+                    のトークン使用量・支出・予算を追跡・レポートする。コスト、支出、使用量、トークン、予算、またはプロジェクト・ツール・セッション・日付別の内訳を問われたときに使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/cost-tracking/SKILL.md"
+                      >skills/cost-tracking/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>ecc-guide</code></td>
+                  <td><code>ecc-guide</code></td>
+                  <td>
+                    ライブリポジトリの構成を読み取ったうえで、ECC の
+                    agents・skills・commands・hooks・rules・インストールプロファイル・プロジェクトオンボーディングを案内する。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/ecc-guide/SKILL.md"
+                      >skills/ecc-guide/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>ecc-tools-cost-audit</code></td>
+                  <td><code>ecc-tools-cost-audit</code></td>
+                  <td>
+                    根拠優先の ECC Tools 消費・課金監査ワークフロー。暴走 PR
+                    作成、クォータ回避、プレミアムモデル漏れ、重複ジョブ、GitHub App コスト急増を
+                    ECC Tools リポジトリで調査するときに使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/ecc-tools-cost-audit/SKILL.md"
+                      >skills/ecc-tools-cost-audit/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>gateguard</code></td>
+                  <td><code>gateguard</code></td>
+                  <td>
+                    Edit / Write / Bash（MultiEdit
+                    含む）をブロックし、具体的な調査（importer、データスキーマ、ユーザー指示）を要求してから操作を許可するファクト強制ゲート。ゲートなしエージェント比で出力品質を
+                    +2.25 ポイント改善。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/gateguard/SKILL.md"
+                      >skills/gateguard/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>hookify-rules</code></td>
+                  <td><code>hookify-rules</code></td>
+                  <td>
+                    hookify ルールの作成、hook ルールの記述、hookify の設定、hookify
+                    ルールの追加、または hookify
+                    ルールの構文・パターンに関するガイダンスが必要なときに使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/hookify-rules/SKILL.md"
+                      >skills/hookify-rules/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>nanoclaw-repl</code></td>
+                  <td><code>nanoclaw-repl</code></td>
+                  <td>
+                    NanoClaw v2（claude -p 上に構築された ECC のゼロ依存・セッション対応
+                    REPL）の操作と拡張。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/nanoclaw-repl/SKILL.md"
+                      >skills/nanoclaw-repl/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>plankton-code-quality</code></td>
+                  <td><code>plankton-code-quality</code></td>
+                  <td>
+                    Plankton による書き込み時コード品質強制 — hooks
+                    経由でファイル編集のたびに自動フォーマット、lint、Claude による修正を実行。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/plankton-code-quality/SKILL.md"
+                      >skills/plankton-code-quality/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>repo-scan</code></td>
+                  <td><code>repo-scan</code></td>
+                  <td>
+                    クロススタックのソースコード資産監査 —
+                    全ファイルを分類し、組み込みサードパーティライブラリを検出し、モジュールごとに 4
+                    段階の判定とインタラクティブ HTML レポートを提供。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/repo-scan/SKILL.md"
+                      >skills/repo-scan/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>rules-distill</code></td>
+                  <td><code>rules-distill</code></td>
+                  <td>
+                    skills をスキャンして横断的原則を抽出し、rules へ蒸留する — 既存 rule
+                    への追記・改訂、または新規 rule ファイルの作成。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/rules-distill/SKILL.md"
+                      >skills/rules-distill/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>safety-guard</code></td>
+                  <td><code>safety-guard</code></td>
+                  <td>
+                    本番システムでの作業やエージェントの自律実行時に、破壊的操作を防ぐために使用。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/safety-guard/SKILL.md"
+                      >skills/safety-guard/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>santa-method</code></td>
+                  <td><code>santa-method</code></td>
+                  <td>
+                    収束ループ付きマルチエージェント敵対的検証。2 つの独立レビューエージェントが双方
+                    PASS するまで出力を出荷しない。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/santa-method/SKILL.md"
+                      >skills/santa-method/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>skill-comply</code></td>
+                  <td><code>skill-comply</code></td>
+                  <td>
+                    skills・rules・エージェント定義が実際に守られているかを可視化 — 3
+                    段階のプロンプト厳密度でシナリオを自動生成し、エージェントを実行、行動シーケンスを分類し、ツール呼び出しタイムライン付きの遵守率をレポート。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/skill-comply/SKILL.md"
+                      >skills/skill-comply/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>skill-scout</code></td>
+                  <td><code>skill-scout</code></td>
+                  <td>
+                    新規 skill 作成前に、ローカル・マーケットプレイス・GitHub・Web の既存 skill
+                    ソースを検索。skill の作成・構築・フォーク・探索が必要なときに使用。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/skill-scout/SKILL.md"
+                      >skills/skill-scout/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>skill-stocktake</code></td>
+                  <td><code>skill-stocktake</code></td>
+                  <td>
+                    Claude skills と commands の品質監査に使用。Quick Scan（変更された skills
+                    のみ）と Full Stocktake
+                    モードをサポートし、サブエージェントの逐次バッチ評価を行う。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/skill-stocktake/SKILL.md"
+                      >skills/skill-stocktake/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>strategic-compact</code></td>
+                  <td><code>strategic-compact</code></td>
+                  <td>
+                    任意の自動コンパクションではなく、タスクフェーズを通じてコンテキストを保持するための論理的な間隔での手動コンパクションを提案します。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/strategic-compact/SKILL.md"
+                      >skills/strategic-compact/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>terminal-ops</code></td>
+                  <td><code>terminal-ops</code></td>
+                  <td>
+                    ECC 向けの根拠優先リポジトリ実行ワークフロー。コマンド実行、リポジトリ確認、CI
+                    失敗のデバッグ、狭い範囲の修正 push を、実行・検証の証跡とともに行うときに使用。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/terminal-ops/SKILL.md"
+                      >skills/terminal-ops/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>token-budget-advisor</code></td>
+                  <td><code>token-budget-advisor</code></td>
+                  <td>
+                    回答前に、応答の深さ・トークン消費量についてユーザーに情報に基づく選択肢を提示する。応答長・深さ・トークン予算を明示的に制御したいときに使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/token-budget-advisor/SKILL.md"
+                      >skills/token-budget-advisor/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>workspace-surface-audit</code></td>
+                  <td><code>workspace-surface-audit</code></td>
+                  <td>
+                    アクティブなリポジトリ、MCP サーバー、プラグイン、コネクタ、env 面、harness
+                    設定を監査し、最も価値の高い ECC ネイティブ
+                    skills・hooks・agents・オペレーターワークフローを推奨。Claude Code
+                    のセットアップや環境で利用可能な機能の把握を求められたときに使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/workspace-surface-audit/SKILL.md"
+                      >skills/workspace-surface-audit/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="2" aria-labelledby="catalog-heading-2">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-2">計画/設計/アーキテクチャ</h2>
+            <p class="catalog-panel-desc">
+              実装前の計画、構造設計、ADR、プロダクト要求から設計への変換。
+            </p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">6 Skills</span></p>
+            <p class="catalog-panel-hint">
+              Skill名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Directory</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>agent-architecture-audit</code></td>
+                  <td><code>agent-architecture-audit</code></td>
+                  <td>
+                    エージェント・LLM アプリケーション向けフルスタック診断。12
+                    層エージェントスタックを監査し、wrapper
+                    退行、メモリ汚染、ツール規律違反、隠れた修復ループ、レンダリング破損を検出。重大度順の所見とコード優先の修正を出力。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/agent-architecture-audit/SKILL.md"
+                      >skills/agent-architecture-audit/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>architecture-decision-records</code></td>
+                  <td><code>architecture-decision-records</code></td>
+                  <td>
+                    Claude Code セッション中のアーキテクチャ判断を構造化 ADR
+                    として記録。判断タイミングを自動検出し、文脈・検討した代替案・根拠を記録。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/architecture-decision-records/SKILL.md"
+                      >skills/architecture-decision-records/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>blueprint</code></td>
+                  <td><code>blueprint</code></td>
+                  <td>
+                    1
+                    行の目的を、マルチセッション・マルチエージェントのエンジニアリング向けステップバイステップ構築計画に変換。各ステップに新規エージェントがコールドスタートで実行できる自己完結コンテキストブリーフを付与。敵対的レビューゲート、依存グラフ、並列ステップ検出、アンチパターンカタログ、計画変更プロトコルを含む。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/blueprint/SKILL.md"
+                      >skills/blueprint/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>plan-orchestrate</code></td>
+                  <td><code>plan-orchestrate</code></td>
+                  <td>
+                    計画ドキュメントを読み、ステップに分解し、ECC
+                    カタログからステップごとのエージェントチェーンを設計し、/orchestrate
+                    用の貼り付け可能なカスタムプロンプトを生成。生成専用 — /orchestrate
+                    自体は呼び出さない。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/plan-orchestrate/SKILL.md"
+                      >skills/plan-orchestrate/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>product-capability</code></td>
+                  <td><code>product-capability</code></td>
+                  <td>
+                    PRD
+                    の意図、ロードマップ要求、プロダクト議論を、マルチサービス作業開始前に制約・不変条件・インターフェース・未決事項を明示した実装可能な
+                    capability 計画へ翻訳。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/product-capability/SKILL.md"
+                      >skills/product-capability/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>product-lens</code></td>
+                  <td><code>product-lens</code></td>
+                  <td>
+                    実装前に「なぜ」を検証し、プロダクト診断を実行し、要求が実装契約になる前にプロダクト方向性をプレッシャーテストするために使用。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/product-lens/SKILL.md"
+                      >skills/product-lens/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="3" aria-labelledby="catalog-heading-3">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-3">
+              コード品質/レビュー/リファクタ
+            </h2>
+            <p class="catalog-panel-desc">
+              コードレビュー、保守性、コメント、型設計、デッドコード整理。
+            </p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">2 Skills</span></p>
+            <p class="catalog-panel-hint">
+              Skill名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Directory</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>coding-standards</code></td>
+                  <td><code>coding-standards</code></td>
+                  <td>
+                    TypeScript、JavaScript、React、Node.js開発のための汎用コーディング標準、ベストプラクティス、パターン。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/coding-standards/SKILL.md"
+                      >skills/coding-standards/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>error-handling</code></td>
+                  <td><code>error-handling</code></td>
+                  <td>
+                    TypeScript・Python・Go
+                    にわたる堅牢なエラーハンドリングパターン。型付きエラー、エラーバウンダリ、リトライ、サーキットブレーカー、ユーザー向けエラーメッセージをカバー。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/error-handling/SKILL.md"
+                      >skills/error-handling/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="4" aria-labelledby="catalog-heading-4">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-4">テスト/検証/品質ゲート</h2>
+            <p class="catalog-panel-desc">TDD、E2E、カバレッジ、品質ゲート、リリース前検証。</p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">9 Skills</span></p>
+            <p class="catalog-panel-hint">
+              Skill名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Directory</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>agent-eval</code></td>
+                  <td><code>agent-eval</code></td>
+                  <td>
+                    カスタムタスク上でのコーディングエージェント（Claude Code、Aider、Codex
+                    等）のヘッドツーヘッド比較。合格率、コスト、時間、一貫性メトリクスを測定。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/agent-eval/SKILL.md"
+                      >skills/agent-eval/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>ai-regression-testing</code></td>
+                  <td><code>ai-regression-testing</code></td>
+                  <td>
+                    AI 支援開発向け回帰テスト戦略。DB 依存なしのサンドボックスモード API
+                    テスト、自動バグチェックワークフロー、同一モデルがコードを書きレビューする AI
+                    の盲点を捉えるパターン。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/ai-regression-testing/SKILL.md"
+                      >skills/ai-regression-testing/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>benchmark</code></td>
+                  <td><code>benchmark</code></td>
+                  <td>
+                    パフォーマンスベースラインの計測、PR
+                    前後の回帰検出、スタック代替案の比較に使用。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/benchmark/SKILL.md"
+                      >skills/benchmark/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>continuous-agent-loop</code></td>
+                  <td><code>continuous-agent-loop</code></td>
+                  <td>
+                    品質ゲート、eval、リカバリ制御を備えた継続的自律エージェントループのパターン。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/continuous-agent-loop/SKILL.md"
+                      >skills/continuous-agent-loop/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>e2e-testing</code></td>
+                  <td><code>e2e-testing</code></td>
+                  <td>
+                    Playwright E2E テストパターン、Page Object Model、設定、CI/CD
+                    統合、アーティファクト管理、フレーキーテスト対策。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/e2e-testing/SKILL.md"
+                      >skills/e2e-testing/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>eval-harness</code></td>
+                  <td><code>eval-harness</code></td>
+                  <td>
+                    Claude
+                    Codeセッションの正式な評価フレームワークで、評価駆動開発（EDD）の原則を実装します
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/eval-harness/SKILL.md"
+                      >skills/eval-harness/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>iterative-retrieval</code></td>
+                  <td><code>iterative-retrieval</code></td>
+                  <td>
+                    サブエージェントのコンテキスト問題を解決するために、コンテキスト取得を段階的に洗練するパターン
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/iterative-retrieval/SKILL.md"
+                      >skills/iterative-retrieval/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>tdd-workflow</code></td>
+                  <td><code>tdd-workflow</code></td>
+                  <td>
+                    新機能の作成、バグ修正、コードのリファクタリング時にこのスキルを使用します。ユニット、統合、E2Eテストを含む80%以上のカバレッジでテスト駆動開発を強制します。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/tdd-workflow/SKILL.md"
+                      >skills/tdd-workflow/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>verification-loop</code></td>
+                  <td><code>verification-loop</code></td>
+                  <td>Claude Code セッション向けの包括的検証システム。</td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/verification-loop/SKILL.md"
+                      >skills/verification-loop/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="5" aria-labelledby="catalog-heading-5">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-5">フロントエンド/UI/デザイン</h2>
+            <p class="catalog-panel-desc">
+              UI 実装、アクセシビリティ、SEO、モーション、ブラウザ
+              QA、フロントエンド系フレームワーク。
+            </p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">25 Skills</span></p>
+            <p class="catalog-panel-hint">
+              Skill名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Directory</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>accessibility</code></td>
+                  <td><code>accessibility</code></td>
+                  <td>
+                    WCAG 2.2 Level AA 基準で包括的なデジタルプロダクトを設計・実装・監査。Web
+                    向けセマンティック ARIA、Web / Native（iOS /
+                    Android）向けアクセシビリティ特性の生成に使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/accessibility/SKILL.md"
+                      >skills/accessibility/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>frontend-a11y</code></td>
+                  <td><code>frontend-a11y</code></td>
+                  <td>
+                    React / Next.js 向けアクセシビリティパターン。セマンティック HTML、ARIA
+                    属性、フォームラベル、キーボードナビゲーション、フォーカス管理、スクリーンリーダー対応。インタラクティブ
+                    UI コンポーネントやフォーム実装時に使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/frontend-a11y/SKILL.md"
+                      >skills/frontend-a11y/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>frontend-a11y</code></td>
+                  <td><code>frontend-a11y</code></td>
+                  <td>
+                    React / Next.js 向けアクセシビリティパターン。セマンティック HTML、ARIA
+                    属性、フォームラベル、キーボードナビゲーション、フォーカス管理、スクリーンリーダー対応。インタラクティブ
+                    UI コンポーネントやフォーム実装時に使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/frontend-a11y/SKILL.md"
+                      >skills/frontend-a11y/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>angular-developer</code></td>
+                  <td><code>angular-developer</code></td>
+                  <td>
+                    Angular
+                    コード生成とアーキテクチャガイダンス。プロジェクト・コンポーネント・サービス作成時、または
+                    reactivity（signals、linkedSignal、resource）、forms、DI、routing、SSR、アクセシビリティ（ARIA）、アニメーション、スタイリング（component
+                    styles、Tailwind CSS）、テスト、CLI ツールのベストプラクティス時に起動。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/angular-developer/SKILL.md"
+                      >skills/angular-developer/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>api-connector-builder</code></td>
+                  <td><code>api-connector-builder</code></td>
+                  <td>
+                    対象リポジトリの既存統合パターンに厳密に合わせて新規 API
+                    コネクタまたはプロバイダを構築。第 2 のアーキテクチャを発明せずに統合を 1
+                    つ追加するときに使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/api-connector-builder/SKILL.md"
+                      >skills/api-connector-builder/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>api-design</code></td>
+                  <td><code>api-design</code></td>
+                  <td>
+                    本番 API 向け REST API
+                    設計パターン。リソース命名、ステータスコード、ページネーション、フィルタリング、エラーレスポンス、バージョニング、レート制限。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/api-design/SKILL.md"
+                      >skills/api-design/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>browser-qa</code></td>
+                  <td><code>browser-qa</code></td>
+                  <td>
+                    機能デプロイ後にブラウザ自動化でビジュアルテストと UI 操作検証を行うために使用。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/browser-qa/SKILL.md"
+                      >skills/browser-qa/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>click-path-audit</code></td>
+                  <td><code>click-path-audit</code></td>
+                  <td>
+                    ユーザー向けボタン・タッチポイントを状態変化シーケンス全体にトレースし、個別機能は動くが相互に打ち消し合う、最終状態が誤る、UI
+                    が不整合になるバグを検出。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/click-path-audit/SKILL.md"
+                      >skills/click-path-audit/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>dashboard-builder</code></td>
+                  <td><code>dashboard-builder</code></td>
+                  <td>
+                    Grafana、SigNoz
+                    等でオペレーターの実際の疑問に答える監視ダッシュボードを構築。見栄えだけのボードではなく、メトリクスを動くダッシュボードにするときに使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/dashboard-builder/SKILL.md"
+                      >skills/dashboard-builder/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>design-system</code></td>
+                  <td><code>design-system</code></td>
+                  <td>
+                    デザインシステムの生成・監査、ビジュアル一貫性チェック、スタイリング変更 PR
+                    のレビューに使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/design-system/SKILL.md"
+                      >skills/design-system/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>frontend-design-direction</code></td>
+                  <td><code>frontend-design-direction</code></td>
+                  <td>
+                    本番 UI 向けの ECC 固有フロントエンドデザイン方向性を設定。Web
+                    サイト、ダッシュボード、アプリ、コンポーネント、ランディングページ、ビジュアルツールなど、プロダクト固有のデザイン判断が必要な
+                    Web UI の構築・改善時に使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/frontend-design-direction/SKILL.md"
+                      >skills/frontend-design-direction/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>frontend-patterns</code></td>
+                  <td><code>frontend-patterns</code></td>
+                  <td>
+                    React、Next.js、状態管理、パフォーマンス最適化、UIベストプラクティスのためのフロントエンド開発パターン。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/frontend-patterns/SKILL.md"
+                      >skills/frontend-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>liquid-glass-design</code></td>
+                  <td><code>liquid-glass-design</code></td>
+                  <td>
+                    iOS 26 Liquid Glass デザインシステム — SwiftUI、UIKit、WidgetKit
+                    向けのブラー、反射、インタラクティブモーフィングを備えた動的ガラスマテリアル。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/liquid-glass-design/SKILL.md"
+                      >skills/liquid-glass-design/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>make-interfaces-feel-better</code></td>
+                  <td><code>make-interfaces-feel-better</code></td>
+                  <td>
+                    UI の spacing、typography、borders、shadows、motion、hit areas、icons、text
+                    wrapping、interaction states
+                    を磨く具体的なデザインエンジニアリング詳細を適用。UI レビュー・改善時に使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/make-interfaces-feel-better/SKILL.md"
+                      >skills/make-interfaces-feel-better/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>motion-advanced</code></td>
+                  <td><code>motion-advanced</code></td>
+                  <td>
+                    React / Next.js 向け高度モーションパターン — drag &amp;
+                    drop、gestures、テキストアニメーション、SVG パス描画、カスタム
+                    hooks、命令型シーケンス（useAnimate）、ローダー、API 決定木。motion-foundations
+                    が前提。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/motion-advanced/SKILL.md"
+                      >skills/motion-advanced/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>motion-foundations</code></td>
+                  <td><code>motion-foundations</code></td>
+                  <td>
+                    motion/react を用いた React / Next.js 向けモーショントークン、spring
+                    プリセット、パフォーマンスルール、デバイス適応、アクセシビリティ強制、SSR
+                    安全性。基盤レイヤー — 他の motion skills はすべてこれに依存。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/motion-foundations/SKILL.md"
+                      >skills/motion-foundations/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>motion-patterns</code></td>
+                  <td><code>motion-patterns</code></td>
+                  <td>
+                    React / Next.js 向け本番対応アニメーションパターン —
+                    button、modal、toast、stagger、ページ遷移、exit
+                    アニメーション、scroll、layout。motion-foundations のトークンと springs
+                    上に構築。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/motion-patterns/SKILL.md"
+                      >skills/motion-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>motion-ui</code></td>
+                  <td><code>motion-ui</code></td>
+                  <td>
+                    React / Next.js 向け本番対応 UI
+                    モーションシステム。アニメーション、トランジション、モーションパターン実装時に使用。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/motion-ui/SKILL.md"
+                      >skills/motion-ui/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>nextjs-turbopack</code></td>
+                  <td><code>nextjs-turbopack</code></td>
+                  <td>
+                    Next.js 16+ と Turbopack — インクリメンタルバンドル、FS
+                    キャッシュ、開発速度、Turbopack と webpack の使い分け。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/nextjs-turbopack/SKILL.md"
+                      >skills/nextjs-turbopack/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>nuxt4-patterns</code></td>
+                  <td><code>nuxt4-patterns</code></td>
+                  <td>
+                    Nuxt 4 アプリパターン — hydration 安全性、パフォーマンス、route rules、lazy
+                    loading、useFetch / useAsyncData による SSR 安全なデータ取得。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/nuxt4-patterns/SKILL.md"
+                      >skills/nuxt4-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>seo</code></td>
+                  <td><code>seo</code></td>
+                  <td>
+                    テクニカル SEO、オンページ最適化、構造化データ、Core Web
+                    Vitals、コンテンツ戦略にわたる SEO 改善の監査・計画・実装。検索可視性向上、SEO
+                    是正、schema markup、sitemap / robots
+                    作業、キーワードマッピングを求められたときに使用。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/seo/SKILL.md"
+                      >skills/seo/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>swiftui-patterns</code></td>
+                  <td><code>swiftui-patterns</code></td>
+                  <td>
+                    SwiftUI アーキテクチャパターン、@Observable
+                    による状態管理、ビュー合成、ナビゲーション、パフォーマンス最適化、モダン iOS /
+                    macOS UI ベストプラクティス。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/swiftui-patterns/SKILL.md"
+                      >skills/swiftui-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>team-builder</code></td>
+                  <td><code>team-builder</code></td>
+                  <td>並列チームの構成・ディスパッチ用インタラクティブエージェントピッカー。</td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/team-builder/SKILL.md"
+                      >skills/team-builder/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>ui-demo</code></td>
+                  <td><code>ui-demo</code></td>
+                  <td>
+                    Playwright で洗練された UI
+                    デモ動画を録画。デモ、ウォークスルー、スクリーン録画、Web
+                    アプリのチュートリアル動画作成時に使用。可視カーソル、自然なペーシング、プロ品質の
+                    WebM を出力。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/ui-demo/SKILL.md"
+                      >skills/ui-demo/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>ui-to-vue</code></td>
+                  <td><code>ui-to-vue</code></td>
+                  <td>
+                    UI スクリーンショットやデザインエクスポートを Vue 3
+                    コンポーネントへ一括変換するときに使用。Vant、Element Plus、Ant Design Vue
+                    向けを特に想定。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/ui-to-vue/SKILL.md"
+                      >skills/ui-to-vue/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>vite-patterns</code></td>
+                  <td><code>vite-patterns</code></td>
+                  <td>
+                    Vite ビルドツールパターン — config、plugins、HMR、env 変数、proxy
+                    設定、SSR、library mode、依存関係
+                    pre-bundling、ビルド最適化。vite.config.ts、Vite プラグイン、Vite
+                    ベースプロジェクト作業時に起動。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/vite-patterns/SKILL.md"
+                      >skills/vite-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="6" aria-labelledby="catalog-heading-6">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-6">バックエンド/API/データ</h2>
+            <p class="catalog-panel-desc">
+              API、DB、ORM、サーバーサイド、データアクセス、バックエンド設計。
+            </p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">28 Skills</span></p>
+            <p class="catalog-panel-hint">
+              Skill名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Directory</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>backend-patterns</code></td>
+                  <td><code>backend-patterns</code></td>
+                  <td>
+                    Node.js、Express、Next.js API routes
+                    向けのバックエンドアーキテクチャパターン、API 設計、DB
+                    最適化、サーバーサイドベストプラクティス。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/backend-patterns/SKILL.md"
+                      >skills/backend-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>data-throughput-accelerator</code></td>
+                  <td><code>data-throughput-accelerator</code></td>
+                  <td>
+                    大規模データ ingest、backfill、export、ETL、データウェアハウスロード、manifest
+                    catch-up、テーブル同期を、正確性を保ちつつ大幅高速化する必要がある場合に使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/data-throughput-accelerator/SKILL.md"
+                      >skills/data-throughput-accelerator/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>data-throughput-accelerator</code></td>
+                  <td><code>data-throughput-accelerator</code></td>
+                  <td>
+                    大規模データ ingest、backfill、export、ETL、データウェアハウスロード、manifest
+                    catch-up、テーブル同期を、正確性を保ちつつ大幅高速化する必要がある場合に使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/data-throughput-accelerator/SKILL.md"
+                      >skills/data-throughput-accelerator/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>database-migrations</code></td>
+                  <td><code>database-migrations</code></td>
+                  <td>
+                    PostgreSQL、MySQL、主要
+                    ORM（Prisma、Drizzle、Kysely、Django、TypeORM、golang-migrate）にわたるスキーマ変更、データマイグレーション、ロールバック、ゼロダウンタイムデプロイの
+                    DB マイグレーションベストプラクティス。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/database-migrations/SKILL.md"
+                      >skills/database-migrations/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>django-celery</code></td>
+                  <td><code>django-celery</code></td>
+                  <td>
+                    Django + Celery 非同期タスクパターン — 設定、タスク設計、beat
+                    スケジューリング、リトライ、canvas ワークフロー、監視、テスト。Django
+                    アプリにバックグラウンドジョブ、定期タスク、非同期処理を追加するときに使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/django-celery/SKILL.md"
+                      >skills/django-celery/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>django-patterns</code></td>
+                  <td><code>django-patterns</code></td>
+                  <td>
+                    Django アーキテクチャパターン、DRF による REST API 設計、ORM
+                    ベストプラクティス、キャッシュ、signals、middleware、本番グレード Django
+                    アプリ。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/django-patterns/SKILL.md"
+                      >skills/django-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>django-tdd</code></td>
+                  <td><code>django-tdd</code></td>
+                  <td>
+                    pytest-django、TDD 手法、factory_boy、モック、カバレッジ、Django REST Framework
+                    API テストを用いた Django テスト戦略。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/django-tdd/SKILL.md"
+                      >skills/django-tdd/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>django-verification</code></td>
+                  <td><code>django-verification</code></td>
+                  <td>
+                    Django プロジェクト向け検証ループ — リリースまたは PR 前の
+                    migrations、lint、カバレッジ付きテスト、セキュリティスキャン、デプロイ readiness
+                    チェック。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/django-verification/SKILL.md"
+                      >skills/django-verification/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>fastapi-patterns</code></td>
+                  <td><code>fastapi-patterns</code></td>
+                  <td>
+                    FastAPI パターン — 非同期 API、dependency injection、Pydantic リクエスト /
+                    レスポンスモデル、OpenAPI ドキュメント、テスト、セキュリティ、本番 readiness。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/fastapi-patterns/SKILL.md"
+                      >skills/fastapi-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>hexagonal-architecture</code></td>
+                  <td><code>hexagonal-architecture</code></td>
+                  <td>
+                    Ports &amp; Adapters
+                    システムの設計・実装・リファクタリング。明確なドメイン境界、依存性逆転、TypeScript
+                    / Java / Kotlin / Go サービスでテスト可能なユースケースオーケストレーション。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/hexagonal-architecture/SKILL.md"
+                      >skills/hexagonal-architecture/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>jpa-patterns</code></td>
+                  <td><code>jpa-patterns</code></td>
+                  <td>
+                    Spring Boot における JPA / Hibernate パターン —
+                    エンティティ設計、リレーション、クエリ最適化、トランザクション、監査、インデックス、ページネーション、プーリング。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/jpa-patterns/SKILL.md"
+                      >skills/jpa-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>laravel-patterns</code></td>
+                  <td><code>laravel-patterns</code></td>
+                  <td>
+                    Laravel アーキテクチャパターン — routing / controllers、Eloquent
+                    ORM、サービスレイヤー、queues、events、キャッシュ、本番アプリ向け API
+                    resources。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/laravel-patterns/SKILL.md"
+                      >skills/laravel-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>laravel-plugin-discovery</code></td>
+                  <td><code>laravel-plugin-discovery</code></td>
+                  <td>
+                    LaraPlugins.io MCP 経由で Laravel
+                    パッケージを発見・評価。プラグイン探索、パッケージ健全性確認、Laravel / PHP
+                    互換性評価時に使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/laravel-plugin-discovery/SKILL.md"
+                      >skills/laravel-plugin-discovery/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>laravel-tdd</code></td>
+                  <td><code>laravel-tdd</code></td>
+                  <td>
+                    PHPUnit と Pest による Laravel TDD — factories、DB
+                    テスト、fakes、カバレッジ目標。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/laravel-tdd/SKILL.md"
+                      >skills/laravel-tdd/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>laravel-verification</code></td>
+                  <td><code>laravel-verification</code></td>
+                  <td>
+                    Laravel プロジェクト向け検証ループ — env
+                    チェック、lint、静的解析、カバレッジ付きテスト、セキュリティスキャン、デプロイ
+                    readiness。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/laravel-verification/SKILL.md"
+                      >skills/laravel-verification/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>mcp-server-patterns</code></td>
+                  <td><code>mcp-server-patterns</code></td>
+                  <td>
+                    Node / TypeScript SDK で MCP サーバーを構築 — tools、resources、prompts、Zod
+                    バリデーション、stdio vs Streamable HTTP。最新 API は Context7 または公式 MCP
+                    ドキュメントを参照。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/mcp-server-patterns/SKILL.md"
+                      >skills/mcp-server-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>mysql-patterns</code></td>
+                  <td><code>mysql-patterns</code></td>
+                  <td>
+                    MySQL / MariaDB
+                    のスキーマ、クエリ、インデックス、トランザクション、レプリケーション、コネクションプールパターン（本番バックエンド向け）。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/mysql-patterns/SKILL.md"
+                      >skills/mysql-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>nestjs-patterns</code></td>
+                  <td><code>nestjs-patterns</code></td>
+                  <td>
+                    NestJS アーキテクチャパターン — modules、controllers、providers、DTO
+                    バリデーション、guards、interceptors、config、本番グレード TypeScript
+                    バックエンド。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/nestjs-patterns/SKILL.md"
+                      >skills/nestjs-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>nutrient-document-processing</code></td>
+                  <td><code>nutrient-document-processing</code></td>
+                  <td>
+                    Nutrient DWS API
+                    を使用してドキュメントの処理、変換、OCR、抽出、編集、署名、フォーム入力を行います。PDF、DOCX、XLSX、PPTX、HTML、画像に対応しています。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/nutrient-document-processing/SKILL.md"
+                      >skills/nutrient-document-processing/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>postgres-patterns</code></td>
+                  <td><code>postgres-patterns</code></td>
+                  <td>
+                    Supabase ベストプラクティスに基づく PostgreSQL パターン —
+                    クエリ最適化、スキーマ設計、インデックス、セキュリティ。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/postgres-patterns/SKILL.md"
+                      >skills/postgres-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>prisma-patterns</code></td>
+                  <td><code>prisma-patterns</code></td>
+                  <td>
+                    TypeScript バックエンド向け Prisma ORM パターン —
+                    スキーマ設計、クエリ最適化、トランザクション、ページネーション、および
+                    updateMany が件数のみ返す、$transaction タイムアウト、migrate dev が DB
+                    をリセットする、一括書き込みで @updatedAt がスキップされる、serverless
+                    での接続枯渇などの重要な落とし穴。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/prisma-patterns/SKILL.md"
+                      >skills/prisma-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>quarkus-patterns</code></td>
+                  <td><code>quarkus-patterns</code></td>
+                  <td>
+                    Quarkus 3.x LTS アーキテクチャパターン — Camel によるメッセージング、RESTful API
+                    設計、CDI サービス、Panache
+                    データアクセス、非同期処理。イベント駆動アーキテクチャの Java Quarkus
+                    バックエンド作業向け。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/quarkus-patterns/SKILL.md"
+                      >skills/quarkus-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>quarkus-tdd</code></td>
+                  <td><code>quarkus-tdd</code></td>
+                  <td>
+                    Quarkus 3.x LTS 向け TDD — JUnit 5、Mockito、REST Assured、Camel
+                    テスト、JaCoCo。機能追加、バグ修正、イベント駆動サービスのリファクタリング時に使用。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/quarkus-tdd/SKILL.md"
+                      >skills/quarkus-tdd/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>quarkus-verification</code></td>
+                  <td><code>quarkus-verification</code></td>
+                  <td>
+                    Quarkus プロジェクト向け検証ループ —
+                    ビルド、静的解析、カバレッジ付きテスト、セキュリティスキャン、ネイティブコンパイル、リリースまたは
+                    PR 前の diff レビュー。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/quarkus-verification/SKILL.md"
+                      >skills/quarkus-verification/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>redis-patterns</code></td>
+                  <td><code>redis-patterns</code></td>
+                  <td>
+                    Redis データ構造パターン — キャッシュ戦略、分散ロック、レート制限、pub /
+                    sub、本番アプリ向け接続管理。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/redis-patterns/SKILL.md"
+                      >skills/redis-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>springboot-patterns</code></td>
+                  <td><code>springboot-patterns</code></td>
+                  <td>
+                    Spring Boot アーキテクチャパターン、REST API
+                    設計、レイヤードサービス、データアクセス、キャッシュ、非同期処理、ロギング。Java
+                    Spring Boot バックエンド作業向け。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/springboot-patterns/SKILL.md"
+                      >skills/springboot-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>springboot-tdd</code></td>
+                  <td><code>springboot-tdd</code></td>
+                  <td>
+                    Spring Boot 向け TDD — JUnit
+                    5、Mockito、MockMvc、Testcontainers、JaCoCo。機能追加、バグ修正、リファクタリング時に使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/springboot-tdd/SKILL.md"
+                      >skills/springboot-tdd/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>springboot-verification</code></td>
+                  <td><code>springboot-verification</code></td>
+                  <td>
+                    Spring Boot プロジェクト向け検証ループ —
+                    ビルド、静的解析、カバレッジ付きテスト、セキュリティスキャン、リリースまたは PR
+                    前の diff レビュー。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/springboot-verification/SKILL.md"
+                      >skills/springboot-verification/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>tinystruct-patterns</code></td>
+                  <td><code>tinystruct-patterns</code></td>
+                  <td>
+                    tinystruct Java フレームワーク開発のエキスパートガイダンス。tinystruct
+                    コードベースまたは tinystruct 上に構築されたプロジェクト作業時に使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/tinystruct-patterns/SKILL.md"
+                      >skills/tinystruct-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="7" aria-labelledby="catalog-heading-7">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-7">言語/フレームワーク別</h2>
+            <p class="catalog-panel-desc">特定言語やフレームワーク固有の実装・レビュー・テスト。</p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">26 Skills</span></p>
+            <p class="catalog-panel-hint">
+              Skill名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Directory</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>android-clean-architecture</code></td>
+                  <td><code>android-clean-architecture</code></td>
+                  <td>
+                    Android / Kotlin Multiplatform 向け Clean Architecture パターン —
+                    モジュール構成、依存ルール、UseCases、Repositories、データレイヤーパターン。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/android-clean-architecture/SKILL.md"
+                      >skills/android-clean-architecture/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>compose-multiplatform-patterns</code></td>
+                  <td><code>compose-multiplatform-patterns</code></td>
+                  <td>
+                    KMP 向け Compose Multiplatform / Jetpack Compose パターン —
+                    状態管理、ナビゲーション、テーマ、パフォーマンス、プラットフォーム固有 UI。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/compose-multiplatform-patterns/SKILL.md"
+                      >skills/compose-multiplatform-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>cpp-coding-standards</code></td>
+                  <td><code>cpp-coding-standards</code></td>
+                  <td>
+                    C++ Core Guidelines（isocpp.github.io）に基づく C++ コーディング標準。C++
+                    コードの記述・レビュー・リファクタリング時に、モダンで安全かつ慣用的な実践を強制。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/cpp-coding-standards/SKILL.md"
+                      >skills/cpp-coding-standards/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>cpp-testing</code></td>
+                  <td><code>cpp-testing</code></td>
+                  <td>
+                    C++ テストの作成/更新/修正、GoogleTest/CTest
+                    の設定、失敗またはフレーキーなテストの診断、カバレッジ/サニタイザーの追加時にのみ使用します。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/cpp-testing/SKILL.md"
+                      >skills/cpp-testing/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>csharp-testing</code></td>
+                  <td><code>csharp-testing</code></td>
+                  <td>
+                    xUnit、FluentAssertions、モック、統合テスト、テスト構成ベストプラクティスを用いた
+                    C# / .NET テストパターン。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/csharp-testing/SKILL.md"
+                      >skills/csharp-testing/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>dart-flutter-patterns</code></td>
+                  <td><code>dart-flutter-patterns</code></td>
+                  <td>
+                    本番向け Dart / Flutter パターン — null safety、不変状態、async 合成、widget
+                    アーキテクチャ、主要 state management（BLoC、Riverpod、Provider）、GoRouter
+                    ナビゲーション、Dio ネットワーク、Freezed コード生成、clean architecture。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/dart-flutter-patterns/SKILL.md"
+                      >skills/dart-flutter-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>dotnet-patterns</code></td>
+                  <td><code>dotnet-patterns</code></td>
+                  <td>
+                    慣用的な C# / .NET パターン、規約、dependency injection、async /
+                    await、堅牢で保守可能な .NET アプリ構築のベストプラクティス。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/dotnet-patterns/SKILL.md"
+                      >skills/dotnet-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>flutter-dart-code-review</code></td>
+                  <td><code>flutter-dart-code-review</code></td>
+                  <td>
+                    ライブラリ非依存の Flutter / Dart コードレビューチェックリスト — widget
+                    ベストプラクティス、state
+                    management（BLoC、Riverpod、Provider、GetX、MobX、Signals）、Dart
+                    イディオム、パフォーマンス、アクセシビリティ、セキュリティ、clean architecture。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/flutter-dart-code-review/SKILL.md"
+                      >skills/flutter-dart-code-review/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>fsharp-testing</code></td>
+                  <td><code>fsharp-testing</code></td>
+                  <td>
+                    xUnit、FsUnit、Unquote、FsCheck
+                    プロパティベーステスト、統合テスト、テスト構成ベストプラクティスを用いた F#
+                    テストパターン。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/fsharp-testing/SKILL.md"
+                      >skills/fsharp-testing/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>golang-patterns</code></td>
+                  <td><code>golang-patterns</code></td>
+                  <td>
+                    堅牢で効率的かつ保守可能なGoアプリケーションを構築するための慣用的なGoパターン、ベストプラクティス、規約。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/golang-patterns/SKILL.md"
+                      >skills/golang-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>golang-testing</code></td>
+                  <td><code>golang-testing</code></td>
+                  <td>
+                    テーブル駆動テスト、subtests、ベンチマーク、fuzzing、カバレッジを含む Go
+                    テストパターン。TDD 手法と慣用的 Go 実践に従う。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/golang-testing/SKILL.md"
+                      >skills/golang-testing/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>java-coding-standards</code></td>
+                  <td><code>java-coding-standards</code></td>
+                  <td>
+                    Spring
+                    Bootサービス向けのJavaコーディング標準：命名、不変性、Optional使用、ストリーム、例外、ジェネリクス、プロジェクトレイアウト。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/java-coding-standards/SKILL.md"
+                      >skills/java-coding-standards/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>kotlin-coroutines-flows</code></td>
+                  <td><code>kotlin-coroutines-flows</code></td>
+                  <td>
+                    Android / KMP 向け Kotlin Coroutines / Flow パターン — structured
+                    concurrency、Flow オペレータ、StateFlow、エラーハンドリング、テスト。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/kotlin-coroutines-flows/SKILL.md"
+                      >skills/kotlin-coroutines-flows/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>kotlin-exposed-patterns</code></td>
+                  <td><code>kotlin-exposed-patterns</code></td>
+                  <td>
+                    JetBrains Exposed ORM パターン — DSL クエリ、DAO
+                    パターン、トランザクション、HikariCP コネクションプール、Flyway
+                    migrations、repository パターン。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/kotlin-exposed-patterns/SKILL.md"
+                      >skills/kotlin-exposed-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>kotlin-ktor-patterns</code></td>
+                  <td><code>kotlin-ktor-patterns</code></td>
+                  <td>
+                    Ktor サーバーパターン — routing DSL、plugins、認証、Koin
+                    DI、kotlinx.serialization、WebSockets、testApplication テスト。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/kotlin-ktor-patterns/SKILL.md"
+                      >skills/kotlin-ktor-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>kotlin-patterns</code></td>
+                  <td><code>kotlin-patterns</code></td>
+                  <td>
+                    慣用的 Kotlin パターン、ベストプラクティス、規約 — coroutines、null safety、DSL
+                    builders による堅牢で効率的かつ保守可能な Kotlin アプリ構築。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/kotlin-patterns/SKILL.md"
+                      >skills/kotlin-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>kotlin-testing</code></td>
+                  <td><code>kotlin-testing</code></td>
+                  <td>
+                    Kotest、MockK、coroutine テスト、プロパティベーステスト、Kover
+                    カバレッジを用いた Kotlin テストパターン。TDD 手法と慣用的 Kotlin 実践に従う。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/kotlin-testing/SKILL.md"
+                      >skills/kotlin-testing/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>perl-patterns</code></td>
+                  <td><code>perl-patterns</code></td>
+                  <td>
+                    Modern Perl 5.36+ イディオム、ベストプラクティス、規約 — 堅牢で保守可能な Perl
+                    アプリ構築。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/perl-patterns/SKILL.md"
+                      >skills/perl-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>perl-testing</code></td>
+                  <td><code>perl-testing</code></td>
+                  <td>
+                    Test2::V0、Test::More、prove runner、モック、Devel::Cover によるカバレッジ、TDD
+                    手法を用いた Perl テストパターン。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/perl-testing/SKILL.md"
+                      >skills/perl-testing/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>python-patterns</code></td>
+                  <td><code>python-patterns</code></td>
+                  <td>
+                    Pythonic イディオム、PEP
+                    8標準、型ヒント、堅牢で効率的かつ保守可能なPythonアプリケーションを構築するためのベストプラクティス。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/python-patterns/SKILL.md"
+                      >skills/python-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>python-testing</code></td>
+                  <td><code>python-testing</code></td>
+                  <td>
+                    pytest、TDD手法、フィクスチャ、モック、パラメータ化、カバレッジ要件を使用したPythonテスト戦略。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/python-testing/SKILL.md"
+                      >skills/python-testing/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>rust-patterns</code></td>
+                  <td><code>rust-patterns</code></td>
+                  <td>
+                    慣用的 Rust パターン —
+                    ownership、エラーハンドリング、traits、並行処理、安全で高性能なアプリ構築のベストプラクティス。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/rust-patterns/SKILL.md"
+                      >skills/rust-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>rust-testing</code></td>
+                  <td><code>rust-testing</code></td>
+                  <td>
+                    Rust テストパターン — ユニットテスト、統合テスト、async
+                    テスト、プロパティベーステスト、モック、カバレッジ。TDD 手法に従う。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/rust-testing/SKILL.md"
+                      >skills/rust-testing/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>swift-actor-persistence</code></td>
+                  <td><code>swift-actor-persistence</code></td>
+                  <td>
+                    Swift actors によるスレッドセーフなデータ永続化 —
+                    ファイルバックストレージ付きインメモリキャッシュで、設計上データ競合を排除。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/swift-actor-persistence/SKILL.md"
+                      >skills/swift-actor-persistence/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>swift-concurrency-6-2</code></td>
+                  <td><code>swift-concurrency-6-2</code></td>
+                  <td>
+                    Swift 6.2 Approachable Concurrency — デフォルトでシングルスレッド、@concurrent
+                    による明示的バックグラウンドオフロード、main actor 型向け isolated
+                    conformances。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/swift-concurrency-6-2/SKILL.md"
+                      >skills/swift-concurrency-6-2/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>swift-protocol-di-testing</code></td>
+                  <td><code>swift-protocol-di-testing</code></td>
+                  <td>
+                    Protocol ベース dependency injection によるテスト可能 Swift コード —
+                    焦点を絞った protocol と Swift Testing でファイルシステム、ネットワーク、外部
+                    API をモック。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/swift-protocol-di-testing/SKILL.md"
+                      >skills/swift-protocol-di-testing/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="8" aria-labelledby="catalog-heading-8">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-8">
+              セキュリティ/コンプライアンス
+            </h2>
+            <p class="catalog-panel-desc">脆弱性、認証認可、秘密情報、PHI/HIPAA、規制・安全性。</p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">22 Skills</span></p>
+            <p class="catalog-panel-hint">
+              Skill名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Directory</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>agent-payment-x402</code></td>
+                  <td><code>agent-payment-x402</code></td>
+                  <td>
+                    AIエージェントにx402決済実行を追加。タスク単位の予算、支出管理、非カストディアルウォレットに対応。Baseはagentwallet-sdk、X
+                    LayerはOKX Payments / OKX Agent Payments Protocol経由。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/agent-payment-x402/SKILL.md"
+                      >skills/agent-payment-x402/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>prediction-market-risk-review</code></td>
+                  <td><code>prediction-market-risk-review</code></td>
+                  <td>
+                    予測市場、basket、oracle、trading agent
+                    ワークフローのコンプライアンス、安全性、データ品質、プライバシー、実行リスクをレビュー。venue
+                    認証、ユーザーポートフォリオデータ、API キー、トレードプランを扱う前に必須。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/prediction-market-risk-review/SKILL.md"
+                      >skills/prediction-market-risk-review/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>prediction-market-risk-review</code></td>
+                  <td><code>prediction-market-risk-review</code></td>
+                  <td>
+                    予測市場、basket、oracle、trading agent
+                    ワークフローのコンプライアンス、安全性、データ品質、プライバシー、実行リスクをレビュー。venue
+                    認証、ユーザーポートフォリオデータ、API キー、トレードプランを扱う前に必須。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/prediction-market-risk-review/SKILL.md"
+                      >skills/prediction-market-risk-review/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>customs-trade-compliance</code></td>
+                  <td><code>customs-trade-compliance</code></td>
+                  <td>
+                    通関書類、関税率分類、関税最適化、制限当事者スクリーニング、複数法域における規制コンプライアンスの体系化された専門知識。通関、関税率分類、貿易コンプライアンス、輸出入書類、関税最適化を扱う際に使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/customs-trade-compliance/SKILL.md"
+                      >skills/customs-trade-compliance/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>defi-amm-security</code></td>
+                  <td><code>defi-amm-security</code></td>
+                  <td>
+                    Solidity
+                    AMMコントラクト、流動性プール、スワップフローのセキュリティチェックリスト。reentrancy、CEI順序、寄付/インフレーション攻撃、オラクル操作、スリッページ、管理者権限、整数演算をカバー。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/defi-amm-security/SKILL.md"
+                      >skills/defi-amm-security/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>django-security</code></td>
+                  <td><code>django-security</code></td>
+                  <td>
+                    Djangoのセキュリティベストプラクティス。認証、認可、CSRF保護、SQLインジェクション防止、XSS防止、セキュアなデプロイ設定。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/django-security/SKILL.md"
+                      >skills/django-security/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>evm-token-decimals</code></td>
+                  <td><code>evm-token-decimals</code></td>
+                  <td>
+                    EVMチェーン間のサイレントなdecimal不一致バグを防止。ランタイムdecimal取得、チェーン対応キャッシュ、ブリッジトークンの精度ドリフト、ボット・ダッシュボード・DeFiツール向けの安全な正規化。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/evm-token-decimals/SKILL.md"
+                      >skills/evm-token-decimals/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>healthcare-cdss-patterns</code></td>
+                  <td><code>healthcare-cdss-patterns</code></td>
+                  <td>
+                    臨床意思決定支援システム（CDSS）開発パターン。薬物相互作用チェック、投与量検証、臨床スコアリング（NEWS2、qSOFA）、アラート重要度分類、EMRワークフローへの統合。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/healthcare-cdss-patterns/SKILL.md"
+                      >skills/healthcare-cdss-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>healthcare-emr-patterns</code></td>
+                  <td><code>healthcare-emr-patterns</code></td>
+                  <td>
+                    ヘルスケアアプリケーション向けEMR/EHR開発パターン。臨床的安全性、エンカウンターワークフロー、処方箋生成、CDSS統合、医療データ入力のためのアクセシビリティファーストUI。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/healthcare-emr-patterns/SKILL.md"
+                      >skills/healthcare-emr-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>healthcare-eval-harness</code></td>
+                  <td><code>healthcare-eval-harness</code></td>
+                  <td>
+                    ヘルスケアアプリケーションのデプロイ向け患者安全評価ハーネス。CDSS精度、PHI露出、臨床ワークフロー整合性、統合コンプライアンスの自動テストスイート。安全上の失敗時はデプロイをブロック。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/healthcare-eval-harness/SKILL.md"
+                      >skills/healthcare-eval-harness/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>healthcare-phi-compliance</code></td>
+                  <td><code>healthcare-phi-compliance</code></td>
+                  <td>
+                    ヘルスケアアプリケーション向け保護対象健康情報（PHI）および個人識別情報（PII）のコンプライアンスパターン。データ分類、アクセス制御、監査証跡、暗号化、一般的な漏洩ベクトルをカバー。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/healthcare-phi-compliance/SKILL.md"
+                      >skills/healthcare-phi-compliance/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>hipaa-compliance</code></td>
+                  <td><code>hipaa-compliance</code></td>
+                  <td>
+                    HIPAA特化エントリーポイント。タスクがHIPAA、PHI取扱い、被保険事業者、BAA、侵害対応、米国ヘルスケアコンプライアンス要件に明示的に関わる場合に使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/hipaa-compliance/SKILL.md"
+                      >skills/hipaa-compliance/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>laravel-security</code></td>
+                  <td><code>laravel-security</code></td>
+                  <td>
+                    Laravelセキュリティベストプラクティス。認証/認可、バリデーション、CSRF、mass
+                    assignment、ファイルアップロード、シークレット、レート制限、セキュアデプロイ。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/laravel-security/SKILL.md"
+                      >skills/laravel-security/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>llm-trading-agent-security</code></td>
+                  <td><code>llm-trading-agent-security</code></td>
+                  <td>
+                    ウォレットまたはトランザクション権限を持つ自律型トレーディングエージェントのセキュリティパターン。プロンプトインジェクション、支出上限、送信前シミュレーション、サーキットブレーカー、MEV保護、鍵管理。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/llm-trading-agent-security/SKILL.md"
+                      >skills/llm-trading-agent-security/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>nodejs-keccak256</code></td>
+                  <td><code>nodejs-keccak256</code></td>
+                  <td>
+                    JavaScript/TypeScriptでのEthereumハッシュ化バグを防止。Nodeのsha3-256はNIST
+                    SHA3でありEthereum
+                    Keccak-256ではなく、selector、署名、ストレージスロット、アドレス導出をサイレントに破壊する。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/nodejs-keccak256/SKILL.md"
+                      >skills/nodejs-keccak256/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>perl-security</code></td>
+                  <td><code>perl-security</code></td>
+                  <td>
+                    Perlセキュリティ網羅。taint
+                    mode、入力検証、安全なプロセス実行、DBIパラメータ化クエリ、Webセキュリティ（XSS/SQLi/CSRF）、perlcriticセキュリティポリシー。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/perl-security/SKILL.md"
+                      >skills/perl-security/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>quarkus-security</code></td>
+                  <td><code>quarkus-security</code></td>
+                  <td>
+                    Quarkus
+                    Securityベストプラクティス。認証、認可、JWT/OIDC、RBAC、入力検証、CSRF、シークレット管理、依存関係セキュリティ。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/quarkus-security/SKILL.md"
+                      >skills/quarkus-security/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>ralphinho-rfc-pipeline</code></td>
+                  <td><code>ralphinho-rfc-pipeline</code></td>
+                  <td>
+                    RFC駆動型マルチエージェントDAG実行パターン。品質ゲート、マージキュー、作業ユニットオーケストレーション。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/ralphinho-rfc-pipeline/SKILL.md"
+                      >skills/ralphinho-rfc-pipeline/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>security-bounty-hunter</code></td>
+                  <td><code>security-bounty-hunter</code></td>
+                  <td>
+                    リポジトリ内の悪用可能でバウンティ対象のセキュリティ問題を探索。ノイズの多いローカルのみの発見ではなく、リモート到達可能で実際のレポートに値する脆弱性に焦点。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/security-bounty-hunter/SKILL.md"
+                      >skills/security-bounty-hunter/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>security-review</code></td>
+                  <td><code>security-review</code></td>
+                  <td>
+                    認証の追加、ユーザー入力の処理、シークレットの操作、APIエンドポイントの作成、支払い/機密機能の実装時にこのスキルを使用します。包括的なセキュリティチェックリストとパターンを提供します。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/security-review/SKILL.md"
+                      >skills/security-review/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>security-scan</code></td>
+                  <td><code>security-scan</code></td>
+                  <td>
+                    AgentShield を使用して、Claude Code の設定（.claude/
+                    ディレクトリ）のセキュリティ脆弱性、設定ミス、インジェクションリスクをスキャンします。CLAUDE.md、settings.json、MCP
+                    サーバー、フック、エージェント定義をチェックします。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/security-scan/SKILL.md"
+                      >skills/security-scan/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>springboot-security</code></td>
+                  <td><code>springboot-security</code></td>
+                  <td>
+                    Java Spring Bootサービス向けSpring
+                    Securityベストプラクティス。認証/認可、バリデーション、CSRF、シークレット、ヘッダー、レート制限、依存関係セキュリティ。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/springboot-security/SKILL.md"
+                      >skills/springboot-security/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>visa-doc-translate</code></td>
+                  <td><code>visa-doc-translate</code></td>
+                  <td>
+                    ビザ申請書類（画像）を英語に翻訳し、原本と翻訳文を含むバイリンガルPDFを作成。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/visa-doc-translate/SKILL.md"
+                      >skills/visa-doc-translate/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="9" aria-labelledby="catalog-heading-9">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-9">DevOps/インフラ/ネットワーク</h2>
+            <p class="catalog-panel-desc">Docker、デプロイ、ネットワーク、homelab、運用基盤。</p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">19 Skills</span></p>
+            <p class="catalog-panel-hint">
+              Skill名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Directory</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>bun-runtime</code></td>
+                  <td><code>bun-runtime</code></td>
+                  <td>
+                    Bunをランタイム、パッケージマネージャー、バンドラー、テストランナーとして使用。Bun
+                    vs Nodeの選択、移行ノート、Vercelサポート。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/bun-runtime/SKILL.md"
+                      >skills/bun-runtime/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>latency-critical-systems</code></td>
+                  <td><code>latency-critical-systems</code></td>
+                  <td>
+                    リアルタイムダッシュボード、market data、ストリーミング agent、execution
+                    gateway、キュー、キャッシュ、HFT 風基盤など、p95
+                    レイテンシとフレッシュネスが重要なレイテンシ敏感システム向け。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/latency-critical-systems/SKILL.md"
+                      >skills/latency-critical-systems/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>latency-critical-systems</code></td>
+                  <td><code>latency-critical-systems</code></td>
+                  <td>
+                    リアルタイムダッシュボード、market data、ストリーミング agent、execution
+                    gateway、キュー、キャッシュ、HFT 風基盤など、p95
+                    レイテンシとフレッシュネスが重要なレイテンシ敏感システム向け。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/latency-critical-systems/SKILL.md"
+                      >skills/latency-critical-systems/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>canary-watch</code></td>
+                  <td><code>canary-watch</code></td>
+                  <td>
+                    リリース後のデプロイURL監視・検証。HTTPエンドポイント、SSEストリーム、静的アセット、コンソールエラー、デプロイ/マージ/依存関係アップグレード後のパフォーマンス退行をチェック。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/canary-watch/SKILL.md"
+                      >skills/canary-watch/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>cisco-ios-patterns</code></td>
+                  <td><code>cisco-ios-patterns</code></td>
+                  <td>
+                    Cisco
+                    IOS/IOS-XEレビューパターン。showコマンド、設定階層、ワイルドカードマスク、ACL配置、インターフェース衛生、安全な変更ウィンドウ検証。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/cisco-ios-patterns/SKILL.md"
+                      >skills/cisco-ios-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>deployment-patterns</code></td>
+                  <td><code>deployment-patterns</code></td>
+                  <td>
+                    デプロイワークフロー、CI/CDパイプラインパターン、Dockerコンテナ化、ヘルスチェック、ロールバック戦略、Webアプリケーション向け本番準備チェックリスト。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/deployment-patterns/SKILL.md"
+                      >skills/deployment-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>dmux-workflows</code></td>
+                  <td><code>dmux-workflows</code></td>
+                  <td>
+                    dmux（AIエージェント用tmuxペインマネージャー）によるマルチエージェントオーケストレーション。Claude
+                    Code、Codex、OpenCode等のハーネス間での並列エージェントワークフローパターン。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/dmux-workflows/SKILL.md"
+                      >skills/dmux-workflows/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>docker-patterns</code></td>
+                  <td><code>docker-patterns</code></td>
+                  <td>
+                    ローカル開発、コンテナセキュリティ、ネットワーキング、ボリューム戦略、マルチサービスオーケストレーション向けDocker/Docker
+                    Composeパターン。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/docker-patterns/SKILL.md"
+                      >skills/docker-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>flox-environments</code></td>
+                  <td><code>flox-environments</code></td>
+                  <td>
+                    Flox（Nixベースの宣言型環境マネージャー）で再現可能なクロスプラットフォーム開発環境を作成。システムレベル依存、再現可能ツールチェーン、sudoやシステム汚染なしのプロジェクトスコープ環境が必要な場合に使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/flox-environments/SKILL.md"
+                      >skills/flox-environments/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>homelab-network-readiness</code></td>
+                  <td><code>homelab-network-readiness</code></td>
+                  <td>
+                    ルーター、ファイアウォール、DHCP、VPN設定変更前のホームラボVLAN分離、ローカルDNSフィルタリング、WireGuard型リモートアクセスの準備チェックリスト。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/homelab-network-readiness/SKILL.md"
+                      >skills/homelab-network-readiness/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>homelab-network-setup</code></td>
+                  <td><code>homelab-network-setup</code></td>
+                  <td>
+                    ゲートウェイ、スイッチ、AP、IPレンジ、DHCP予約、DNS、配線、よくある初歩的ミスを含む実用的なホーム/ホームラボネットワーク計画。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/homelab-network-setup/SKILL.md"
+                      >skills/homelab-network-setup/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>homelab-pihole-dns</code></td>
+                  <td><code>homelab-pihole-dns</code></td>
+                  <td>
+                    Pi-holeインストール、ブロックリスト管理、DNS-over-HTTPS設定、DHCP統合、ローカルDNSレコード、家庭ネットワークでのDNS解決トラブルシューティング。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/homelab-pihole-dns/SKILL.md"
+                      >skills/homelab-pihole-dns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>homelab-vlan-segmentation</code></td>
+                  <td><code>homelab-vlan-segmentation</code></td>
+                  <td>
+                    UniFi、pfSense/OPNsense、MikroTikを使ったIoT、ゲスト、信頼、サーバートラフィックのVLAN分割。スイッチtrunk設定、ファイアウォールルール、無線SSIDマッピング含む。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/homelab-vlan-segmentation/SKILL.md"
+                      >skills/homelab-vlan-segmentation/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>homelab-wireguard-vpn</code></td>
+                  <td><code>homelab-wireguard-vpn</code></td>
+                  <td>
+                    WireGuard VPNサーバー設定、ピア設定、鍵生成、スプリットトンネル vs
+                    フルトンネルルーティング、モバイル/ラップトップからのホームネットワークリモートアクセス。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/homelab-wireguard-vpn/SKILL.md"
+                      >skills/homelab-wireguard-vpn/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>netmiko-ssh-automation</code></td>
+                  <td><code>netmiko-ssh-automation</code></td>
+                  <td>
+                    読み取り専用収集、境界付きバッチSSH、TextFSMパース、保護された設定変更、タイムアウト、ネットワーク自動化エラー処理の安全なPython
+                    Netmikoパターン。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/netmiko-ssh-automation/SKILL.md"
+                      >skills/netmiko-ssh-automation/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>network-bgp-diagnostics</code></td>
+                  <td><code>network-bgp-diagnostics</code></td>
+                  <td>
+                    診断専用BGPトラブルシューティングパターン。ネイバー状態、ルート交換、プレフィックスポリシー、AS
+                    path検査、安全な証拠収集。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/network-bgp-diagnostics/SKILL.md"
+                      >skills/network-bgp-diagnostics/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>network-config-validation</code></td>
+                  <td><code>network-config-validation</code></td>
+                  <td>
+                    ルーター/スイッチ設定のデプロイ前チェック。危険コマンド、重複アドレス、サブネット重複、古い参照、管理プレーンリスク、IOSスタイルセキュリティ衛生。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/network-config-validation/SKILL.md"
+                      >skills/network-config-validation/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>network-interface-health</code></td>
+                  <td><code>network-interface-health</code></td>
+                  <td>
+                    ルーター、スイッチ、Linuxホストでのインターフェースエラー、ドロップ、CRC、デュプレックス不一致、flapping、速度ネゴシエーション問題、カウンタートレンドの診断。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/network-interface-health/SKILL.md"
+                      >skills/network-interface-health/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>uncloud</code></td>
+                  <td><code>uncloud</code></td>
+                  <td>
+                    Uncloudクラスタ管理。サービスデプロイ、Caddy
+                    ingress設定、クラスタ外デバイス向け静的プロキシルート追加、ポート公開、スケーリング、ログ確認、`uc`
+                    CLIでのマシン/ボリューム管理。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/uncloud/SKILL.md"
+                      >skills/uncloud/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>windows-desktop-e2e</code></td>
+                  <td><code>windows-desktop-e2e</code></td>
+                  <td>
+                    pywinautoとWindows UI
+                    Automationを使ったWindowsネイティブデスクトップアプリ（WPF、WinForms、Win32/MFC、Qt）のE2Eテスト。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/windows-desktop-e2e/SKILL.md"
+                      >skills/windows-desktop-e2e/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="10" aria-labelledby="catalog-heading-10">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-10">AIエージェント/自律化</h2>
+            <p class="catalog-panel-desc">
+              自律ループ、マルチエージェント、評価ハーネス、AI 実行基盤。
+            </p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">20 Skills</span></p>
+            <p class="catalog-panel-hint">
+              Skill名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Directory</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>agent-harness-construction</code></td>
+                  <td><code>agent-harness-construction</code></td>
+                  <td>
+                    AIエージェントのアクション空間、ツール定義、観測フォーマットの設計・最適化で完了率を向上。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/agent-harness-construction/SKILL.md"
+                      >skills/agent-harness-construction/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>benchmark-optimization-loop</code></td>
+                  <td><code>benchmark-optimization-loop</code></td>
+                  <td>
+                    何かを高速化、多バリアント試行、再帰的最適化、レイテンシ/スループット/コスト
+                    ベンチマーク、反復測定で最良実装選定が必要な場合に使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/benchmark-optimization-loop/SKILL.md"
+                      >skills/benchmark-optimization-loop/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>ito-data-atlas-agent</code></td>
+                  <td><code>ito-data-atlas-agent</code></td>
+                  <td>
+                    Itô basket リサーチ、市場ディスカバリ、パラメータ起草、human-in-the-loop
+                    編集向けバックグラウンド Data Atlas 型 agent
+                    設計。アーキテクチャ・ワークフロー計画用（live order 実行は対象外）。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/ito-data-atlas-agent/SKILL.md"
+                      >skills/ito-data-atlas-agent/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>parallel-execution-optimizer</code></td>
+                  <td><code>parallel-execution-optimizer</code></td>
+                  <td>
+                    タスクを並列ワーク、並行 agent、batched tool call、隔離
+                    worktree、独立検証レーンで大幅高速化したい場合に使用（正確性を保ったまま）。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/parallel-execution-optimizer/SKILL.md"
+                      >skills/parallel-execution-optimizer/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>recursive-decision-ledger</code></td>
+                  <td><code>recursive-decision-ledger</code></td>
+                  <td>
+                    反復 rollout、marked
+                    意思決定プロセス、高次元探索、確率最適化、局所解探索、アンサンブル比較、可視
+                    evidence trail を伴う再帰推論が必要な場合に使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/recursive-decision-ledger/SKILL.md"
+                      >skills/recursive-decision-ledger/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>benchmark-optimization-loop</code></td>
+                  <td><code>benchmark-optimization-loop</code></td>
+                  <td>
+                    何かを高速化、多バリアント試行、再帰的最適化、レイテンシ/スループット/コスト
+                    ベンチマーク、反復測定で最良実装選定が必要な場合に使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/benchmark-optimization-loop/SKILL.md"
+                      >skills/benchmark-optimization-loop/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>ito-data-atlas-agent</code></td>
+                  <td><code>ito-data-atlas-agent</code></td>
+                  <td>
+                    Itô basket リサーチ、市場ディスカバリ、パラメータ起草、human-in-the-loop
+                    編集向けバックグラウンド Data Atlas 型 agent
+                    設計。アーキテクチャ・ワークフロー計画用（live order 実行は対象外）。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/ito-data-atlas-agent/SKILL.md"
+                      >skills/ito-data-atlas-agent/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>parallel-execution-optimizer</code></td>
+                  <td><code>parallel-execution-optimizer</code></td>
+                  <td>
+                    タスクを並列ワーク、並行 agent、batched tool call、隔離
+                    worktree、独立検証レーンで大幅高速化したい場合に使用（正確性を保ったまま）。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/parallel-execution-optimizer/SKILL.md"
+                      >skills/parallel-execution-optimizer/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>recursive-decision-ledger</code></td>
+                  <td><code>recursive-decision-ledger</code></td>
+                  <td>
+                    反復 rollout、marked
+                    意思決定プロセス、高次元探索、確率最適化、局所解探索、アンサンブル比較、可視
+                    evidence trail を伴う再帰推論が必要な場合に使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/recursive-decision-ledger/SKILL.md"
+                      >skills/recursive-decision-ledger/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>agent-introspection-debugging</code></td>
+                  <td><code>agent-introspection-debugging</code></td>
+                  <td>
+                    AIエージェント失敗向け構造化自己デバッグワークフロー。キャプチャ、診断、限定リカバリ、内省レポート。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/agent-introspection-debugging/SKILL.md"
+                      >skills/agent-introspection-debugging/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>agentic-engineering</code></td>
+                  <td><code>agentic-engineering</code></td>
+                  <td>
+                    eval-first実行、分解、コスト意識のモデルルーティングでagentic
+                    engineerとして運用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/agentic-engineering/SKILL.md"
+                      >skills/agentic-engineering/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>agentic-os</code></td>
+                  <td><code>agentic-os</code></td>
+                  <td>
+                    Claude
+                    Code上の永続的マルチエージェントOS構築。カーネルアーキテクチャ、専門エージェント、スラッシュコマンド、ファイルベースメモリ、スケジュール自動化、外部DBなしの状態管理。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/agentic-os/SKILL.md"
+                      >skills/agentic-os/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>ai-first-engineering</code></td>
+                  <td><code>ai-first-engineering</code></td>
+                  <td>
+                    AIエージェントが実装出力の大半を生成するチーム向けエンジニアリング運用モデル。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/ai-first-engineering/SKILL.md"
+                      >skills/ai-first-engineering/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>autonomous-agent-harness</code></td>
+                  <td><code>autonomous-agent-harness</code></td>
+                  <td>
+                    Claude
+                    Codeを完全自律エージェントシステムに変換。永続メモリ、スケジュール操作、computer
+                    use、タスクキュー。Hermes、AutoGPT等のスタンドアロンフレームワークをClaude
+                    Codeネイティブのcron、dispatch、MCP、メモリで置き換え。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/autonomous-agent-harness/SKILL.md"
+                      >skills/autonomous-agent-harness/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>autonomous-loops</code></td>
+                  <td><code>autonomous-loops</code></td>
+                  <td>
+                    自律Claude
+                    Codeループのパターンとアーキテクチャ。単純な逐次パイプラインからRFC駆動マルチエージェントDAGまで。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/autonomous-loops/SKILL.md"
+                      >skills/autonomous-loops/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>claude-devfleet</code></td>
+                  <td><code>claude-devfleet</code></td>
+                  <td>
+                    Claude
+                    DevFleet経由のマルチエージェントコーディングタスクオーケストレーション。プロジェクト計画、分離worktreeでの並列エージェントdispatch、進捗監視、構造化レポート読み取り。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/claude-devfleet/SKILL.md"
+                      >skills/claude-devfleet/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>cost-aware-llm-pipeline</code></td>
+                  <td><code>cost-aware-llm-pipeline</code></td>
+                  <td>
+                    LLM
+                    API利用のコスト最適化パターン。タスク複雑度によるモデルルーティング、予算追跡、リトライロジック、プロンプトキャッシュ。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/cost-aware-llm-pipeline/SKILL.md"
+                      >skills/cost-aware-llm-pipeline/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>council</code></td>
+                  <td><code>council</code></td>
+                  <td>
+                    曖昧な意思決定、トレードオフ、go/no-go判断のための4声評議会。複数の有効な選択肢があり、選択前に構造化された反対意見が必要な場合に使用。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/council/SKILL.md"
+                      >skills/council/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>enterprise-agent-ops</code></td>
+                  <td><code>enterprise-agent-ops</code></td>
+                  <td>
+                    可観測性、セキュリティ境界、ライフサイクル管理を備えた長寿命エージェントワークロードの運用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/enterprise-agent-ops/SKILL.md"
+                      >skills/enterprise-agent-ops/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>foundation-models-on-device</code></td>
+                  <td><code>foundation-models-on-device</code></td>
+                  <td>
+                    iOS 26+向けApple
+                    FoundationModelsフレームワークによるオンデバイスLLM。テキスト生成、@Generableによるguided
+                    generation、ツール呼び出し、スナップショットストリーミング。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/foundation-models-on-device/SKILL.md"
+                      >skills/foundation-models-on-device/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>gan-style-harness</code></td>
+                  <td><code>gan-style-harness</code></td>
+                  <td>
+                    GAN風Generator-Evaluatorエージェントハーネスで高品質アプリケーションを自律構築。Anthropic
+                    2026年3月 harness設計論文ベース。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/gan-style-harness/SKILL.md"
+                      >skills/gan-style-harness/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>openclaw-persona-forge</code></td>
+                  <td><code>openclaw-persona-forge</code></td>
+                  <td>
+                    OpenClaw AI
+                    Agent向け完全なペルソナ（龙虾灵魂）鍛造。ユーザー嗜好またはランダム抽選でアイデンティティ、SOUL.md、役割化ルール、名前、アバター生成プロンプトを出力。OpenClawペルソナの作成・設計・カスタマイズ時に使用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/openclaw-persona-forge/SKILL.md"
+                      >skills/openclaw-persona-forge/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>prompt-optimizer</code></td>
+                  <td><code>prompt-optimizer</code></td>
+                  <td>
+                    生プロンプト分析、意図とギャップ特定、ECCコンポーネント（skills/commands/agents/hooks）マッチング、最適化プロンプト出力。助言のみ—実行しない。「optimize
+                    prompt」「improve my prompt」等でトリガー。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/prompt-optimizer/SKILL.md"
+                      >skills/prompt-optimizer/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>regex-vs-llm-structured-text</code></td>
+                  <td><code>regex-vs-llm-structured-text</code></td>
+                  <td>
+                    構造化テキスト解析でregex vs
+                    LLMの選択フレームワーク。regexから始め、低信頼度のエッジケースのみLLMを追加。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/regex-vs-llm-structured-text/SKILL.md"
+                      >skills/regex-vs-llm-structured-text/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="11" aria-labelledby="catalog-heading-11">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-11">
+              ドキュメント/ナレッジ/リサーチ
+            </h2>
+            <p class="catalog-panel-desc">
+              ドキュメント更新、最新情報調査、ナレッジ管理、コードベース理解。
+            </p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">7 Skills</span></p>
+            <p class="catalog-panel-hint">
+              Skill名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Directory</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>code-tour</code></td>
+                  <td><code>code-tour</code></td>
+                  <td>
+                    CodeTour
+                    `.tour`ファイル作成。ペルソナ別、ステップバイステップ、実ファイル/行アンカー付きウォークスルー。オンボーディング、アーキテクチャ、PR、RCAツアー、「仕組み説明」リクエスト向け。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/code-tour/SKILL.md"
+                      >skills/code-tour/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>codebase-onboarding</code></td>
+                  <td><code>codebase-onboarding</code></td>
+                  <td>
+                    不慣れなコードベース分析と構造化オンボーディングガイド生成。アーキテクチャマップ、主要エントリポイント、規約、初期CLAUDE.md。新プロジェクト参加やリポ初回Claude
+                    Code設定時。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/codebase-onboarding/SKILL.md"
+                      >skills/codebase-onboarding/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>deep-research</code></td>
+                  <td><code>deep-research</code></td>
+                  <td>
+                    firecrawlとexa
+                    MCPによるマルチソース深掘りリサーチ。Web検索、所見統合、出典付きレポート配信。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/deep-research/SKILL.md"
+                      >skills/deep-research/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>documentation-lookup</code></td>
+                  <td><code>documentation-lookup</code></td>
+                  <td>
+                    Context7
+                    MCP経由で最新ライブラリ/フレームワークドキュメントを取得（訓練データ非依存）。セットアップ、APIリファレンス、コード例、フレームワーク名（React、Next.js、Prisma等）言及時に起動。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/documentation-lookup/SKILL.md"
+                      >skills/documentation-lookup/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>exa-search</code></td>
+                  <td><code>exa-search</code></td>
+                  <td>
+                    Exa
+                    MCPによるニューラル検索。Web、コード、企業リサーチ。Web検索、コード例、企業情報、人物検索、Exa深掘りリサーチが必要な場合。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/exa-search/SKILL.md"
+                      >skills/exa-search/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>knowledge-ops</code></td>
+                  <td><code>knowledge-ops</code></td>
+                  <td>
+                    ナレッジベース管理、取り込み、同期、検索。複数ストレージ層（ローカルファイル、MCP
+                    memory、ベクターストア、Gitリポ）。保存、整理、同期、重複排除、横断検索時。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/knowledge-ops/SKILL.md"
+                      >skills/knowledge-ops/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>search-first</code></td>
+                  <td><code>search-first</code></td>
+                  <td>
+                    コーディング前リサーチワークフロー。カスタム実装前に既存ツール、ライブラリ、パターンを探索。researcher
+                    agentを起動。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/search-first/SKILL.md"
+                      >skills/search-first/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="12" aria-labelledby="catalog-heading-12">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-12">
+              GitHub/プロジェクト運用/セッション
+            </h2>
+            <p class="catalog-panel-desc">
+              PR、セッション保存、チェックポイント、プロジェクト運用。
+            </p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">2 Skills</span></p>
+            <p class="catalog-panel-hint">
+              Skill名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Directory</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>git-workflow</code></td>
+                  <td><code>git-workflow</code></td>
+                  <td>
+                    Gitワークフローパターン。ブランチ戦略、コミット規約、merge vs
+                    rebase、コンフリクト解決、あらゆる規模チーム向け協調開発ベストプラクティス。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/git-workflow/SKILL.md"
+                      >skills/git-workflow/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>github-ops</code></td>
+                  <td><code>github-ops</code></td>
+                  <td>
+                    GitHubリポジトリ操作、自動化、管理。Issueトリアージ、PR管理、CI/CD操作、リリース管理、gh
+                    CLIによるセキュリティ監視。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/github-ops/SKILL.md"
+                      >skills/github-ops/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="13" aria-labelledby="catalog-heading-13">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-13">ビジネス/オペレーション</h2>
+            <p class="catalog-panel-desc">請求、物流、投資家対応、調達、メール、営業、業務運用。</p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">24 Skills</span></p>
+            <p class="catalog-panel-hint">
+              Skill名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Directory</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>carrier-relationship-management</code></td>
+                  <td><code>carrier-relationship-management</code></td>
+                  <td>
+                    キャリアポートフォリオ管理、運賃交渉、パフォーマンス追跡、貨物配分、戦略的キャリア関係維持の体系化専門知識。キャリア管理、運賃交渉、評価、貨物戦略構築時。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/carrier-relationship-management/SKILL.md"
+                      >skills/carrier-relationship-management/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>ito-basket-compare</code></td>
+                  <td><code>ito-basket-compare</code></td>
+                  <td>
+                    Itô 予測市場 basket
+                    をユーザーのナレッジベース、ポートフォリオノート、金融コンテキスト、ウォッチリスト、リサーチテーゼと比較。投資助言・ライブトレードなしの読み取り専用ギャップ分析用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/ito-basket-compare/SKILL.md"
+                      >skills/ito-basket-compare/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>ito-market-intelligence</code></td>
+                  <td><code>ito-market-intelligence</code></td>
+                  <td>
+                    Itô basket
+                    ワークフロー向け予測市場イベント、venue、underlier、流動性、ニュースコンテキストをリサーチ。投資助言・ライブトレードなしの読み取り専用市場インテリジェンス用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/ito-market-intelligence/SKILL.md"
+                      >skills/ito-market-intelligence/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>ito-trade-planner</code></td>
+                  <td><code>ito-trade-planner</code></td>
+                  <td>
+                    Itô・venue
+                    ワークフロー向け非助言型トレードプランニングワークシート。venue、underlier、制約、order
+                    事前条件、手動実行ステップを確認（実発注やポジション推奨は対象外）。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/ito-trade-planner/SKILL.md"
+                      >skills/ito-trade-planner/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>marketing-campaign</code></td>
+                  <td><code>marketing-campaign</code></td>
+                  <td>
+                    エンドツーエンドのマーケティングキャンペーン計画と実行。オーディエンス調査、ポジショニング、キャンペーンアングル定義、LP
+                    コピー、メールシーケンス、SNS
+                    投稿、広告コピー、動画スクリプト、コンテンツカレンダー。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/marketing-campaign/SKILL.md"
+                      >skills/marketing-campaign/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>ito-basket-compare</code></td>
+                  <td><code>ito-basket-compare</code></td>
+                  <td>
+                    Itô 予測市場 basket
+                    をユーザーのナレッジベース、ポートフォリオノート、金融コンテキスト、ウォッチリスト、リサーチテーゼと比較。投資助言・ライブトレードなしの読み取り専用ギャップ分析用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/ito-basket-compare/SKILL.md"
+                      >skills/ito-basket-compare/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>ito-market-intelligence</code></td>
+                  <td><code>ito-market-intelligence</code></td>
+                  <td>
+                    Itô basket
+                    ワークフロー向け予測市場イベント、venue、underlier、流動性、ニュースコンテキストをリサーチ。投資助言・ライブトレードなしの読み取り専用市場インテリジェンス用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/ito-market-intelligence/SKILL.md"
+                      >skills/ito-market-intelligence/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>ito-trade-planner</code></td>
+                  <td><code>ito-trade-planner</code></td>
+                  <td>
+                    Itô・venue
+                    ワークフロー向け非助言型トレードプランニングワークシート。venue、underlier、制約、order
+                    事前条件、手動実行ステップを確認（実発注やポジション推奨は対象外）。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/ito-trade-planner/SKILL.md"
+                      >skills/ito-trade-planner/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>marketing-campaign</code></td>
+                  <td><code>marketing-campaign</code></td>
+                  <td>
+                    エンドツーエンドのマーケティングキャンペーン計画と実行。オーディエンス調査、ポジショニング、キャンペーンアングル定義、LP
+                    コピー、メールシーケンス、SNS
+                    投稿、広告コピー、動画スクリプト、コンテンツカレンダー。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/marketing-campaign/SKILL.md"
+                      >skills/marketing-campaign/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>customer-billing-ops</code></td>
+                  <td><code>customer-billing-ops</code></td>
+                  <td>
+                    Stripe等の課金ツールを使ったサブスクリプション、返金、解約トリアージ、課金ポータルリカバリ、プラン分析など顧客課金ワークフロー運用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/customer-billing-ops/SKILL.md"
+                      >skills/customer-billing-ops/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>email-ops</code></td>
+                  <td><code>email-ops</code></td>
+                  <td>
+                    ECC向け証拠ファーストメールボックストリアージ、下書き、送信検証、送信済みメール安全フォローアップワークフロー。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/email-ops/SKILL.md"
+                      >skills/email-ops/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>energy-procurement</code></td>
+                  <td><code>energy-procurement</code></td>
+                  <td>
+                    電力・ガス調達、タリフ最適化、デマンドチャージ管理、再エネPPA評価、複数施設エネルギーコスト管理の体系化専門知識。エネルギー調達、タリフ最適化、デマンドチャージ、PPA評価、エネルギー戦略時。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/energy-procurement/SKILL.md"
+                      >skills/energy-procurement/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>finance-billing-ops</code></td>
+                  <td><code>finance-billing-ops</code></td>
+                  <td>
+                    ECC向け証拠ファースト収益、価格、返金、チーム課金、課金モデル真実性ワークフロー。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/finance-billing-ops/SKILL.md"
+                      >skills/finance-billing-ops/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>google-workspace-ops</code></td>
+                  <td><code>google-workspace-ops</code></td>
+                  <td>
+                    Google
+                    Drive、Docs、Sheets、Slidesを一体のワークフロー面として運用。計画、トラッカー、デッキ、共有ドキュメント。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/google-workspace-ops/SKILL.md"
+                      >skills/google-workspace-ops/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>inventory-demand-planning</code></td>
+                  <td><code>inventory-demand-planning</code></td>
+                  <td>
+                    需要予測、安全在庫最適化、補充計画、複数拠点小売のプロモーションリフト推定の体系化専門知識。需要予測、安全在庫、補充、プロモ管理、在庫最適化時。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/inventory-demand-planning/SKILL.md"
+                      >skills/inventory-demand-planning/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>investor-materials</code></td>
+                  <td><code>investor-materials</code></td>
+                  <td>
+                    ピッチデック、ワンページャー、投資家メモ、アクセラレーター申請、財務モデル、資金調達資料の作成・更新。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/investor-materials/SKILL.md"
+                      >skills/investor-materials/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>investor-outreach</code></td>
+                  <td><code>investor-outreach</code></td>
+                  <td>
+                    資金調達向けコールドメール、温かい紹介文、フォローアップ、更新メール、投資家コミュニケーション起草。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/investor-outreach/SKILL.md"
+                      >skills/investor-outreach/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>jira-integration</code></td>
+                  <td><code>jira-integration</code></td>
+                  <td>
+                    Jiraチケット取得、要件分析、ステータス更新、コメント追加、イシュー遷移時に使用。MCPまたはREST経由のJira
+                    APIパターン。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/jira-integration/SKILL.md"
+                      >skills/jira-integration/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>logistics-exception-management</code></td>
+                  <td><code>logistics-exception-management</code></td>
+                  <td>
+                    貨物例外、配送遅延、破損、紛失、キャリア紛争対応の体系化専門知識。配送例外、貨物クレーム、配送問題、キャリア紛争時。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/logistics-exception-management/SKILL.md"
+                      >skills/logistics-exception-management/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>market-research</code></td>
+                  <td><code>market-research</code></td>
+                  <td>
+                    市場調査、競合分析、投資家デューデリジェンス、業界インテリジェンス。出典付き、意思決定志向サマリー。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/market-research/SKILL.md"
+                      >skills/market-research/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>messages-ops</code></td>
+                  <td><code>messages-ops</code></td>
+                  <td>
+                    ECC向け証拠ファーストライブメッセージング。SMS/DM読み取り、最近のワンタイムコード回収、返信前スレッド確認、実際に確認したメッセージソースの証明。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/messages-ops/SKILL.md"
+                      >skills/messages-ops/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>production-audit</code></td>
+                  <td><code>production-audit</code></td>
+                  <td>
+                    外部監査サービスにリポデータを送らず、出荷済みアプリ、ローンチ前レビュー、マージ後チェック、「本番で何が壊れる？」向けローカル証拠ベース本番準備監査。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/production-audit/SKILL.md"
+                      >skills/production-audit/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>production-scheduling</code></td>
+                  <td><code>production-scheduling</code></td>
+                  <td>
+                    離散/バッチ製造の生産スケジューリング、ジョブ順序付け、ラインバランシング、段取り最適化、ボトルネック解消の体系化専門知識。生産計画、ボトルネック、段取り、障害対応、ラインバランス時。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/production-scheduling/SKILL.md"
+                      >skills/production-scheduling/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>project-flow-ops</code></td>
+                  <td><code>project-flow-ops</code></td>
+                  <td>
+                    GitHubとLinear横断の実行フロー運用。Issue/PRトリアージ、作業リンク、GitHubを公開面、Linearを内部実行層として維持。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/project-flow-ops/SKILL.md"
+                      >skills/project-flow-ops/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>quality-nonconformance</code></td>
+                  <td><code>quality-nonconformance</code></td>
+                  <td>
+                    規制製造の品質管理、不適合調査、根本原因分析、是正措置、サプライヤー品質管理の体系化専門知識。不適合調査、RCA、CAPA、SPC解釈、サプライヤー品質問題時。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/quality-nonconformance/SKILL.md"
+                      >skills/quality-nonconformance/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>returns-reverse-logistics</code></td>
+                  <td><code>returns-reverse-logistics</code></td>
+                  <td>
+                    返品承認、受入検査、処分判断、返金処理、不正検知、保証クレーム管理の体系化専門知識。返品、リバースロジスティクス、返金判断、返品不正、保証クレーム時。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/returns-reverse-logistics/SKILL.md"
+                      >skills/returns-reverse-logistics/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>unified-notifications-ops</code></td>
+                  <td><code>unified-notifications-ops</code></td>
+                  <td>
+                    GitHub、Linear、デスクトップアラート、フック、接続通信面を横断するECCネイティブ通知ワークフロー運用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/unified-notifications-ops/SKILL.md"
+                      >skills/unified-notifications-ops/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>x-api</code></td>
+                  <td><code>x-api</code></td>
+                  <td>
+                    X/Twitter
+                    API統合。ツイート/スレッド投稿、タイムライン読み取り、検索、分析。OAuth認証パターン、レート制限、プラットフォームネイティブ投稿。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/x-api/SKILL.md"
+                      >skills/x-api/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="14" aria-labelledby="catalog-heading-14">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-14">メディア/コンテンツ</h2>
+            <p class="catalog-panel-desc">
+              記事、ブランドボイス、動画、スライド、画像・音声生成、SNS。
+            </p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">14 Skills</span></p>
+            <p class="catalog-panel-hint">
+              Skill名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Directory</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>article-writing</code></td>
+                  <td><code>article-writing</code></td>
+                  <td>
+                    供給例やブランドガイダンスから派生した distinctive voice
+                    で記事、ガイド、ブログ、チュートリアル、ニュースレター等の長文コンテンツ執筆。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/article-writing/SKILL.md"
+                      >skills/article-writing/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>social-publisher</code></td>
+                  <td><code>social-publisher</code></td>
+                  <td>
+                    SocialClaw 経由で 13 プラットフォーム（X、LinkedIn、Instagram、Facebook
+                    Pages、TikTok、Discord、Telegram、YouTube、Reddit、WordPress、Pinterest 等）へ
+                    agent
+                    駆動の投稿スケジューリングと配信。メディアアップロード、配信ステータス監視も対応。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/social-publisher/SKILL.md"
+                      >skills/social-publisher/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>social-publisher</code></td>
+                  <td><code>social-publisher</code></td>
+                  <td>
+                    SocialClaw 経由で 13 プラットフォーム（X、LinkedIn、Instagram、Facebook
+                    Pages、TikTok、Discord、Telegram、YouTube、Reddit、WordPress、Pinterest 等）へ
+                    agent
+                    駆動の投稿スケジューリングと配信。メディアアップロード、配信ステータス監視も対応。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/social-publisher/SKILL.md"
+                      >skills/social-publisher/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>blender-motion-state-inspection</code></td>
+                  <td><code>blender-motion-state-inspection</code></td>
+                  <td>
+                    Blenderキャラクター、リグ、ポーズ、アニメーションリターゲティング、接地、向き、モデル
+                    vs モーション整合の検査。スクリーンショットだけでは不足する場合。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/blender-motion-state-inspection/SKILL.md"
+                      >skills/blender-motion-state-inspection/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>brand-voice</code></td>
+                  <td><code>brand-voice</code></td>
+                  <td>
+                    実投稿、エッセイ、ローンチノート、ドキュメント、サイトコピーからソース派生のライティングスタイルプロファイル構築。コンテンツ、アウトリーチ、ソーシャルワークフローで再利用。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/brand-voice/SKILL.md"
+                      >skills/brand-voice/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>content-engine</code></td>
+                  <td><code>content-engine</code></td>
+                  <td>
+                    X、LinkedIn、TikTok、YouTube、ニュースレター、マルチプラットフォームキャンペーン向けプラットフォームネイティブコンテンツシステム構築。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/content-engine/SKILL.md"
+                      >skills/content-engine/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>content-hash-cache-pattern</code></td>
+                  <td><code>content-hash-cache-pattern</code></td>
+                  <td>
+                    SHA-256コンテンツハッシュで高コストファイル処理結果をキャッシュ。パス非依存、自動無効化、サービス層分離。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/content-hash-cache-pattern/SKILL.md"
+                      >skills/content-hash-cache-pattern/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>crosspost</code></td>
+                  <td><code>crosspost</code></td>
+                  <td>
+                    X、LinkedIn、Threads、Blueskyへのマルチプラットフォーム配信。content-engineパターンでプラットフォーム別適応。同一コンテンツのクロスポストは不可。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/crosspost/SKILL.md"
+                      >skills/crosspost/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>fal-ai-media</code></td>
+                  <td><code>fal-ai-media</code></td>
+                  <td>
+                    fal.ai MCP統合メディア生成。画像、動画、音声。text-to-image（Nano
+                    Banana）、text/image-to-video（Seedance、Kling、Veo
+                    3）、TTS（CSM-1B）、video-to-audio（ThinkSound）。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/fal-ai-media/SKILL.md"
+                      >skills/fal-ai-media/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>frontend-slides</code></td>
+                  <td><code>frontend-slides</code></td>
+                  <td>
+                    ゼロから、またはPowerPoint変換でアニメーション豊富なHTMLプレゼン作成。プレゼン構築、PPT/PPTXのWeb変換、トーク/ピッチスライド作成時。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/frontend-slides/SKILL.md"
+                      >skills/frontend-slides/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>ios-icon-gen</code></td>
+                  <td><code>ios-icon-gen</code></td>
+                  <td>
+                    SF Symbols（5000+ Appleネイティブ）またはIconify API（200+コレクション275k+
+                    OSSアイコン）からXcodeアセットカタログ用PNG imageset生成。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/ios-icon-gen/SKILL.md"
+                      >skills/ios-icon-gen/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>manim-video</code></td>
+                  <td><code>manim-video</code></td>
+                  <td>
+                    技術概念、グラフ、システム図、プロダクトウォークスルー向け再利用可能Manim解説動画。必要ならECC動画スタックへハンドオフ。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/manim-video/SKILL.md"
+                      >skills/manim-video/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>remotion-video-creation</code></td>
+                  <td><code>remotion-video-creation</code></td>
+                  <td>
+                    Remotion（React動画作成）ベストプラクティス。3D、アニメーション、音声、キャプション、チャート、トランジション等29ルール。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/remotion-video-creation/SKILL.md"
+                      >skills/remotion-video-creation/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>video-editing</code></td>
+                  <td><code>video-editing</code></td>
+                  <td>
+                    実映像のカット、構成、拡張向けAI支援編集。FFmpeg、Remotion、ElevenLabs、fal.ai、Descript/CapCut最終仕上げまでのパイプライン。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/video-editing/SKILL.md"
+                      >skills/video-editing/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>videodb</code></td>
+                  <td><code>videodb</code></td>
+                  <td>
+                    動画・音声のSee, Understand,
+                    Act。ローカル、URL、RTSP/ライブ取り込み；フレーム抽出とタイムスタンプ検索；トランスコード、オーバーレイ、吹き替え、翻訳、メディアアセット生成。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/videodb/SKILL.md"
+                      >skills/videodb/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="15" aria-labelledby="catalog-heading-15">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-15">科学/データ/ML</h2>
+            <p class="catalog-panel-desc">機械学習、推薦、学術文献、特許、バイオ系データベース。</p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">15 Skills</span></p>
+            <p class="catalog-panel-hint">
+              Skill名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Directory</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>clickhouse-io</code></td>
+                  <td><code>clickhouse-io</code></td>
+                  <td>
+                    高性能分析ワークロード向けClickHouse
+                    DBパターン、クエリ最適化、分析、データエンジニアリングベストプラクティス。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/clickhouse-io/SKILL.md"
+                      >skills/clickhouse-io/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>prediction-market-oracle-research</code></td>
+                  <td><code>prediction-market-oracle-research</code></td>
+                  <td>
+                    プロダクト、agent、ダッシュボード、企業意思決定インテリジェンス向けのデータソース/oracle
+                    シグナルとして予測市場をリサーチ。市場示唆確率、留意点、統合パターンのソース根拠分析（投資助言は対象外）。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/prediction-market-oracle-research/SKILL.md"
+                      >skills/prediction-market-oracle-research/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>prediction-market-oracle-research</code></td>
+                  <td><code>prediction-market-oracle-research</code></td>
+                  <td>
+                    プロダクト、agent、ダッシュボード、企業意思決定インテリジェンス向けのデータソース/oracle
+                    シグナルとして予測市場をリサーチ。市場示唆確率、留意点、統合パターンのソース根拠分析（投資助言は対象外）。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/prediction-market-oracle-research/SKILL.md"
+                      >skills/prediction-market-oracle-research/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>connections-optimizer</code></td>
+                  <td><code>connections-optimizer</code></td>
+                  <td>
+                    X/LinkedInネットワークのレビューファースト整理。不要接続の削除候補、追加/フォロー推奨、ユーザー本人の声でのチャネル別ウォームアウトリーチ起草。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/connections-optimizer/SKILL.md"
+                      >skills/connections-optimizer/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>data-scraper-agent</code></td>
+                  <td><code>data-scraper-agent</code></td>
+                  <td>
+                    任意の公開ソース（求人、価格、ニュース、GitHub、スポーツ等）向け完全自動AIデータ収集エージェント構築。スケジュールスクレイピング、無料LLM（Gemini
+                    Flash）でデータ強化、Notion/Sheets/Supabase保存、ユーザーフィードバック学習。GitHub
+                    Actionsで100%無料運用。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/data-scraper-agent/SKILL.md"
+                      >skills/data-scraper-agent/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>scientific-pkg-gget</code></td>
+                  <td><code>scientific-pkg-gget</code></td>
+                  <td>
+                    gget
+                    CLI/PythonでゲノムDB照会、配列検索、BLAST風検索、エンリッチメントチェック、再現可能bioinformatics証拠ログ。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/scientific-pkg-gget/SKILL.md"
+                      >skills/scientific-pkg-gget/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>lead-intelligence</code></td>
+                  <td><code>lead-intelligence</code></td>
+                  <td>
+                    AIネイティブリードインテリジェンス・アウトリーチ。Apollo/Clay/ZoomInfo代替。シグナルスコアリング、相互ランキング、ウォームパス発見、ソース派生ボイス、メール/LinkedIn/Xチャネル別アウトリーチ。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/lead-intelligence/SKILL.md"
+                      >skills/lead-intelligence/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>scientific-thinking-literature-review</code></td>
+                  <td><code>scientific-thinking-literature-review</code></td>
+                  <td>
+                    学術、生物医学、技術、科学トピック向け体系的文献レビュー。検索計画、ソーススクリーニング、統合、引用チェック、証拠ログ。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/scientific-thinking-literature-review/SKILL.md"
+                      >skills/scientific-thinking-literature-review/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>mle-workflow</code></td>
+                  <td><code>mle-workflow</code></td>
+                  <td>
+                    本番MLEワークフロー。データコントラクト、再現可能学習、モデル評価、デプロイ、監視、ロールバック。ワンオフnotebookを超えるMLシステム構築・レビュー・硬化時。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/mle-workflow/SKILL.md"
+                      >skills/mle-workflow/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>scientific-db-pubmed-database</code></td>
+                  <td><code>scientific-db-pubmed-database</code></td>
+                  <td>
+                    PubMed/NCBI
+                    E-utilities直接検索。生物医学文献、MeSHクエリ、PMID検索、引用取得、API文献モニタリング。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/scientific-db-pubmed-database/SKILL.md"
+                      >skills/scientific-db-pubmed-database/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>pytorch-patterns</code></td>
+                  <td><code>pytorch-patterns</code></td>
+                  <td>
+                    堅牢・効率的・再現可能な学習パイプライン、モデルアーキテクチャ、データローディング向けPyTorch深層学習パターンとベストプラクティス。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/pytorch-patterns/SKILL.md"
+                      >skills/pytorch-patterns/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>recsys-pipeline-architect</code></td>
+                  <td><code>recsys-pipeline-architect</code></td>
+                  <td>
+                    xAI公開For
+                    Youアルゴリズムで普及した6段階Source→Hydrator→Filter→Scorer→Selector→SideEffectフレームワークで推薦・ランキング・フィードパイプライン設計。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/recsys-pipeline-architect/SKILL.md"
+                      >skills/recsys-pipeline-architect/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>research-ops</code></td>
+                  <td><code>research-ops</code></td>
+                  <td>
+                    ECC向け証拠ファースト現状リサーチ。最新事実、比較、エンリッチメント、公開証拠とローカルコンテキストからの推奨が必要な場合。
+                  </td>
+                  <td>
+                    <a href="https://github.com/affaan-m/ECC/blob/main/skills/research-ops/SKILL.md"
+                      >skills/research-ops/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>scientific-thinking-scholar-evaluation</code></td>
+                  <td><code>scientific-thinking-scholar-evaluation</code></td>
+                  <td>
+                    論文、提案、文献レビュー、メソッド、証拠品質、引用支援、研究執筆フィードバック向け構化学術評価。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/scientific-thinking-scholar-evaluation/SKILL.md"
+                      >skills/scientific-thinking-scholar-evaluation/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>social-graph-ranker</code></td>
+                  <td><code>social-graph-ranker</code></td>
+                  <td>
+                    X/LinkedIn横断のウォーム紹介発見、ブリッジスコアリング、ネットワークギャップ分析向け加重ソーシャルグラフランキング。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/social-graph-ranker/SKILL.md"
+                      >skills/social-graph-ranker/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>scientific-db-uspto-database</code></td>
+                  <td><code>scientific-db-uspto-database</code></td>
+                  <td>
+                    USPTO特許・商標データワークフロー。公式記録照会、PatentSearch、TSDR、譲渡データ、再現可能IPリサーチログ。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/scientific-db-uspto-database/SKILL.md"
+                      >skills/scientific-db-uspto-database/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="catalog-panel" data-panel="16" aria-labelledby="catalog-heading-16">
+          <header class="catalog-panel-header">
+            <h2 class="catalog-panel-title" id="catalog-heading-16">その他/専門領域</h2>
+            <p class="catalog-panel-desc">上記に明確に入らない専門用途。</p>
+            <p class="catalog-panel-meta"><span class="catalog-panel-count">5 Skills</span></p>
+            <p class="catalog-panel-hint">
+              Skill名の全文検索は <kbd>Ctrl</kbd>+<kbd>F</kbd>（Mac:
+              <kbd>⌘</kbd>+<kbd>F</kbd>）をご利用ください。
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Directory</th>
+                  <th>説明</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>automation-audit-ops</code></td>
+                  <td><code>automation-audit-ops</code></td>
+                  <td>
+                    ECC向け証拠ファースト自動化インベントリ・重複監査。ジョブ、フック、コネクター、MCP、ラッパーの稼働/故障/冗長/欠落把握
+                    before 修正。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/automation-audit-ops/SKILL.md"
+                      >skills/automation-audit-ops/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>continuous-learning</code></td>
+                  <td><code>continuous-learning</code></td>
+                  <td>
+                    Claude
+                    Codeセッションから再利用可能なパターンを自動的に抽出し、将来の使用のために学習済みスキルとして保存します。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/continuous-learning/SKILL.md"
+                      >skills/continuous-learning/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>continuous-learning-v2</code></td>
+                  <td><code>continuous-learning-v2</code></td>
+                  <td>
+                    フックを介してセッションを観察し、信頼度スコアリング付きのアトミックなインスティンクトを作成し、スキル/コマンド/エージェントに進化させるインスティンクトベースの学習システム。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/continuous-learning-v2/SKILL.md"
+                      >skills/continuous-learning-v2/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>hermes-imports</code></td>
+                  <td><code>hermes-imports</code></td>
+                  <td>
+                    ローカルHermes operatorワークフローを sanitized
+                    ECCスキルとリリースパック成果物に変換。プライベートワークスペース状態、認証情報、ローカル専用パスの漏洩なしで公開ECC再利用準備時。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/hermes-imports/SKILL.md"
+                      >skills/hermes-imports/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>opensource-pipeline</code></td>
+                  <td><code>opensource-pipeline</code></td>
+                  <td>
+                    オープンソースパイプライン:
+                    プライベートプロジェクトをfork、sanitize、安全な公開リリース用パッケージ。3エージェント（forker、sanitizer、packager）チェーン。'/opensource'、'open
+                    source this'等でトリガー。
+                  </td>
+                  <td>
+                    <a
+                      href="https://github.com/affaan-m/ECC/blob/main/skills/opensource-pipeline/SKILL.md"
+                      >skills/opensource-pipeline/SKILL.md</a
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

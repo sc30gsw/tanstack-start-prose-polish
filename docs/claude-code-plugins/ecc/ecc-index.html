@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>everything-claude-code 実体ベース分類ガイド — インデックス</title>
+    <link rel="stylesheet" href="../../style.css" />
+    <link rel="stylesheet" href="ecc-index-style.css" />
+  </head>
+  <body>
+    <main class="main">
+      <header class="page-header">
+        <h1 class="page-title">everything-claude-code 実体ベース分類ガイド</h1>
+        <p class="page-subtitle">
+          <a href="https://github.com/affaan-m/ECC">affaan-m/ECC</a> の agents / commands / skills
+          を、実体に合わせて主用途ごとに分類した網羅一覧です。スナップショット: 2026-05-28
+        </p>
+      </header>
+
+      <nav class="quick-links" aria-label="ページナビゲーション">
+        <a href="ecc-index.html" class="current">インデックス</a>
+        <a href="ecc-usage.html">呼び出し方</a>
+        <a href="ecc-agents.html">Agents (61)</a>
+        <a href="ecc-commands.html">Commands (76)</a>
+        <a href="ecc-skills.html">Skills (246)</a>
+      </nav>
+
+      <div class="section-card">
+        <h2>件数サマリー</h2>
+        <div class="stat-grid">
+          <div class="stat-card"><span>Agents</span><strong>61</strong></div>
+          <div class="stat-card"><span>Commands</span><strong>76</strong></div>
+          <div class="stat-card"><span>Skills</span><strong>246</strong></div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>種別</th>
+                <th>件数</th>
+                <th>カテゴリ別内訳</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><a href="ecc-agents.html">Agents</a></td>
+                <td>61</td>
+                <td>
+                  計画/設計/アーキテクチャ: 5, コード品質/レビュー/リファクタ: 20, ビルド復旧: 10,
+                  テスト/検証/品質ゲート: 7, フロントエンド/UI/デザイン: 2,
+                  セキュリティ/コンプライアンス: 3, DevOps/インフラ/ネットワーク: 5,
+                  AIエージェント/自律化: 1, ドキュメント/ナレッジ/リサーチ: 2,
+                  GitHub/プロジェクト運用/セッション: 2, ビジネス/オペレーション: 2, 科学/データ/ML:
+                  1, その他/専門領域: 1
+                </td>
+              </tr>
+              <tr>
+                <td><a href="ecc-commands.html">Commands</a></td>
+                <td>76</td>
+                <td>
+                  ECC/メタツール: 11, 計画/設計/アーキテクチャ: 5, コード品質/レビュー/リファクタ:
+                  10, ビルド復旧: 7, テスト/検証/品質ゲート: 8, セキュリティ/コンプライアンス: 1,
+                  AIエージェント/自律化: 10, ドキュメント/ナレッジ/リサーチ: 3,
+                  GitHub/プロジェクト運用/セッション: 11, その他/専門領域: 10
+                </td>
+              </tr>
+              <tr>
+                <td><a href="ecc-skills.html">Skills</a></td>
+                <td>246</td>
+                <td>
+                  ECC/メタツール: 22, 計画/設計/アーキテクチャ: 6, コード品質/レビュー/リファクタ:
+                  2, テスト/検証/品質ゲート: 9, フロントエンド/UI/デザイン: 25,
+                  バックエンド/API/データ: 28, 言語/フレームワーク別: 26,
+                  セキュリティ/コンプライアンス: 22, DevOps/インフラ/ネットワーク: 19,
+                  AIエージェント/自律化: 20, ドキュメント/ナレッジ/リサーチ: 7,
+                  GitHub/プロジェクト運用/セッション: 2, ビジネス/オペレーション: 24,
+                  メディア/コンテンツ: 14, 科学/データ/ML: 15, その他/専門領域: 5
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <h2>各ページへのリンク</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ページ</th>
+                <th>内容</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><a href="ecc-usage.html">ecc-usage.html</a></td>
+                <td>呼び出し方 (Agent / Command / Skill の使い方)</td>
+              </tr>
+              <tr>
+                <td><a href="ecc-agents.html">ecc-agents.html</a></td>
+                <td>Agents 一覧 (61件 / 13カテゴリ)</td>
+              </tr>
+              <tr>
+                <td><a href="ecc-commands.html">ecc-commands.html</a></td>
+                <td>Commands 一覧 (76件 / 10カテゴリ)</td>
+              </tr>
+              <tr>
+                <td><a href="ecc-skills.html">ecc-skills.html</a></td>
+                <td>Skills 一覧 (246件 / 16カテゴリ)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <h2>カテゴリ凡例</h2>
+        <ul class="legend-list">
+          <li>
+            <code>ECC/メタツール</code
+            ><span
+              >ECC
+              自体の案内、インストール、スキル棚卸し、hooks、instinct、コンテキストやコスト管理。</span
+            >
+          </li>
+          <li>
+            <code>計画/設計/アーキテクチャ</code
+            ><span>実装前の計画、構造設計、ADR、プロダクト要求から設計への変換。</span>
+          </li>
+          <li>
+            <code>コード品質/レビュー/リファクタ</code
+            ><span>コードレビュー、保守性、コメント、型設計、デッドコード整理。</span>
+          </li>
+          <li>
+            <code>ビルド復旧</code><span>コンパイル、型チェック、依存関係、ビルド失敗の復旧。</span>
+          </li>
+          <li>
+            <code>テスト/検証/品質ゲート</code
+            ><span>TDD、E2E、カバレッジ、品質ゲート、リリース前検証。</span>
+          </li>
+          <li>
+            <code>フロントエンド/UI/デザイン</code
+            ><span
+              >UI 実装、アクセシビリティ、SEO、モーション、ブラウザ
+              QA、フロントエンド系フレームワーク。</span
+            >
+          </li>
+          <li>
+            <code>バックエンド/API/データ</code
+            ><span>API、DB、ORM、サーバーサイド、データアクセス、バックエンド設計。</span>
+          </li>
+          <li>
+            <code>言語/フレームワーク別</code
+            ><span>特定言語やフレームワーク固有の実装・レビュー・テスト。</span>
+          </li>
+          <li>
+            <code>セキュリティ/コンプライアンス</code
+            ><span>脆弱性、認証認可、秘密情報、PHI/HIPAA、規制・安全性。</span>
+          </li>
+          <li>
+            <code>DevOps/インフラ/ネットワーク</code
+            ><span>Docker、デプロイ、ネットワーク、homelab、運用基盤。</span>
+          </li>
+          <li>
+            <code>AIエージェント/自律化</code
+            ><span>自律ループ、マルチエージェント、評価ハーネス、AI 実行基盤。</span>
+          </li>
+          <li>
+            <code>ドキュメント/ナレッジ/リサーチ</code
+            ><span>ドキュメント更新、最新情報調査、ナレッジ管理、コードベース理解。</span>
+          </li>
+          <li>
+            <code>GitHub/プロジェクト運用/セッション</code
+            ><span>PR、セッション保存、チェックポイント、プロジェクト運用。</span>
+          </li>
+          <li>
+            <code>ビジネス/オペレーション</code
+            ><span>請求、物流、投資家対応、調達、メール、営業、業務運用、マーケティング。</span>
+          </li>
+          <li>
+            <code>メディア/コンテンツ</code
+            ><span>記事、ブランドボイス、動画、スライド、画像・音声生成、SNS。</span>
+          </li>
+          <li>
+            <code>科学/データ/ML</code
+            ><span>機械学習、推薦、学術文献、特許、バイオ系データベース。</span>
+          </li>
+          <li><code>その他/専門領域</code><span>上記に明確に入らない専門用途。</span></li>
+        </ul>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,11 +1,6 @@
 ---
-description: Build complete, functional apps with InstantDB as the backend. Use when creating React/vanilla JS or expo applications. Triggers on requests for building apps.
-metadata:
-  github-path: skills/instantdb
-  github-ref: refs/heads/main
-  github-repo: https://github.com/instantdb/skills
-  github-tree-sha: fe9f1d7eff195b5a61e5ac7e6b4584f1013d02e3
 name: instantdb
+description: Build complete, functional apps with InstantDB as the backend. Use when creating React/vanilla JS or expo applications. Triggers on requests for building apps.
 ---
 
 Act as a world-class senior frontend engineer with deep expertise in InstantDB
@@ -299,10 +294,14 @@ clientDb.transact(clientDb.tx.todos[id()].create({ title: 'New Todo' }));
 Always use Instant utility types to type data models
 
 ```tsx
-import { AppSchema } from "@/instant.schema";
+import { AppSchema } from '@/instant.schema';
 
-type Todo = InstaQLEntity<AppSchema, "todos">; // todo from clientDb.useQuery({ todos: {} })
-type PostsWithProfile = InstaQLEntity<AppSchema, "posts", { author: { avatar: {} } }>; // post from clientDb.useQuery({ posts: { author: { avatar: {} } } })
+type Todo = InstaQLEntity<AppSchema, 'todos'>; // todo from clientDb.useQuery({ todos: {} })
+type PostsWithProfile = InstaQLEntity<
+  AppSchema,
+  'posts',
+  { author: { avatar: {} } }
+>; // post from clientDb.useQuery({ posts: { author: { avatar: {} } } })
 ```
 
 ## Use `db.useAuth` or `db.subscribeAuth` for auth state
@@ -347,7 +346,9 @@ const { user, created } = await db.auth.signInWithMagicCode({
 // Scaffold data for new users
 if (created) {
   db.transact([
-    db.tx.settings[id()].update({ theme: "light", notifications: true }).link({ user: user.id }),
+    db.tx.settings[id()]
+      .update({ theme: 'light', notifications: true })
+      .link({ user: user.id }),
   ]);
 }
 ```
