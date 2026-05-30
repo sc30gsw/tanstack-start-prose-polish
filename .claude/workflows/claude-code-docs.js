@@ -25,6 +25,7 @@ const SKILL_DIRS = [
   'diagnose', 'doc-coauthoring', 'find-docs', 'find-skills', 'frontend-design',
   'git-guardrails-claude-code', 'grill-me', 'grill-with-docs', 'handoff',
   'improve-codebase-architecture', 'instantdb', 'mantine-custom-components', 'mantine-form',
+  'modern-web-guidance',
   'nodejs-backend-patterns', 'nodejs-best-practices', 'react-best-practices', 'react-doctor',
   'seo', 'setup-matt-pocock-skills', 'skill-creator', 'tailwind-css-patterns', 'tanstack-start',
   'tanstack-start-server-fn-testing', 'to-issues', 'to-prd', 'triage', 'typescript-advanced-types',
