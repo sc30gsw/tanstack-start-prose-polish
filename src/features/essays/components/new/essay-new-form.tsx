@@ -6,7 +6,7 @@ import * as v from "valibot";
 
 import { db } from "~/db/instant";
 import { useAuthUser } from "~/features/auth/hooks/use-auth-user";
-import { correctEssay } from "~/features/essays/api/mock-ai";
+import { correctEssay } from "~/features/essays/api/correct-essay";
 import { DiverseModePrompt } from "~/features/essays/components/new/diverse-prompt";
 import { EssayEditor } from "~/features/essays/components/new/essay-editor";
 import { ModePicker } from "~/features/essays/components/new/mode-picker";
@@ -51,49 +51,51 @@ export function EssayNewForm() {
 
       await db.transact(user ? txEssayUpdate.link({ owner: user.id }) : txEssayUpdate);
 
-      correctEssay(value.bodyBefore, { mode: value.mode, prompt: value.prompt }).then((result) => {
-        result.match({
-          err: () => {},
-          ok: async ({ correctedBody, aiComments }) => {
-            const txUpdate = db.tx.essays[essayId];
+      correctEssay({ mode: value.mode, prompt: value.prompt, text: value.bodyBefore }).then(
+        (result) => {
+          result.match({
+            err: () => {},
+            ok: async ({ comments, correctedBody }) => {
+              const txUpdate = db.tx.essays[essayId];
 
-            if (!txUpdate) {
-              return;
-            }
-
-            await db.transact(
-              txUpdate.update({
-                bodyAfter: correctedBody,
-                status: "reviewed",
-                updatedAt: new Date(),
-              }),
-            );
-
-            for (const comment of aiComments) {
-              const commentId = id();
-              const txComment = db.tx.diffComments[commentId];
-
-              if (!txComment) {
-                continue;
+              if (!txUpdate) {
+                return;
               }
 
               await db.transact(
-                txComment
-                  .update({
-                    body: comment.body,
-                    createdAt: new Date(),
-                    kind: "ai",
-                    lineNumber: comment.lineNumber,
-                    side: comment.side,
-                    suggestion: comment.suggestion,
-                    userId: crypto.randomUUID(),
-                  })
-                  .link({ essay: essayId }),
+                txUpdate.update({
+                  bodyAfter: correctedBody,
+                  status: "reviewed",
+                  updatedAt: new Date(),
+                }),
               );
-            }
-          },
-        });
-      });
+
+              for (const comment of comments) {
+                const commentId = id();
+                const txComment = db.tx.diffComments[commentId];
+
+                if (!txComment) {
+                  continue;
+                }
+
+                await db.transact(
+                  txComment
+                    .update({
+                      body: comment.body,
+                      createdAt: new Date(),
+                      kind: "ai",
+                      lineNumber: comment.lineNumber,
+                      side: comment.side,
+                      suggestion: comment.suggestion,
+                      userId: user?.id ?? crypto.randomUUID(),
+                    })
+                    .link({ essay: essayId }),
+                );
+              }
+            },
+          });
+        },
+      );
 
       await navigate({ params: () => ({ essayId }), to: "/essays/$essayId/scoring" });
     },

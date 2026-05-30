@@ -1,7 +1,6 @@
-import { Result } from "better-result";
 import { clamp, range, sample, sampleSize } from "es-toolkit";
 
-import type { DiffComment, Score } from "~/features/essays/schemas/essay-schema";
+import type { Score } from "~/features/essays/schemas/essay-schema";
 
 const TOPICS = [
   "Should artificial intelligence have legal rights? Discuss your perspective with specific examples.",
@@ -39,74 +38,51 @@ const MOCK_CORRECTIONS: Array<{ body: string; suggestion: string }> = [
   },
 ];
 
-function delay(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+export type EssayOpts = { mode?: string; prompt?: string };
+
+export type CorrectionComment = {
+  body: string;
+  lineNumber: number;
+  side: "additions" | "deletions";
+  suggestion?: string;
+};
+
+export type CorrectionResult = {
+  comments: CorrectionComment[];
+  correctedBody: string;
+};
+
+export function mockTopics(): string[] {
+  return [...TOPICS];
 }
 
-/** 採点ストリーミング各ステップの間隔（点数 → CEFR → TOEIC）。モック用。 */
-const SCORE_STREAM_STEP_MS = 350;
-
-export function generateTopics() {
-  return Result.tryPromise({
-    catch: (e) => e as Error,
-    try: async () => {
-      await delay(600);
-      return TOPICS;
-    },
-  });
+export function mockDiverseQuestion(): string {
+  return sample(DIVERSE_MODE_SAMPLE_QUESTIONS) as string;
 }
 
-export function askDiverseMode() {
-  return Result.tryPromise({
-    catch: (e) => e as Error,
-    try: async () => {
-      await delay(600);
-      return sample(DIVERSE_MODE_SAMPLE_QUESTIONS) as string;
-    },
-  });
-}
-
-type EssayOpts = { mode?: string; prompt?: string };
-
-export async function* scoreEssay(
-  text: string,
-  opts?: EssayOpts,
-): AsyncGenerator<Partial<Score>, void, unknown> {
+export function mockScore(text: string, opts?: EssayOpts): Score {
   const charCount = text.trim().length;
   const baseScore = clamp(40 + Math.floor(charCount / 200), 30, 95);
 
-  await delay(SCORE_STREAM_STEP_MS);
-  yield { score: baseScore, scoreFeedback: buildScoreFeedback(baseScore, opts) };
-
-  await delay(SCORE_STREAM_STEP_MS);
-  yield { cefr: scoreToCefr(baseScore) };
-
-  await delay(SCORE_STREAM_STEP_MS);
-  yield {
+  return {
+    cefr: scoreToCefr(baseScore),
+    score: baseScore,
+    scoreFeedback: buildScoreFeedback(baseScore, opts),
     toeicMax: scoreToToeicMax(baseScore),
     toeicMin: scoreToToeicMin(baseScore),
-  };
+  } satisfies Score;
 }
 
-export function correctEssay(text: string, opts?: EssayOpts) {
-  return Result.tryPromise({
-    catch: (e) => e as Error,
-    try: async (): Promise<{ aiComments: DiffComment[]; correctedBody: string }> => {
-      await delay(2200);
+export function mockCorrect(text: string, opts?: EssayOpts): CorrectionResult {
+  const lines = text.split("\n");
+  const correctedLines = lines.map((line) => applySimpleCorrection(line));
+  let correctedBody = correctedLines.join("\n");
+  // @pierre/diffs / parseDiffFromFile は前後が完全一致だと hunk が 0 になり、本文が一切描画されない
+  if (correctedBody === text) {
+    correctedBody = `${text}\n`;
+  }
 
-      const lines = text.split("\n");
-      const correctedLines = lines.map((line) => applySimpleCorrection(line));
-      let correctedBody = correctedLines.join("\n");
-      // @pierre/diffs / parseDiffFromFile は前後が完全一致だと hunk が 0 になり、本文が一切描画されない
-      if (correctedBody === text) {
-        correctedBody = `${text}\n`;
-      }
-
-      const aiComments: DiffComment[] = generateAiComments(lines, opts);
-
-      return { aiComments, correctedBody };
-    },
-  });
+  return { comments: generateMockComments(lines, opts), correctedBody };
 }
 
 function buildScoreFeedback(score: number, opts?: EssayOpts): string {
@@ -148,8 +124,8 @@ function applySimpleCorrection(line: string): string {
     .trim();
 }
 
-function generateAiComments(lines: string[], opts?: EssayOpts): DiffComment[] {
-  const comments: DiffComment[] = [];
+function generateMockComments(lines: string[], opts?: EssayOpts): CorrectionComment[] {
+  const comments: CorrectionComment[] = [];
 
   const targetCount = Math.min(MOCK_CORRECTIONS.length, Math.floor(lines.length / 3) + 1);
   const lineNumbers = sampleSize(range(1, lines.length + 1), Math.min(targetCount, lines.length));
@@ -161,13 +137,9 @@ function generateAiComments(lines: string[], opts?: EssayOpts): DiffComment[] {
 
     comments.push({
       body: correction.body,
-      createdAt: new Date(),
-      id: `ai-${lineNumber}-${i}`,
-      kind: "ai",
       lineNumber,
       side: "additions",
       suggestion: correction.suggestion,
-      userId: crypto.randomUUID(),
     });
   }
 
@@ -178,14 +150,10 @@ function generateAiComments(lines: string[], opts?: EssayOpts): DiffComment[] {
     if (!usedLines.has(topicLine)) {
       comments.unshift({
         body: `Topic relevance check: Make sure your essay directly addresses the given topic — "${opts.prompt.slice(0, 60)}${opts.prompt.length > 60 ? "…" : ""}"`,
-        createdAt: new Date(),
-        id: `ai-topic-${topicLine}`,
-        kind: "ai",
         lineNumber: topicLine,
         side: "additions",
         suggestion:
           "Add a clear thesis statement in your opening paragraph that explicitly references the topic.",
-        userId: crypto.randomUUID(),
       });
     }
   }

@@ -13,6 +13,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedEssaysIndexRouteImport } from './routes/_authenticated/essays/index'
+import { Route as ApiEssaysScoreRouteImport } from './routes/api/essays/score'
 import { Route as AuthenticatedEssaysNewRouteImport } from './routes/_authenticated/essays/new'
 import { Route as AuthenticatedEssaysEssayIdScoringRouteImport } from './routes/_authenticated/essays/$essayId/scoring'
 import { Route as AuthenticatedEssaysEssayIdResultRouteImport } from './routes/_authenticated/essays/$essayId/result'
@@ -39,6 +40,11 @@ const AuthenticatedEssaysIndexRoute =
     path: '/essays/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const ApiEssaysScoreRoute = ApiEssaysScoreRouteImport.update({
+  id: '/api/essays/score',
+  path: '/api/essays/score',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedEssaysNewRoute = AuthenticatedEssaysNewRouteImport.update({
   id: '/essays/new',
   path: '/essays/new',
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/login': typeof LoginRoute
   '/essays/new': typeof AuthenticatedEssaysNewRoute
+  '/api/essays/score': typeof ApiEssaysScoreRoute
   '/essays/': typeof AuthenticatedEssaysIndexRoute
   '/essays/$essayId/diff': typeof AuthenticatedEssaysEssayIdDiffRoute
   '/essays/$essayId/history': typeof AuthenticatedEssaysEssayIdHistoryRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/': typeof AuthenticatedIndexRoute
   '/essays/new': typeof AuthenticatedEssaysNewRoute
+  '/api/essays/score': typeof ApiEssaysScoreRoute
   '/essays': typeof AuthenticatedEssaysIndexRoute
   '/essays/$essayId/diff': typeof AuthenticatedEssaysEssayIdDiffRoute
   '/essays/$essayId/history': typeof AuthenticatedEssaysEssayIdHistoryRoute
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/essays/new': typeof AuthenticatedEssaysNewRoute
+  '/api/essays/score': typeof ApiEssaysScoreRoute
   '/_authenticated/essays/': typeof AuthenticatedEssaysIndexRoute
   '/_authenticated/essays/$essayId/diff': typeof AuthenticatedEssaysEssayIdDiffRoute
   '/_authenticated/essays/$essayId/history': typeof AuthenticatedEssaysEssayIdHistoryRoute
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/essays/new'
+    | '/api/essays/score'
     | '/essays/'
     | '/essays/$essayId/diff'
     | '/essays/$essayId/history'
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/'
     | '/essays/new'
+    | '/api/essays/score'
     | '/essays'
     | '/essays/$essayId/diff'
     | '/essays/$essayId/history'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/_authenticated/'
     | '/_authenticated/essays/new'
+    | '/api/essays/score'
     | '/_authenticated/essays/'
     | '/_authenticated/essays/$essayId/diff'
     | '/_authenticated/essays/$essayId/history'
@@ -138,6 +150,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   LoginRoute: typeof LoginRoute
+  ApiEssaysScoreRoute: typeof ApiEssaysScoreRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -169,6 +182,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/essays/'
       preLoaderRoute: typeof AuthenticatedEssaysIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/api/essays/score': {
+      id: '/api/essays/score'
+      path: '/api/essays/score'
+      fullPath: '/api/essays/score'
+      preLoaderRoute: typeof ApiEssaysScoreRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/essays/new': {
       id: '/_authenticated/essays/new'
@@ -237,6 +257,7 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginRoute: LoginRoute,
+  ApiEssaysScoreRoute: ApiEssaysScoreRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

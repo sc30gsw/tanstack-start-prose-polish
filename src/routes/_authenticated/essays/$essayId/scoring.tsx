@@ -1,4 +1,4 @@
-import { Button, Container, Stack, Text } from "@mantine/core";
+import { Alert, Button, Container, Stack, Text } from "@mantine/core";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_authenticated/essays/$essayId/scoring")(
 function ScoringPage() {
   const { essayId } = Route.useParams();
   const { essay, isLoading } = useEssayDetail(essayId);
-  const { state, start, hydrate, markFeedbackReady, isPending } = useScoringStream();
+  const { error, hydrate, isPending, markFeedbackReady, retry, start, state } = useScoringStream();
   const startedRef = useRef(false);
 
   useEffect(() => {
@@ -41,16 +41,11 @@ function ScoringPage() {
     }
 
     startedRef.current = true;
-    const controller = new AbortController();
 
-    start(essayId, bodyBefore, controller.signal, {
+    start(essayId, bodyBefore, {
       mode: mode as EssayMode,
       prompt,
     });
-
-    return () => {
-      controller.abort();
-    };
   }, [essay, essayId, hydrate, start]);
 
   useEffect(() => {
@@ -86,6 +81,16 @@ function ScoringPage() {
         title={state.stage === "done" ? "採点結果" : "採点中..."}
       />
       <Stack gap="xl">
+        {error != null && (
+          <Alert color="red" title="採点に失敗しました" variant="light">
+            <Stack align="flex-start" gap="sm">
+              <Text size="md">{error}</Text>
+              <Button onClick={() => retry()} size="sm" variant="light">
+                再採点する
+              </Button>
+            </Stack>
+          </Alert>
+        )}
         <ScoringProgress state={state} />
         <Button
           aria-label="添削結果を確認"

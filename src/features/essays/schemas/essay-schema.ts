@@ -28,7 +28,7 @@ export const essayDraftSchema = v.pipe(
   ),
 );
 
-const scoreSchema = v.object({
+export const scoreSchema = v.object({
   cefr: v.picklist(SCORE_CEFR),
   score: v.pipe(v.number(), v.minValue(0), v.maxValue(100)),
   scoreFeedback: v.string(),

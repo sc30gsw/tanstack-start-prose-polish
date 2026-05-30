@@ -1,7 +1,6 @@
-import { Loader, Radio, Stack, Text } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { Alert, Button, Loader, Radio, Stack, Text } from "@mantine/core";
 
-import { generateTopics } from "~/features/essays/api/mock-ai";
+import { useDailyPrompt } from "~/features/essays/hooks/use-daily-prompt";
 
 type TopicPickerProps = {
   field: {
@@ -11,23 +10,23 @@ type TopicPickerProps = {
 };
 
 export function TopicPicker({ field }: TopicPickerProps) {
-  const [topics, setTopics] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { error, isLoading, payload, retry } = useDailyPrompt("topic");
+  const topics = Array.isArray(payload) ? (payload as string[]) : [];
 
-  useEffect(() => {
-    setIsLoading(true);
-    void generateTopics().then((result) =>
-      result.match({
-        err: () => setIsLoading(false),
-        ok: (data) => {
-          setTopics(data);
-          setIsLoading(false);
-        },
-      }),
+  if (error) {
+    return (
+      <Alert color="red" title="トピックの生成に失敗しました" variant="light">
+        <Stack align="flex-start" gap="sm">
+          <Text size="md">{error}</Text>
+          <Button onClick={() => void retry()} size="sm" variant="light">
+            再生成する
+          </Button>
+        </Stack>
+      </Alert>
     );
-  }, []);
+  }
 
-  if (isLoading) {
+  if (isLoading || topics.length === 0) {
     return (
       <Stack align="center" gap="md" py="lg">
         <Loader aria-label="トピックを生成中" size="md" />

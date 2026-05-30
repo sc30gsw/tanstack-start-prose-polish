@@ -1,4 +1,8 @@
+import type { InstaQLEntity } from "@instantdb/react";
+import { useMemo } from "react";
+
 import { db } from "~/db/instant";
+import type { AppSchema } from "~/db/instant-schema";
 import type {
   EssaysModeFilter,
   EssaysSearchParams,
@@ -7,59 +11,72 @@ import type {
 const ESSAYS_ORDER_DESC = { order: { createdAt: "desc" as const } };
 export const ESSAY_LIST_PAGE_SIZE = 10;
 
-function escapeIlikeUserInput(input: EssaysSearchParams["q"]) {
-  return input.replaceAll("\\", "\\\\").replaceAll("%", "\\%").replaceAll("_", "\\_");
+type EssayListRow = InstaQLEntity<AppSchema, "essays", { scoring: {} }>;
+
+function buildModeWhere(mode: EssaysModeFilter) {
+  if (mode === "free" || mode === "topic" || mode === "diverse") {
+    return { mode } as const;
+  }
+
+  return undefined;
 }
 
-function buildEssaysListWhere(mode: EssaysModeFilter, q: EssaysSearchParams["q"]) {
-  const parts: Record<string, unknown>[] = [];
-
-  if (mode === "free" || mode === "topic") {
-    parts.push({ mode });
-  } else if (mode === "diverse") {
-    parts.push({ mode: "diverse" });
+/** bodyBefore / bodyAfter / prompt は indexed 不可（最大 10,000 文字）のためクライアント側で全文検索 */
+function essayMatchesQuery(essay: EssayListRow, q: string) {
+  const needle = q.trim().toLowerCase();
+  if (needle.length === 0) {
+    return true;
   }
 
-  const trimmed = q.trim();
+  const haystack = [essay.bodyBefore, essay.bodyAfter, essay.prompt]
+    .filter((part): part is string => typeof part === "string" && part.length > 0)
+    .join("\n")
+    .toLowerCase();
 
-  if (trimmed.length > 0) {
-    const p = `%${escapeIlikeUserInput(trimmed)}%`;
-
-    parts.push({
-      or: [{ bodyBefore: { $ilike: p } }, { bodyAfter: { $ilike: p } }, { prompt: { $ilike: p } }],
-    });
-  }
-
-  if (parts.length === 0) {
-    return undefined;
-  }
-
-  if (parts.length === 1) {
-    return parts[0]!;
-  }
-
-  return { and: parts };
+  return haystack.includes(needle);
 }
 
 export function useEssaysList(search: EssaysSearchParams) {
-  const where = buildEssaysListWhere(search.mode ?? "all", search.q ?? "");
+  const trimmedQ = (search.q ?? "").trim();
+  const hasTextSearch = trimmedQ.length > 0;
+  const modeWhere = buildModeWhere(search.mode ?? "all");
 
-  const page$ = {
-    ...ESSAYS_ORDER_DESC,
-    limit: ESSAY_LIST_PAGE_SIZE,
-    offset: (search.page - 1) * ESSAY_LIST_PAGE_SIZE,
-  };
+  const listQuery = useMemo(() => {
+    const page$ = {
+      ...ESSAYS_ORDER_DESC,
+      limit: hasTextSearch ? 1000 : ESSAY_LIST_PAGE_SIZE,
+      offset: hasTextSearch ? 0 : (search.page - 1) * ESSAY_LIST_PAGE_SIZE,
+      ...(modeWhere ? { where: modeWhere } : {}),
+    };
 
-  const { data, error, isLoading, pageInfo } = db.useQuery(
-    where
-      ? { essays: { $: { ...page$, where }, scoring: {} } }
-      : { essays: { $: page$, scoring: {} } },
-  );
+    return { essays: { $: page$, scoring: {} } };
+  }, [hasTextSearch, modeWhere, search.page]);
+
+  const { data, error, isLoading, pageInfo } = db.useQuery(listQuery);
+
+  const { essays, hasNextPage } = useMemo(() => {
+    const rows = (data?.essays ?? []) as EssayListRow[];
+
+    if (!hasTextSearch) {
+      return {
+        essays: rows,
+        hasNextPage: pageInfo?.essays?.hasNextPage ?? false,
+      };
+    }
+
+    const filtered = rows.filter((essay) => essayMatchesQuery(essay, trimmedQ));
+    const start = (search.page - 1) * ESSAY_LIST_PAGE_SIZE;
+
+    return {
+      essays: filtered.slice(start, start + ESSAY_LIST_PAGE_SIZE),
+      hasNextPage: filtered.length > start + ESSAY_LIST_PAGE_SIZE,
+    };
+  }, [data?.essays, hasTextSearch, pageInfo?.essays?.hasNextPage, search.page, trimmedQ]);
 
   return {
     error,
-    essays: data?.essays ?? [],
-    hasNextPage: pageInfo?.essays?.hasNextPage ?? false,
+    essays,
+    hasNextPage,
     isLoading,
   } as const;
 }

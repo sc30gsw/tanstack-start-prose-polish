@@ -1,39 +1,44 @@
-import { Alert, Loader, Stack, Text } from "@mantine/core";
+import { Alert, Button, Loader, Stack, Text } from "@mantine/core";
 import { IconBulb } from "@tabler/icons-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
-import { askDiverseMode } from "~/features/essays/api/mock-ai";
+import { useDailyPrompt } from "~/features/essays/hooks/use-daily-prompt";
 
 type DiverseModePromptProps = {
   onQuestionLoaded: (question: string) => void;
 };
 
 export function DiverseModePrompt({ onQuestionLoaded }: DiverseModePromptProps) {
-  const [question, setQuestion] = useState<null | string>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { error, isLoading, payload, retry } = useDailyPrompt("diverse");
+  const question = typeof payload === "string" ? payload : null;
+
   /**
-   * 親の `form.Field` から毎レンダー新しい関数が渡る。依存にすると完了のたびに
-   * effect が再実行され、永遠にローディングに戻る。TopicPicker 同様マウント時1回だけ取得し、
-   * 最新コールバックは ref 経由で呼ぶ。
+   * 親の `form.Field` から毎レンダー新しい関数が渡るため、依存に入れず ref 経由で最新を呼ぶ。
+   * 質問が確定したら 1 度だけフォームに反映する。
    */
   const onQuestionLoadedRef = useRef(onQuestionLoaded);
   onQuestionLoadedRef.current = onQuestionLoaded;
 
   useEffect(() => {
-    setIsLoading(true);
-    void askDiverseMode().then((result) =>
-      result.match({
-        err: () => setIsLoading(false),
-        ok: (q) => {
-          setQuestion(q);
-          onQuestionLoadedRef.current(q);
-          setIsLoading(false);
-        },
-      }),
-    );
-  }, []);
+    if (question) {
+      onQuestionLoadedRef.current(question);
+    }
+  }, [question]);
 
-  if (isLoading) {
+  if (error) {
+    return (
+      <Alert color="red" title="お題の生成に失敗しました" variant="light">
+        <Stack align="flex-start" gap="sm">
+          <Text size="md">{error}</Text>
+          <Button onClick={() => void retry()} size="sm" variant="light">
+            再生成する
+          </Button>
+        </Stack>
+      </Alert>
+    );
+  }
+
+  if (isLoading || question == null) {
     return (
       <Stack align="center" gap="md" py="lg">
         <Loader aria-label="質問を生成中" size="md" />
@@ -43,8 +48,6 @@ export function DiverseModePrompt({ onQuestionLoaded }: DiverseModePromptProps) 
       </Stack>
     );
   }
-
-  if (question == null) return null;
 
   return (
     <Alert icon={<IconBulb />} p="md" title="今日の問い" variant="light">

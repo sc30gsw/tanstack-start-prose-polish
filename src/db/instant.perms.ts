@@ -14,6 +14,14 @@ const rules = {
       create: "false",
     },
   },
+  dailyPrompts: {
+    allow: {
+      create: "auth.id != null && auth.id == data.userId",
+      delete: "false",
+      update: "false",
+      view: "auth.id != null && auth.id == data.userId",
+    },
+  },
   diffComments: {
     allow: {
       create: "auth.id != null",
