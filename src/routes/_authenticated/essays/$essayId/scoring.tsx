@@ -1,7 +1,8 @@
-import { Alert, Button, Container, Stack, Text } from "@mantine/core";
+import { Button, Container, Stack, Text } from "@mantine/core";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { ErrorRetryAlert } from "~/components/error-retry-alert";
 import { PageHeader } from "~/components/page-header";
 import { db } from "~/db/instant";
 import { useAuthUser } from "~/features/auth/hooks/use-auth-user";
@@ -112,7 +113,7 @@ function ScoringPage() {
       return;
     }
 
-    if (essay.bodyAfter != null || essay.status === "reviewed") {
+    if (essay.status === "reviewed") {
       markFeedbackReady();
     }
   }, [essay, markFeedbackReady]);
@@ -141,29 +142,22 @@ function ScoringPage() {
       />
       <Stack gap="xl">
         {correctionError != null && (
-          <Alert color="orange" title="添削に失敗しました" variant="light">
-            <Stack align="flex-start" gap="sm">
-              <Text size="md">{correctionError}</Text>
-              <Button
-                loading={isRetryingCorrection}
-                onClick={() => void retryCorrection()}
-                size="sm"
-                variant="light"
-              >
-                添削を再試行
-              </Button>
-            </Stack>
-          </Alert>
+          <ErrorRetryAlert
+            color="orange"
+            message={correctionError}
+            onRetry={() => void retryCorrection()}
+            retryLabel="添削を再試行"
+            retryLoading={isRetryingCorrection}
+            title="添削に失敗しました"
+          />
         )}
         {error != null && (
-          <Alert color="red" title="採点に失敗しました" variant="light">
-            <Stack align="flex-start" gap="sm">
-              <Text size="md">{error}</Text>
-              <Button onClick={retryScoring} size="sm" variant="light">
-                再採点する
-              </Button>
-            </Stack>
-          </Alert>
+          <ErrorRetryAlert
+            message={error}
+            onRetry={retryScoring}
+            retryLabel="再採点する"
+            title="採点に失敗しました"
+          />
         )}
         <ScoringProgress state={state} />
         <Button

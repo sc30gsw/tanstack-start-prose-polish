@@ -1,6 +1,7 @@
 import { valibotSchema } from "@ai-sdk/valibot";
 import { createFileRoute } from "@tanstack/react-router";
 import { Output, streamText } from "ai";
+import { Result } from "better-result";
 import * as v from "valibot";
 
 import { requireInstantUser } from "~/features/auth/server/verify-instant-user";
@@ -25,23 +26,17 @@ export const Route = createFileRoute("/api/essays/score")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        try {
-          await requireInstantUser(request);
-        } catch (response) {
-          if (response instanceof Response) {
-            return response;
-          }
+        const authResult = await requireInstantUser(request);
+        if (Result.isError(authResult)) {
           return new Response("Unauthorized", { status: 401 });
         }
 
-        let body: unknown;
-        try {
-          body = await request.json();
-        } catch {
+        const bodyResult = await Result.tryPromise(() => request.json());
+        if (Result.isError(bodyResult)) {
           return new Response("Invalid JSON", { status: 400 });
         }
 
-        const parsed = v.safeParse(essayScoreInputSchema, body);
+        const parsed = v.safeParse(essayScoreInputSchema, bodyResult.value);
         if (!parsed.success) {
           return new Response("Invalid request body", { status: 400 });
         }

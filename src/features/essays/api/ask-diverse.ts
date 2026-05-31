@@ -7,7 +7,11 @@ import { requireInstantAuthMiddleware } from "~/features/auth/middleware/require
 import { getCachedDailyPrompt, saveDailyPrompt } from "~/features/essays/api/daily-prompt-cache";
 import { mockDiverseQuestion } from "~/features/essays/api/mock-ai";
 import { aiDiverseSchema } from "~/features/essays/schemas/ai-schema";
-import { dailyPromptInputSchema } from "~/features/essays/schemas/essay-ai-input-schema";
+import {
+  dailyPromptInputSchema,
+  type DailyPromptInput,
+} from "~/features/essays/schemas/essay-ai-input-schema";
+import { EssayAiError } from "~/features/essays/types/essay-error";
 import { AI_MODEL, isAiEnabled } from "~/lib/ai/model";
 
 const DIVERSE_SYSTEM =
@@ -43,7 +47,11 @@ const askDiverseFn = createServerFn({ method: "POST" })
 
 export function askDiverse(dateKey: DailyPromptInput["dateKey"]) {
   return Result.tryPromise({
-    catch: (e) => e as Error,
+    catch: (e) =>
+      new EssayAiError({
+        cause: e,
+        message: e instanceof Error ? e.message : "お題の生成に失敗しました",
+      }),
     try: async () => (await askDiverseFn({ data: { dateKey, mode: "diverse" } })).question,
   });
 }

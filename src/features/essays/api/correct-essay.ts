@@ -13,6 +13,7 @@ import {
   essayAiContextSchema,
   type EssayAiContext,
 } from "~/features/essays/schemas/essay-ai-input-schema";
+import { EssayAiError } from "~/features/essays/types/essay-error";
 import {
   normalizeCorrectedBody,
   resolveComments,
@@ -116,14 +117,22 @@ function estimateBodyOutputTokens(charCount: number) {
 
 export function correctEssayBody(params: v.InferInput<typeof essayBodyInputSchema>) {
   return Result.tryPromise({
-    catch: (e) => e as Error,
+    catch: (e) =>
+      new EssayAiError({
+        cause: e,
+        message: e instanceof Error ? e.message : "添削に失敗しました",
+      }),
     try: () => correctEssayBodyFn({ data: params }),
   });
 }
 
 export function generateEssayComments(params: v.InferInput<typeof commentsInputSchema>) {
   return Result.tryPromise({
-    catch: (e) => e as Error,
+    catch: (e) =>
+      new EssayAiError({
+        cause: e,
+        message: e instanceof Error ? e.message : "コメント生成に失敗しました",
+      }),
     try: () => generateEssayCommentsFn({ data: params }),
   });
 }

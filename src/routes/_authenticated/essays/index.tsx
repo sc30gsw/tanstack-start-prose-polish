@@ -11,6 +11,7 @@ import { valibotValidator } from "@tanstack/valibot-adapter";
 import { EssaySearch } from "~/features/essays/components/essay-search";
 import { EssaysPagination } from "~/features/essays/components/essays-pagination";
 import { HistoryCard } from "~/features/essays/components/history-card";
+import { ESSAY_SEARCH_SCAN_LIMIT } from "~/features/essays/constants/essay";
 import { ESSAY_LIST_PAGE_SIZE, useEssaysList } from "~/features/essays/hooks/use-essays-list";
 import {
   defaultEssaysSearchParams,
@@ -30,7 +31,7 @@ const routeApi = getRouteApi("/_authenticated/essays/");
 function EssaysList() {
   const { q, mode: modeFilter, page } = routeApi.useSearch();
 
-  const { error, essays, hasNextPage, isLoading } = useEssaysList({
+  const { error, essays, hasNextPage, isLoading, isTruncated } = useEssaysList({
     mode: modeFilter,
     page,
     q,
@@ -87,6 +88,11 @@ function EssaysList() {
 
   return (
     <Stack gap="sm">
+      {isTruncated && (
+        <Text c="orange" size="sm">
+          検索結果が多いため、最新 {ESSAY_SEARCH_SCAN_LIMIT} 件のみを対象にしています。
+        </Text>
+      )}
       <Text c="dimmed" size="sm">
         {startCount}〜{endCount}件
       </Text>

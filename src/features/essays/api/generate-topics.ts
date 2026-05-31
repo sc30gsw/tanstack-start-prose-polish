@@ -11,6 +11,7 @@ import {
   dailyPromptInputSchema,
   type DailyPromptInput,
 } from "~/features/essays/schemas/essay-ai-input-schema";
+import { EssayAiError } from "~/features/essays/types/essay-error";
 import { AI_MODEL, isAiEnabled } from "~/lib/ai/model";
 
 const TOPICS_SYSTEM =
@@ -46,7 +47,11 @@ const generateTopicsFn = createServerFn({ method: "POST" })
 
 export function generateTopics(dateKey: DailyPromptInput["dateKey"]) {
   return Result.tryPromise({
-    catch: (e) => e as Error,
+    catch: (e) =>
+      new EssayAiError({
+        cause: e,
+        message: e instanceof Error ? e.message : "お題の生成に失敗しました",
+      }),
     try: async () => (await generateTopicsFn({ data: { dateKey, mode: "topic" } })).topics,
   });
 }

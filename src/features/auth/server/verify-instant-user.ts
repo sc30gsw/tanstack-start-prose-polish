@@ -1,7 +1,8 @@
-import type { User } from "@instantdb/admin";
+import { Result } from "better-result";
 
 import { adminDb } from "~/db/instant-admin";
 import { INSTANT_REFRESH_TOKEN_HEADER } from "~/features/auth/constants/instant-auth";
+import { AuthError } from "~/features/auth/types/auth-error";
 
 export function getRefreshTokenFromRequest(request: Request) {
   const headerToken = request.headers.get(INSTANT_REFRESH_TOKEN_HEADER)?.trim();
@@ -27,14 +28,13 @@ export async function requireInstantUser(request: Request) {
   const token = getRefreshTokenFromRequest(request);
 
   if (!token) {
-    throw unauthorizedResponse();
+    return Result.err(new AuthError({ message: "Unauthorized", reason: "missing" }));
   }
 
-  try {
-    return await verifyInstantUser(token);
-  } catch {
-    throw unauthorizedResponse();
-  }
+  return Result.tryPromise({
+    catch: (e) => new AuthError({ cause: e, message: "Unauthorized", reason: "invalid" }),
+    try: () => verifyInstantUser(token),
+  });
 }
 
 export function unauthorizedResponse() {

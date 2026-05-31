@@ -7,6 +7,8 @@ export const schema = i.schema({
       username: i.string().optional(),
     }),
     dailyPrompts: i.entity({
+      /** `${userId}:${dateKey}:${mode}` 一意キー。並行生成での重複行を防ぐ */
+      cacheKey: i.string().unique().indexed(),
       createdAt: i.date(),
       dateKey: i.string().indexed(),
       mode: i.string().indexed(),

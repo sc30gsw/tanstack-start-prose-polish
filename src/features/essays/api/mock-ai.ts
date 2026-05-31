@@ -6,6 +6,7 @@ import type {
   EssayBodyInput,
 } from "~/features/essays/schemas/essay-ai-input-schema";
 import type { DiffCommentInput, Score } from "~/features/essays/schemas/essay-schema";
+import { normalizeCorrectedBody } from "~/features/essays/utils/correction-comment-resolution";
 
 const TOPICS = [
   "Should artificial intelligence have legal rights? Discuss your perspective with specific examples.",
@@ -44,11 +45,6 @@ const MOCK_CORRECTIONS = [
 
 export type EssayOpts = Pick<EssayAiContext, "mode" | "prompt">;
 
-export type CorrectionResult = {
-  comments: Array<Pick<DiffCommentInput, "body" | "lineNumber" | "side" | "suggestion">>;
-  correctedBody: AiCorrectedBody["correctedBody"];
-};
-
 export function mockTopics() {
   return [...TOPICS];
 }
@@ -71,15 +67,8 @@ export function mockScore(text: string, opts?: EssayOpts): Score {
 }
 
 export function mockCorrectBody(text: string, _opts?: EssayOpts): { correctedBody: string } {
-  const lines = text.split("\n");
-  const correctedLines = lines.map((line) => applySimpleCorrection(line));
-  let correctedBody = correctedLines.join("\n");
-  // @pierre/diffs / parseDiffFromFile は前後が完全一致だと hunk が 0 になり、本文が一切描画されない
-  if (correctedBody === text) {
-    correctedBody = `${text}\n`;
-  }
-
-  return { correctedBody };
+  const correctedLines = text.split("\n").map((line) => applySimpleCorrection(line));
+  return { correctedBody: normalizeCorrectedBody(correctedLines.join("\n"), text) };
 }
 
 export function mockGenerateComments(
@@ -90,13 +79,6 @@ export function mockGenerateComments(
   return {
     comments: generateMockComments(correctedBody.split("\n"), opts),
   };
-}
-
-export function mockCorrect(text: EssayBodyInput["text"], opts?: EssayOpts) {
-  const { correctedBody } = mockCorrectBody(text, opts);
-  const { comments } = mockGenerateComments(text, correctedBody, opts);
-
-  return { comments, correctedBody };
 }
 
 function buildScoreFeedback(score: Score["score"], opts?: EssayOpts) {
@@ -153,7 +135,7 @@ function applySimpleCorrection(line: AiCorrectedBody["correctedBody"]) {
     .trim();
 }
 
-function generateMockComments(lines: AiCorrectedBody["correctedBody"], opts?: EssayOpts) {
+function generateMockComments(lines: string[], opts?: EssayOpts) {
   const comments: Array<Pick<DiffCommentInput, "body" | "lineNumber" | "side" | "suggestion">> = [];
 
   const targetCount = Math.min(MOCK_CORRECTIONS.length, Math.floor(lines.length / 3) + 1);

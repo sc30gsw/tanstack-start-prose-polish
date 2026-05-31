@@ -23,18 +23,14 @@ function buildModeWhere(mode: EssaysModeFilter) {
 }
 
 //? bodyBefore / bodyAfter / prompt は indexed 不可（最大 10,000 文字）のためクライアント側で全文検索（最大 ESSAY_SEARCH_SCAN_LIMIT 件）
-function essayMatchesQuery(essay: EssayListRow, q: EssaysSearchParams["q"]) {
-  const needle = q.trim().toLowerCase();
-  if (needle.length === 0) {
+function essayMatchesQuery(essay: EssayListRow, needleLower: string) {
+  if (needleLower.length === 0) {
     return true;
   }
 
-  const haystack = [essay.bodyBefore, essay.bodyAfter, essay.prompt]
-    .filter((part): part is string => typeof part === "string" && part.length > 0)
-    .join("\n")
-    .toLowerCase();
-
-  return haystack.includes(needle);
+  return [essay.bodyBefore, essay.bodyAfter, essay.prompt].some(
+    (part) => typeof part === "string" && part.toLowerCase().includes(needleLower),
+  );
 }
 
 export function useEssaysList(search: EssaysSearchParams) {
@@ -55,22 +51,26 @@ export function useEssaysList(search: EssaysSearchParams) {
 
   const { data, error, isLoading, pageInfo } = db.useQuery(listQuery);
 
-  const { essays, hasNextPage } = useMemo(() => {
+  const { essays, hasNextPage, isTruncated } = useMemo(() => {
     const rows = (data?.essays ?? []) as EssayListRow[];
 
     if (!hasTextSearch) {
       return {
         essays: rows,
         hasNextPage: pageInfo?.essays?.hasNextPage ?? false,
+        isTruncated: false,
       };
     }
 
-    const filtered = rows.filter((essay) => essayMatchesQuery(essay, trimmedQ));
+    const needleLower = trimmedQ.toLowerCase();
+    const filtered = rows.filter((essay) => essayMatchesQuery(essay, needleLower));
     const start = (search.page - 1) * ESSAY_LIST_PAGE_SIZE;
 
     return {
       essays: filtered.slice(start, start + ESSAY_LIST_PAGE_SIZE),
       hasNextPage: filtered.length > start + ESSAY_LIST_PAGE_SIZE,
+      //? 走査上限に達した = 全文検索が古い履歴を取りこぼしている可能性
+      isTruncated: rows.length >= ESSAY_SEARCH_SCAN_LIMIT,
     };
   }, [data?.essays, hasTextSearch, pageInfo?.essays?.hasNextPage, search.page, trimmedQ]);
 
@@ -79,5 +79,6 @@ export function useEssaysList(search: EssaysSearchParams) {
     essays,
     hasNextPage,
     isLoading,
+    isTruncated,
   } as const;
 }

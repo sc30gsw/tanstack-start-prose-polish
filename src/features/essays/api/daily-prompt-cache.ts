@@ -1,4 +1,5 @@
 import { id, type InstaQLEntity } from "@instantdb/admin";
+import { Result } from "better-result";
 
 import { adminDb } from "~/db/instant-admin";
 import type { AppSchema } from "~/db/instant-schema";
@@ -37,15 +38,28 @@ export async function saveDailyPrompt(
     throw new Error("Failed to create daily prompt transaction");
   }
 
-  await adminDb.transact(
-    tx.update({
-      createdAt: new Date(),
-      dateKey,
-      mode,
-      payload,
-      userId,
-    }),
+  const saveResult = await Result.tryPromise(() =>
+    adminDb.transact(
+      tx.update({
+        cacheKey: `${userId}:${dateKey}:${mode}`,
+        createdAt: new Date(),
+        dateKey,
+        mode,
+        payload,
+        userId,
+      }),
+    ),
   );
 
-  return { createdAt: new Date(), dateKey, id: promptId, mode, payload, userId };
+  if (Result.isError(saveResult)) {
+    //? cacheKey の unique 制約違反 = 並行リクエストが先に作成済み。勝者を読み直して返す
+    const winner = await getCachedDailyPrompt(userId, dateKey, mode);
+    if (winner) {
+      return winner;
+    }
+
+    throw new Error("Failed to save daily prompt");
+  }
+
+  return (await getCachedDailyPrompt(userId, dateKey, mode)) ?? null;
 }

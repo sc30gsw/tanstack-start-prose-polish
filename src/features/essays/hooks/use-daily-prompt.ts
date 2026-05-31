@@ -86,9 +86,12 @@ export function useDailyPrompt(mode: DailyPromptMode) {
     void generate();
   }, [userId, isLoading, row, generate]);
 
+  //? 未解決（row も error も無い）間は loading 扱い。解決後に空 payload なら呼び出し側で空状態を出す
+  const isResolved = row != null || error != null;
+
   return {
     error,
-    isLoading: isLoading || isGenerating,
+    isLoading: userId != null && !isResolved ? true : isGenerating,
     payload: row?.payload,
     retry: generate,
   } as const;

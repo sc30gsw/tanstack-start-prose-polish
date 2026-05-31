@@ -1,9 +1,11 @@
 import { id, type InstaQLEntity } from "@instantdb/react";
+import { Result } from "better-result";
 
 import { db } from "~/db/instant";
 import type { AppSchema } from "~/db/instant-schema";
 import { correctEssayBody, generateEssayComments } from "~/features/essays/api/correct-essay";
 import type { DiffCommentInput, EssayMode } from "~/features/essays/schemas/essay-schema";
+import { EssayPersistenceError } from "~/features/essays/types/essay-error";
 
 type EssayEntity = InstaQLEntity<AppSchema, "essays">;
 
@@ -70,63 +72,71 @@ export async function persistEssayCorrection({
   text,
   userId,
 }: PersistEssayCorrectionParams) {
-  const bodyResult = await correctEssayBody({
+  //! 添削後本文の生成と保存は失敗時の後始末が共通なので Result.gen で短絡合成する
+  const correctionResult = await Result.gen(async function* () {
+    const { correctedBody } = yield* Result.await(
+      correctEssayBody({ mode: mode as EssayMode, prompt, text }),
+    );
+
+    const txUpdate = db.tx.essays[essayId];
+    if (!txUpdate) {
+      return Result.err(new EssayPersistenceError({ message: "エッセイの更新に失敗しました" }));
+    }
+
+    yield* Result.await(
+      Result.tryPromise({
+        catch: (e) =>
+          new EssayPersistenceError({
+            cause: e,
+            message: e instanceof Error ? e.message : "添削結果の保存に失敗しました",
+          }),
+        try: () =>
+          db.transact(
+            txUpdate.update({
+              bodyAfter: correctedBody,
+              updatedAt: new Date(),
+            }),
+          ),
+      }),
+    );
+
+    return Result.ok(correctedBody);
+  });
+
+  if (Result.isError(correctionResult)) {
+    await markCorrectionFailed(essayId);
+
+    return { error: correctionResult.error.message || "添削に失敗しました", ok: false as const };
+  }
+
+  //? コメント生成・保存は best-effort。失敗しても本文は保存済みのため成功扱い
+  const commentsResult = await generateEssayComments({
+    correctedBody: correctionResult.value,
     mode: mode as EssayMode,
     prompt,
     text,
   });
 
-  return bodyResult.match({
-    err: async (error: Error) => {
-      const message = error.message || "添削に失敗しました";
-      await markCorrectionFailed(essayId);
-      return { error: message, ok: false as const };
-    },
-    ok: async ({ correctedBody }) => {
-      const txUpdate = db.tx.essays[essayId];
-      if (!txUpdate) {
-        return { error: "エッセイの更新に失敗しました", ok: false as const };
+  await commentsResult.match({
+    err: async () => {},
+    ok: async ({ comments }) => {
+      const commentTxs = buildCommentTransactions(essayId, comments, userId);
+      if (commentTxs.length === 0) {
+        return;
       }
 
-      try {
-        await db.transact(
-          txUpdate.update({
-            bodyAfter: correctedBody,
-            status: "reviewed",
-            updatedAt: new Date(),
-          }),
-        );
-      } catch (error) {
-        const message = error instanceof Error ? error.message : "添削結果の保存に失敗しました";
-        await markCorrectionFailed(essayId);
-
-        return { error: message, ok: false as const };
-      }
-
-      const commentsResult = await generateEssayComments({
-        correctedBody,
-        mode: mode as EssayMode,
-        prompt,
-        text,
-      });
-
-      await commentsResult.match({
-        err: async () => {},
-        ok: async ({ comments }) => {
-          const commentTxs = buildCommentTransactions(essayId, comments, userId);
-          if (commentTxs.length === 0) {
-            return;
-          }
-
-          try {
-            await db.transact(commentTxs);
-          } catch {
-            //? 本文は保存済み。コメントのみ失敗は致命的ではない
-          }
-        },
-      });
-
-      return { ok: true } as const;
+      //? 本文は保存済み。コメントのみ失敗は致命的ではないため結果は無視する
+      await Result.tryPromise(() => db.transact(commentTxs));
     },
   });
+
+  //? コメント処理が完了してから reviewed にする（添削結果ボタンを早く有効化しない）
+  const txFinalize = db.tx.essays[essayId];
+  if (txFinalize) {
+    await Result.tryPromise(() =>
+      db.transact(txFinalize.update({ status: "reviewed", updatedAt: new Date() })),
+    );
+  }
+
+  return { ok: true } as const;
 }

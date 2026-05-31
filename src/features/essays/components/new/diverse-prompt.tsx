@@ -1,7 +1,8 @@
-import { Alert, Button, Loader, Stack, Text } from "@mantine/core";
+import { Alert, Loader, Stack, Text } from "@mantine/core";
 import { IconBulb } from "@tabler/icons-react";
 import { useEffect, useRef } from "react";
 
+import { ErrorRetryAlert } from "~/components/error-retry-alert";
 import { useDailyPrompt } from "~/features/essays/hooks/use-daily-prompt";
 
 type DiverseModePromptProps = {
@@ -10,9 +11,9 @@ type DiverseModePromptProps = {
 
 export function DiverseModePrompt({ onQuestionLoaded }: DiverseModePromptProps) {
   const { error, isLoading, payload, retry } = useDailyPrompt("diverse");
-  const question = typeof payload === "string" ? payload : null;
+  const question = typeof payload === "string" && payload.length > 0 ? payload : null;
 
-  /**
+  /*
    * 親の `form.Field` から毎レンダー新しい関数が渡るため、依存に入れず ref 経由で最新を呼ぶ。
    * 質問が確定したら 1 度だけフォームに反映する。
    */
@@ -27,18 +28,16 @@ export function DiverseModePrompt({ onQuestionLoaded }: DiverseModePromptProps) 
 
   if (error) {
     return (
-      <Alert color="red" title="お題の生成に失敗しました" variant="light">
-        <Stack align="flex-start" gap="sm">
-          <Text size="md">{error}</Text>
-          <Button onClick={() => void retry()} size="sm" variant="light">
-            再生成する
-          </Button>
-        </Stack>
-      </Alert>
+      <ErrorRetryAlert
+        message={error}
+        onRetry={() => void retry()}
+        retryLabel="再生成する"
+        title="お題の生成に失敗しました"
+      />
     );
   }
 
-  if (isLoading || question == null) {
+  if (isLoading) {
     return (
       <Stack align="center" gap="md" py="lg">
         <Loader aria-label="質問を生成中" size="md" />
@@ -46,6 +45,18 @@ export function DiverseModePrompt({ onQuestionLoaded }: DiverseModePromptProps) 
           AI が質問を生成中...
         </Text>
       </Stack>
+    );
+  }
+
+  if (!question) {
+    return (
+      <ErrorRetryAlert
+        color="gray"
+        message="お題を生成できませんでした。もう一度お試しください。"
+        onRetry={() => void retry()}
+        retryLabel="再生成する"
+        title="お題がありません"
+      />
     );
   }
 

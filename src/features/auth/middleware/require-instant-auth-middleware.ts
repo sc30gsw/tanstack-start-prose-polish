@@ -1,5 +1,6 @@
 import type { User } from "@instantdb/admin";
 import { createMiddleware } from "@tanstack/react-start";
+import { Result } from "better-result";
 
 import { INSTANT_REFRESH_TOKEN_HEADER } from "~/features/auth/constants/instant-auth";
 import { getInstantRefreshToken } from "~/features/auth/server/instant-refresh-token-store";
@@ -8,6 +9,7 @@ import {
   unauthorizedResponse,
   verifyInstantUser,
 } from "~/features/auth/server/verify-instant-user";
+import { AuthError } from "~/features/auth/types/auth-error";
 
 export type AuthenticatedServerContext = Record<"user", User>;
 
@@ -18,12 +20,16 @@ export const instantAuthRequestMiddleware = createMiddleware({ type: "request" }
       return unauthorizedResponse();
     }
 
-    try {
-      const user = await verifyInstantUser(token);
-      return next({ context: { instantUser: user } });
-    } catch {
+    const userResult = await Result.tryPromise({
+      catch: (e) => new AuthError({ cause: e, message: "Unauthorized", reason: "invalid" }),
+      try: () => verifyInstantUser(token),
+    });
+
+    if (Result.isError(userResult)) {
       return unauthorizedResponse();
     }
+
+    return next({ context: { instantUser: userResult.value } });
   },
 );
 

@@ -2,6 +2,7 @@ import { experimental_useObject as useObject } from "@ai-sdk/react";
 import { valibotSchema } from "@ai-sdk/valibot";
 import type { InstaQLEntity } from "@instantdb/react";
 import { id } from "@instantdb/react";
+import { Result } from "better-result";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { db } from "~/db/instant";
@@ -13,6 +14,7 @@ import type {
 } from "~/features/essays/schemas/essay-ai-input-schema";
 import { scoreSchema, type Essay, type Score } from "~/features/essays/schemas/essay-schema";
 import type { ScoringState } from "~/features/essays/types/essay";
+import { EssayPersistenceError } from "~/features/essays/types/essay-error";
 import { isEveryNonNull } from "~/lib/every-non-null";
 
 type StartOpts = Partial<Pick<Essay, "mode" | "prompt">> & {
@@ -30,7 +32,7 @@ export function useScoringStream() {
   const existingScoreIdRef = useRef<null | InstaQLEntity<AppSchema, "scores">["id"]>(null);
   const lastArgsRef = useRef<null | SubmitArgs>(null);
 
-  const { error, isLoading, object, submit } = useObject({
+  const { error, isLoading, object, stop, submit } = useObject({
     api: "/api/essays/score",
     headers: () => buildScoreRequestHeaders() ?? {},
     onError: (e) => setErrorMessage(e.message),
@@ -71,20 +73,31 @@ export function useScoringStream() {
         return;
       }
 
-      try {
-        await db.transact(
-          existingScoreId
-            ? txScore.update({ cefr, score, scoreFeedback, toeicMax, toeicMin })
-            : txScore
-                .update({ cefr, score, scoreFeedback, toeicMax, toeicMin })
-                .link({ essay: essayId }),
-        );
-        setStage("done");
-      } catch (error) {
-        const message = error instanceof Error ? error.message : "採点結果の保存に失敗しました";
-        setErrorMessage(message);
-        setStage("score");
-      }
+      const result = await Result.tryPromise({
+        catch: (e) =>
+          new EssayPersistenceError({
+            cause: e,
+            message: e instanceof Error ? e.message : "採点結果の保存に失敗しました",
+          }),
+        try: () =>
+          db.transact(
+            existingScoreId
+              ? txScore.update({ cefr, score, scoreFeedback, toeicMax, toeicMin })
+              : txScore
+                  .update({ cefr, score, scoreFeedback, toeicMax, toeicMin })
+                  .link({ essay: essayId }),
+          ),
+      });
+
+      result.match({
+        err: (error) => {
+          setErrorMessage(error.message);
+          setStage("score");
+        },
+        ok: () => {
+          setStage("done");
+        },
+      });
     },
     schema: valibotSchema(scoreSchema),
   });
@@ -94,14 +107,18 @@ export function useScoringStream() {
       return;
     }
 
-    if (object.toeicMin && object.toeicMax) {
-      setStage("done");
-    } else if (object.cefr != null) {
+    //? 完了は onFinish が確定する。到着駆動では done に進めない（部分到着で先走らせない）
+    if (object.cefr != null) {
       setStage("toeic");
     } else if (object.score != null) {
       setStage("cefr");
     }
   }, [object]);
+
+  //? アンマウント時にストリームを中断（離脱後の DB 書込・状態更新を防ぐ）
+  const stopRef = useRef(stop);
+  stopRef.current = stop;
+  useEffect(() => () => stopRef.current(), []);
 
   const start = useCallback(
     (
