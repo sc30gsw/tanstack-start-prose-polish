@@ -1,8 +1,15 @@
 import { valibotSchema } from "@ai-sdk/valibot";
 import { createFileRoute } from "@tanstack/react-router";
 import { Output, streamText } from "ai";
+import * as v from "valibot";
 
+import { requireInstantUser } from "~/features/auth/server/verify-instant-user";
 import { mockScore } from "~/features/essays/api/mock-ai";
+import {
+  essayScoreInputSchema,
+  type EssayAiContext,
+  type EssayBodyInput,
+} from "~/features/essays/schemas/essay-ai-input-schema";
 import { scoreSchema } from "~/features/essays/schemas/essay-schema";
 import { AI_MODEL, isAiEnabled } from "~/lib/ai/model";
 
@@ -14,16 +21,32 @@ const SCORE_SYSTEM = [
   "Emit the fields in this order: score, scoreFeedback, cefr, toeicMin, toeicMax.",
 ].join(" ");
 
-type ScoreRequestBody = { mode?: string; prompt?: string; text?: string };
-
 export const Route = createFileRoute("/api/essays/score")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const body = (await request.json()) as ScoreRequestBody;
-        const text = typeof body.text === "string" ? body.text : "";
-        const mode = typeof body.mode === "string" ? body.mode : undefined;
-        const prompt = typeof body.prompt === "string" ? body.prompt : undefined;
+        try {
+          await requireInstantUser(request);
+        } catch (response) {
+          if (response instanceof Response) {
+            return response;
+          }
+          return new Response("Unauthorized", { status: 401 });
+        }
+
+        let body: unknown;
+        try {
+          body = await request.json();
+        } catch {
+          return new Response("Invalid JSON", { status: 400 });
+        }
+
+        const parsed = v.safeParse(essayScoreInputSchema, body);
+        if (!parsed.success) {
+          return new Response("Invalid request body", { status: 400 });
+        }
+
+        const { mode, prompt, text } = parsed.output;
 
         if (!isAiEnabled()) {
           return mockScoreStreamResponse(text, { mode, prompt });
@@ -43,9 +66,9 @@ export const Route = createFileRoute("/api/essays/score")({
 });
 
 function buildScorePrompt(
-  text: NonNullable<ScoreRequestBody["text"]>,
-  mode: ScoreRequestBody["mode"],
-  prompt: ScoreRequestBody["prompt"],
+  text: EssayBodyInput["text"],
+  mode: EssayAiContext["mode"],
+  prompt: EssayAiContext["prompt"],
 ) {
   const topicNote =
     mode === "topic" && prompt ? ` Also judge how well it addresses the topic: "${prompt}".` : "";
@@ -55,9 +78,9 @@ function buildScorePrompt(
 
 /** キー未設定時のフォールバック。mock スコアを 3 段階に分け擬似ストリーム配信する */
 function mockScoreStreamResponse(
-  text: NonNullable<ScoreRequestBody["text"]>,
-  opts: Pick<ScoreRequestBody, "mode" | "prompt">,
-): Response {
+  text: EssayBodyInput["text"],
+  opts: Pick<EssayAiContext, "mode" | "prompt">,
+) {
   const s = mockScore(text, opts);
   const slices = [
     `{"score":${s.score},"scoreFeedback":${JSON.stringify(s.scoreFeedback)}`,

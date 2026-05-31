@@ -28,12 +28,14 @@ const MODE_COLORS = {
 } as const satisfies Record<string, MantineColor>;
 
 const STATUS_COLORS = {
+  correction_failed: "red",
   draft: "gray",
   reviewed: "green",
   scoring: "yellow",
 } as const satisfies Record<string, MantineColor>;
 
 const STATUS_LABELS = {
+  correction_failed: "添削失敗",
   draft: "下書き",
   reviewed: "添削済み",
   scoring: "採点中",

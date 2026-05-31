@@ -6,31 +6,39 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { db } from "~/db/instant";
 import type { AppSchema } from "~/db/instant-schema";
+import { buildScoreRequestHeaders } from "~/features/essays/api/score-request-headers";
+import type {
+  EssayAiContext,
+  EssayBodyInput,
+} from "~/features/essays/schemas/essay-ai-input-schema";
 import { scoreSchema, type Essay, type Score } from "~/features/essays/schemas/essay-schema";
 import type { ScoringState } from "~/features/essays/types/essay";
 import { isEveryNonNull } from "~/lib/every-non-null";
 
-type StartOpts = Partial<Pick<Essay, "mode" | "prompt">>;
-type SubmitArgs = { mode?: string; prompt?: string; text: string };
+type StartOpts = Partial<Pick<Essay, "mode" | "prompt">> & {
+  existingScoreId?: InstaQLEntity<AppSchema, "scores">["id"];
+};
+type SubmitArgs = Pick<EssayAiContext, "mode" | "prompt"> & Pick<EssayBodyInput, "text">;
 
 export function useScoringStream() {
   const [stage, setStage] = useState<ScoringState["stage"]>("idle");
   const [feedbackReady, setFeedbackReady] = useState(false);
   const [hydrated, setHydrated] = useState<null | Score>(null);
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
-  const essayIdRef = useRef<null | string>(null);
+
+  const essayIdRef = useRef<null | InstaQLEntity<AppSchema, "essays">["id"]>(null);
+  const existingScoreIdRef = useRef<null | InstaQLEntity<AppSchema, "scores">["id"]>(null);
   const lastArgsRef = useRef<null | SubmitArgs>(null);
 
   const { error, isLoading, object, submit } = useObject({
     api: "/api/essays/score",
+    headers: () => buildScoreRequestHeaders() ?? {},
     onError: (e) => setErrorMessage(e.message),
     onFinish: async ({ object: finalObject }) => {
       if (!finalObject) {
         setErrorMessage("採点結果の解析に失敗しました");
         return;
       }
-
-      setStage("done");
 
       const essayId = essayIdRef.current;
       const scoring = [
@@ -39,32 +47,54 @@ export function useScoringStream() {
         finalObject.cefr,
         finalObject.toeicMin,
         finalObject.toeicMax,
-      ] as const;
+      ] as const satisfies readonly (
+        | Score["score"]
+        | Score["scoreFeedback"]
+        | Score["cefr"]
+        | Score["toeicMin"]
+        | Score["toeicMax"]
+      )[];
 
-      if (essayId && isEveryNonNull(scoring)) {
-        const [score, scoreFeedback, cefr, toeicMin, toeicMax] = scoring;
-        const scoreId = id();
-        const txScore = db.tx.scores[scoreId];
+      if (!essayId || !isEveryNonNull(scoring)) {
+        setStage("done");
+        return;
+      }
 
-        if (txScore) {
-          await db.transact(
-            txScore
-              .update({ cefr, score, scoreFeedback, toeicMax, toeicMin })
-              .link({ essay: essayId }),
-          );
-        }
+      const [score, scoreFeedback, cefr, toeicMin, toeicMax] = scoring;
+      const existingScoreId = existingScoreIdRef.current;
+      const scoreId = existingScoreId ?? id();
+      const txScore = db.tx.scores[scoreId];
+
+      if (!txScore) {
+        setErrorMessage("採点結果の保存に失敗しました");
+        setStage("score");
+        return;
+      }
+
+      try {
+        await db.transact(
+          existingScoreId
+            ? txScore.update({ cefr, score, scoreFeedback, toeicMax, toeicMin })
+            : txScore
+                .update({ cefr, score, scoreFeedback, toeicMax, toeicMin })
+                .link({ essay: essayId }),
+        );
+        setStage("done");
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "採点結果の保存に失敗しました";
+        setErrorMessage(message);
+        setStage("score");
       }
     },
     schema: valibotSchema(scoreSchema),
   });
 
-  // 部分オブジェクトの到着フィールドで段階を進める（到着駆動。完了は onFinish で確定）
   useEffect(() => {
     if (!object) {
       return;
     }
 
-    if (object.toeicMin != null && object.toeicMax != null) {
+    if (object.toeicMin && object.toeicMax) {
       setStage("done");
     } else if (object.cefr != null) {
       setStage("toeic");
@@ -80,6 +110,7 @@ export function useScoringStream() {
       opts?: StartOpts,
     ) => {
       essayIdRef.current = essayId;
+      existingScoreIdRef.current = opts?.existingScoreId ?? null;
       const args: SubmitArgs = { mode: opts?.mode, prompt: opts?.prompt, text };
       lastArgsRef.current = args;
       setHydrated(null);

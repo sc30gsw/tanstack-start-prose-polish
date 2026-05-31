@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import { AppShellLayout } from "~/components/app-shell-layout";
 import { db } from "~/db/instant";
+import { SyncInstantAuthToken } from "~/features/auth/components/sync-instant-auth-token";
 
 export const Route = createFileRoute("/_authenticated")({
   component: AuthGate,
@@ -23,6 +24,7 @@ function AuthGate() {
   return (
     <>
       <db.SignedIn>
+        <SyncInstantAuthToken />
         <AppShellLayout>
           <Outlet />
         </AppShellLayout>

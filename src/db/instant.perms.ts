@@ -24,7 +24,7 @@ const rules = {
   },
   diffComments: {
     allow: {
-      create: "auth.id != null",
+      create: "auth.id != null && auth.id in data.ref('essay.owner.id')",
       delete: "auth.id != null && data.kind == 'user' && auth.id == data.userId",
       update: "auth.id != null && data.kind == 'user' && auth.id == data.userId",
       view: "auth.id != null && auth.id in data.ref('essay.owner.id')",

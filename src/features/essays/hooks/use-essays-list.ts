@@ -3,12 +3,13 @@ import { useMemo } from "react";
 
 import { db } from "~/db/instant";
 import type { AppSchema } from "~/db/instant-schema";
+import { ESSAY_SEARCH_SCAN_LIMIT } from "~/features/essays/constants/essay";
 import type {
   EssaysModeFilter,
   EssaysSearchParams,
 } from "~/features/essays/schemas/search-params/essays-search-params";
 
-const ESSAYS_ORDER_DESC = { order: { createdAt: "desc" as const } };
+const ESSAYS_ORDER_DESC = { order: { createdAt: "desc" } } as const;
 export const ESSAY_LIST_PAGE_SIZE = 10;
 
 type EssayListRow = InstaQLEntity<AppSchema, "essays", { scoring: {} }>;
@@ -21,8 +22,8 @@ function buildModeWhere(mode: EssaysModeFilter) {
   return undefined;
 }
 
-/** bodyBefore / bodyAfter / prompt は indexed 不可（最大 10,000 文字）のためクライアント側で全文検索 */
-function essayMatchesQuery(essay: EssayListRow, q: string) {
+//? bodyBefore / bodyAfter / prompt は indexed 不可（最大 10,000 文字）のためクライアント側で全文検索（最大 ESSAY_SEARCH_SCAN_LIMIT 件）
+function essayMatchesQuery(essay: EssayListRow, q: EssaysSearchParams["q"]) {
   const needle = q.trim().toLowerCase();
   if (needle.length === 0) {
     return true;
@@ -44,7 +45,7 @@ export function useEssaysList(search: EssaysSearchParams) {
   const listQuery = useMemo(() => {
     const page$ = {
       ...ESSAYS_ORDER_DESC,
-      limit: hasTextSearch ? 1000 : ESSAY_LIST_PAGE_SIZE,
+      limit: hasTextSearch ? ESSAY_SEARCH_SCAN_LIMIT : ESSAY_LIST_PAGE_SIZE,
       offset: hasTextSearch ? 0 : (search.page - 1) * ESSAY_LIST_PAGE_SIZE,
       ...(modeWhere ? { where: modeWhere } : {}),
     };

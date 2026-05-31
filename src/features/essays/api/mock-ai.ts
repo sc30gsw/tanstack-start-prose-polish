@@ -1,21 +1,25 @@
 import { clamp, range, sample, sampleSize } from "es-toolkit";
 
-import type { Score } from "~/features/essays/schemas/essay-schema";
+import type { AiCorrectedBody } from "~/features/essays/schemas/ai-schema";
+import type {
+  EssayAiContext,
+  EssayBodyInput,
+} from "~/features/essays/schemas/essay-ai-input-schema";
+import type { DiffCommentInput, Score } from "~/features/essays/schemas/essay-schema";
 
 const TOPICS = [
   "Should artificial intelligence have legal rights? Discuss your perspective with specific examples.",
   "How has social media changed the way people form their identities? Use evidence to support your argument.",
   "What would the world look like if all countries adopted a four-day work week? Explore the potential benefits and challenges.",
-];
+] as const satisfies readonly string[];
 
-/** 「多様なお題」モード用サンプル（仮定・文化・意見など幅広い英文プロンプト） */
 const DIVERSE_MODE_SAMPLE_QUESTIONS = [
   "If you could eliminate one human emotion permanently from the world, which would you choose and why? Consider both personal and societal implications.",
   "Imagine you discovered a way to live forever, but only in your current physical form. Would you choose immortality, and what would be the consequences for humanity?",
   "If you could design the perfect educational system from scratch, what core principles would guide it, and how would it differ from today's schools?",
-];
+] as const satisfies readonly string[];
 
-const MOCK_CORRECTIONS: Array<{ body: string; suggestion: string }> = [
+const MOCK_CORRECTIONS = [
   {
     body: "Passive voice weakens the impact here. Consider using an active construction.",
     suggestion: "Put the doer of the action before the verb so the sentence reads more directly.",
@@ -36,28 +40,21 @@ const MOCK_CORRECTIONS: Array<{ body: string; suggestion: string }> = [
     body: "This word choice is informal for academic writing.",
     suggestion: 'Consider replacing "a lot of" with "numerous" or "a significant number of".',
   },
-];
+] as const satisfies readonly Pick<DiffCommentInput, "body" | "suggestion">[];
 
-export type EssayOpts = { mode?: string; prompt?: string };
-
-export type CorrectionComment = {
-  body: string;
-  lineNumber: number;
-  side: "additions" | "deletions";
-  suggestion?: string;
-};
+export type EssayOpts = Pick<EssayAiContext, "mode" | "prompt">;
 
 export type CorrectionResult = {
-  comments: CorrectionComment[];
-  correctedBody: string;
+  comments: Array<Pick<DiffCommentInput, "body" | "lineNumber" | "side" | "suggestion">>;
+  correctedBody: AiCorrectedBody["correctedBody"];
 };
 
-export function mockTopics(): string[] {
+export function mockTopics() {
   return [...TOPICS];
 }
 
-export function mockDiverseQuestion(): string {
-  return sample(DIVERSE_MODE_SAMPLE_QUESTIONS) as string;
+export function mockDiverseQuestion() {
+  return sample(DIVERSE_MODE_SAMPLE_QUESTIONS);
 }
 
 export function mockScore(text: string, opts?: EssayOpts): Score {
@@ -86,53 +83,68 @@ export function mockCorrectBody(text: string, _opts?: EssayOpts): { correctedBod
 }
 
 export function mockGenerateComments(
-  _text: string,
-  correctedBody: string,
+  _text: EssayBodyInput["text"],
+  correctedBody: AiCorrectedBody["correctedBody"],
   opts?: EssayOpts,
-): { comments: CorrectionComment[] } {
+) {
   return {
     comments: generateMockComments(correctedBody.split("\n"), opts),
   };
 }
 
-export function mockCorrect(text: string, opts?: EssayOpts): CorrectionResult {
+export function mockCorrect(text: EssayBodyInput["text"], opts?: EssayOpts) {
   const { correctedBody } = mockCorrectBody(text, opts);
   const { comments } = mockGenerateComments(text, correctedBody, opts);
 
   return { comments, correctedBody };
 }
 
-function buildScoreFeedback(score: number, opts?: EssayOpts): string {
+function buildScoreFeedback(score: Score["score"], opts?: EssayOpts) {
   const topicNote =
     opts?.mode === "topic" && opts.prompt != null
       ? ` お題「${opts.prompt.slice(0, 40)}${opts.prompt.length > 40 ? "…" : ""}」との内容合致度も評価に含まれています。`
       : "";
 
-  if (score >= 80)
+  if (score >= 80) {
     return `語彙の多様性が高く、文章構造も安定しています。接続詞の使い方にやや改善の余地があります。${topicNote}`;
-  if (score >= 60)
+  }
+
+  if (score >= 60) {
     return `基本的な文法は押さえられています。より複雑な構文を取り入れることで表現力が向上するでしょう。${topicNote}`;
+  }
+
   return `基礎的な文法の見直しと、段落構成の整理をお勧めします。${topicNote}`;
 }
 
-function scoreToCefr(score: number): Score["cefr"] {
-  if (score >= 90) return "C2";
-  if (score >= 80) return "C1";
-  if (score >= 68) return "B2";
-  if (score >= 54) return "B1";
-  if (score >= 40) return "A2";
-  return "A1";
+function scoreToCefr(score: Score["score"]) {
+  if (score >= 90) {
+    return "C2";
+  }
+
+  if (score >= 80) {
+    return "C1";
+  }
+
+  if (score >= 68) {
+    return "B2";
+  }
+
+  if (score >= 54) {
+    return "B1";
+  }
+
+  return "A2";
 }
 
-function scoreToToeicMin(score: number): number {
+function scoreToToeicMin(score: Score["score"]) {
   return Math.max(300, score * 9 - 20);
 }
 
-function scoreToToeicMax(score: number): number {
+function scoreToToeicMax(score: Score["score"]) {
   return Math.min(990, score * 9 + 70);
 }
 
-function applySimpleCorrection(line: string): string {
+function applySimpleCorrection(line: AiCorrectedBody["correctedBody"]) {
   return line
     .replace(/\b(i)\b(?=[^'])/g, "I")
     .replace(/\s{2,}/g, " ")
@@ -141,8 +153,8 @@ function applySimpleCorrection(line: string): string {
     .trim();
 }
 
-function generateMockComments(lines: string[], opts?: EssayOpts): CorrectionComment[] {
-  const comments: CorrectionComment[] = [];
+function generateMockComments(lines: AiCorrectedBody["correctedBody"], opts?: EssayOpts) {
+  const comments: Array<Pick<DiffCommentInput, "body" | "lineNumber" | "side" | "suggestion">> = [];
 
   const targetCount = Math.min(MOCK_CORRECTIONS.length, Math.floor(lines.length / 3) + 1);
   const lineNumbers = sampleSize(range(1, lines.length + 1), Math.min(targetCount, lines.length));

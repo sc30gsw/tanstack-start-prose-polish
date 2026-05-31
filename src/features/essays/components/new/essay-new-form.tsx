@@ -31,6 +31,10 @@ export function EssayNewForm() {
       prompt: undefined as EssayDraftInput["prompt"],
     } satisfies EssayDraftInput,
     onSubmit: async ({ value }) => {
+      if (!user?.id) {
+        return;
+      }
+
       const essayId = id();
       const now = new Date();
 
@@ -49,14 +53,14 @@ export function EssayNewForm() {
         updatedAt: now,
       });
 
-      await db.transact(user ? txEssayUpdate.link({ owner: user.id }) : txEssayUpdate);
+      await db.transact(txEssayUpdate.link({ owner: user.id }));
 
-      persistEssayCorrection({
+      void persistEssayCorrection({
         essayId,
         mode: value.mode,
         prompt: value.prompt,
         text: value.bodyBefore,
-        userId: user?.id,
+        userId: user.id,
       });
 
       await navigate({ params: () => ({ essayId }), to: "/essays/$essayId/scoring" });
