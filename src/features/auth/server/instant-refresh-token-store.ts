@@ -1,6 +1,12 @@
-let refreshToken: null | string = null;
+import type { User } from "@instantdb/react";
 
-export function setInstantRefreshToken(token: null | string) {
+import type { adminDb } from "~/db/instant-admin";
+
+let refreshToken: null | User["refresh_token"] = null;
+
+export function setInstantRefreshToken(
+  token: null | Parameters<typeof adminDb.auth.verifyToken>[0],
+) {
   refreshToken = token;
 }
 

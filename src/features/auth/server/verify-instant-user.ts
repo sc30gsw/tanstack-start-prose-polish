@@ -11,6 +11,7 @@ export function getRefreshTokenFromRequest(request: Request) {
   }
 
   const authorization = request.headers.get("Authorization")?.trim();
+
   if (authorization?.startsWith("Bearer ")) {
     return authorization.slice("Bearer ".length).trim();
   }
