@@ -6,7 +6,7 @@ import * as v from "valibot";
 
 import { db } from "~/db/instant";
 import { useAuthUser } from "~/features/auth/hooks/use-auth-user";
-import { correctEssay } from "~/features/essays/api/mock-ai";
+import { persistEssayCorrection } from "~/features/essays/api/persist-essay-correction";
 import { DiverseModePrompt } from "~/features/essays/components/new/diverse-prompt";
 import { EssayEditor } from "~/features/essays/components/new/essay-editor";
 import { ModePicker } from "~/features/essays/components/new/mode-picker";
@@ -31,6 +31,10 @@ export function EssayNewForm() {
       prompt: undefined as EssayDraftInput["prompt"],
     } satisfies EssayDraftInput,
     onSubmit: async ({ value }) => {
+      if (!user?.id) {
+        return;
+      }
+
       const essayId = id();
       const now = new Date();
 
@@ -49,50 +53,14 @@ export function EssayNewForm() {
         updatedAt: now,
       });
 
-      await db.transact(user ? txEssayUpdate.link({ owner: user.id }) : txEssayUpdate);
+      await db.transact(txEssayUpdate.link({ owner: user.id }));
 
-      correctEssay(value.bodyBefore, { mode: value.mode, prompt: value.prompt }).then((result) => {
-        result.match({
-          err: () => {},
-          ok: async ({ correctedBody, aiComments }) => {
-            const txUpdate = db.tx.essays[essayId];
-
-            if (!txUpdate) {
-              return;
-            }
-
-            await db.transact(
-              txUpdate.update({
-                bodyAfter: correctedBody,
-                status: "reviewed",
-                updatedAt: new Date(),
-              }),
-            );
-
-            for (const comment of aiComments) {
-              const commentId = id();
-              const txComment = db.tx.diffComments[commentId];
-
-              if (!txComment) {
-                continue;
-              }
-
-              await db.transact(
-                txComment
-                  .update({
-                    body: comment.body,
-                    createdAt: new Date(),
-                    kind: "ai",
-                    lineNumber: comment.lineNumber,
-                    side: comment.side,
-                    suggestion: comment.suggestion,
-                    userId: crypto.randomUUID(),
-                  })
-                  .link({ essay: essayId }),
-              );
-            }
-          },
-        });
+      void persistEssayCorrection({
+        essayId,
+        mode: value.mode,
+        prompt: value.prompt,
+        text: value.bodyBefore,
+        userId: user.id,
       });
 
       await navigate({ params: () => ({ essayId }), to: "/essays/$essayId/scoring" });

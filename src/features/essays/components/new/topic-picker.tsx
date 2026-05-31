@@ -1,7 +1,7 @@
 import { Loader, Radio, Stack, Text } from "@mantine/core";
-import { useEffect, useState } from "react";
 
-import { generateTopics } from "~/features/essays/api/mock-ai";
+import { ErrorRetryAlert } from "~/components/error-retry-alert";
+import { useDailyPrompt } from "~/features/essays/hooks/use-daily-prompt";
 
 type TopicPickerProps = {
   field: {
@@ -11,21 +11,21 @@ type TopicPickerProps = {
 };
 
 export function TopicPicker({ field }: TopicPickerProps) {
-  const [topics, setTopics] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { error, isLoading, payload, retry } = useDailyPrompt("topic");
+  const topics = Array.isArray(payload)
+    ? payload.filter((t): t is string => typeof t === "string")
+    : [];
 
-  useEffect(() => {
-    setIsLoading(true);
-    void generateTopics().then((result) =>
-      result.match({
-        err: () => setIsLoading(false),
-        ok: (data) => {
-          setTopics(data);
-          setIsLoading(false);
-        },
-      }),
+  if (error) {
+    return (
+      <ErrorRetryAlert
+        message={error}
+        onRetry={() => void retry()}
+        retryLabel="再生成する"
+        title="トピックの生成に失敗しました"
+      />
     );
-  }, []);
+  }
 
   if (isLoading) {
     return (
@@ -35,6 +35,18 @@ export function TopicPicker({ field }: TopicPickerProps) {
           AI がトピックを生成中...
         </Text>
       </Stack>
+    );
+  }
+
+  if (topics.length === 0) {
+    return (
+      <ErrorRetryAlert
+        color="gray"
+        message="トピックを生成できませんでした。もう一度お試しください。"
+        onRetry={() => void retry()}
+        retryLabel="再生成する"
+        title="トピックがありません"
+      />
     );
   }
 

@@ -17,6 +17,8 @@ import { useDiffComments } from "~/features/essays/hooks/diff/use-diff-comments"
 import { useDiffViewState } from "~/features/essays/hooks/diff/use-diff-view-state";
 import type { DiffSearchParams } from "~/features/essays/schemas/search-params/essay-diff-search-params";
 
+import diffViewPierreShadowCss from "~/styles/diff-view-pierre-shadow.css?raw";
+
 type DiffViewProps = {
   afterText: InstaQLEntity<AppSchema, "essays">["bodyAfter"];
   beforeText: InstaQLEntity<AppSchema, "essays">["bodyBefore"];
@@ -68,6 +70,7 @@ export function DiffView({
       return (
         <ActionIcon
           aria-label="行にコメントを追加"
+          className="m-0 size-[1lh] shrink-0 p-0"
           color="blue"
           disabled={isPending}
           onClick={() => {
@@ -83,11 +86,11 @@ export function DiffView({
             });
           }}
           radius="xl"
-          size="sm"
+          size="xs"
           title="コメントを追加"
-          variant="light"
+          variant="filled"
         >
-          <IconPlus size={14} />
+          <IconPlus size={12} />
         </ActionIcon>
       );
     },
@@ -140,6 +143,7 @@ export function DiffView({
         overflow: "wrap",
         theme: { dark: "github-dark", light: "github-light" },
         themeType: diffThemeType,
+        unsafeCSS: diffViewPierreShadowCss,
       }) as const satisfies FileDiffOptions<CommentAnnotationMeta>,
     [diffStyle, handleDiffLineClick, diffThemeType],
   );

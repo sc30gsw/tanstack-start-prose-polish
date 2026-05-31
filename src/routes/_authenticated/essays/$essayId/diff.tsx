@@ -83,8 +83,11 @@ function DiffSegmentControl() {
   const view = useResolvedDiffView(viewParam);
   const navigate = useNavigate({ from: "/essays/$essayId/diff" });
 
-  const handleViewChange = (value: string) => {
-    if (value !== "split" && value !== "unified") return;
+  const handleViewChange = (value: (typeof DIFF_VIEW_MODE_OPTIONS)[number]["value"]) => {
+    if (value !== "split" && value !== "unified") {
+      return;
+    }
+
     navigate({
       params: { essayId },
       search: (prev) => ({ ...prev, view: value }),

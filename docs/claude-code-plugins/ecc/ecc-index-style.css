@@ -166,7 +166,7 @@ td a:hover {
   color: var(--text);
 }
 .section-card > h2::after {
-  content: '';
+  content: "";
   display: block;
   height: 2px;
   background: linear-gradient(90deg, var(--primary) 0%, transparent 100%);

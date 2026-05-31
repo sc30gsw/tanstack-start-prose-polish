@@ -1,42 +1,58 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Rules — Claude Code 設定ガイド</title>
-<link rel="stylesheet" href="./assets/styles.css" />
-</head>
-<body>
-<div class="layout">
-  <aside class="sidebar">
-    <h1>Claude Code 設定</h1>
-    <div class="sub">tanstack-start-prose-polish</div>
-    <nav class="nav">
-        <a href="./index.html" class="">概要</a>
-        <a href="./skills.html" class="">Skills<span class="n">39</span></a>
-        <a href="./rules.html" class="active">Rules<span class="n">9</span></a>
-        <a href="./hooks.html" class="">Hooks<span class="n">8</span></a>
-        <a href="./settings.html" class="">settings.json</a>
-        <a href="./plugin.html" class="">Plugin (ECC)<span class="n">386</span></a>
-    </nav>
-  </aside>
-  <main class="main">
-    <div class="page-head">
-      <h2>Rules</h2>
-      <div class="meta">生成日:  ・ 実データ（.claude/ 配下の実ファイル）から自動生成</div>
-    </div>
-    <div class="toolbar">
-        <input id="q" type="search" placeholder="このページ内を検索…" autocomplete="off" />
-        <button class="btn" id="expand-all">すべて展開</button>
-        <button class="btn" id="collapse-all">すべて折りたたみ</button>
-      </div>
-    <div class="cards">
-<article class="card" data-search="coding-style.md .claude/rules/common/coding-style.md ts・tsx・js・jsx すべてに常時適用される基本コーディング規約。命名規則、不変性、ファイルサイズ上限、相対インポート・interface・console.log・default export の禁止などをまとめ、postooluse フックでも一部強制される。 core coding style — naming, comments, import order, file size, immutability **/*.{ts,tsx,js,jsx}">
-  <div class="card-head"><h3>coding-style.md</h3><span class="badge">**/*.{ts,tsx,js,jsx}</span><span class="badge ok">alwaysApply</span></div>
-  <p class="explain"><strong>解説:</strong> ts・tsx・js・jsx すべてに常時適用される基本コーディング規約。命名規則、不変性、ファイルサイズ上限、相対インポート・interface・console.log・default export の禁止などをまとめ、PostToolUse フックでも一部強制される。</p>
-  <p class="desc">Core coding style — naming, comments, import order, file size, immutability</p>
-  <p class="when"><code>.claude/rules/common/coding-style.md</code></p>
-  <details><summary>ルール全文を表示</summary><pre class="md">---
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rules — Claude Code 設定ガイド</title>
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <h1>Claude Code 設定</h1>
+        <div class="sub">tanstack-start-prose-polish</div>
+        <nav class="nav">
+          <a href="./index.html" class="">概要</a>
+          <a href="./skills.html" class="">Skills<span class="n">39</span></a>
+          <a href="./rules.html" class="active">Rules<span class="n">9</span></a>
+          <a href="./hooks.html" class="">Hooks<span class="n">8</span></a>
+          <a href="./settings.html" class="">settings.json</a>
+          <a href="./plugin.html" class="">Plugin (ECC)<span class="n">386</span></a>
+        </nav>
+      </aside>
+      <main class="main">
+        <div class="page-head">
+          <h2>Rules</h2>
+          <div class="meta">生成日: ・ 実データ（.claude/ 配下の実ファイル）から自動生成</div>
+        </div>
+        <div class="toolbar">
+          <input id="q" type="search" placeholder="このページ内を検索…" autocomplete="off" />
+          <button class="btn" id="expand-all">すべて展開</button>
+          <button class="btn" id="collapse-all">すべて折りたたみ</button>
+        </div>
+        <div class="cards">
+          <article
+            class="card"
+            data-search="coding-style.md .claude/rules/common/coding-style.md ts・tsx・js・jsx すべてに常時適用される基本コーディング規約。命名規則、不変性、ファイルサイズ上限、相対インポート・interface・console.log・default export の禁止などをまとめ、postooluse フックでも一部強制される。 core coding style — naming, comments, import order, file size, immutability **/*.{ts,tsx,js,jsx}"
+          >
+            <div class="card-head">
+              <h3>coding-style.md</h3>
+              <span class="badge">**/*.{ts,tsx,js,jsx}</span
+              ><span class="badge ok">alwaysApply</span>
+            </div>
+            <p class="explain">
+              <strong>解説:</strong> ts・tsx・js・jsx
+              すべてに常時適用される基本コーディング規約。命名規則、不変性、ファイルサイズ上限、相対インポート・interface・console.log・default
+              export の禁止などをまとめ、PostToolUse フックでも一部強制される。
+            </p>
+            <p class="desc">
+              Core coding style — naming, comments, import order, file size, immutability
+            </p>
+            <p class="when"><code>.claude/rules/common/coding-style.md</code></p>
+            <details>
+              <summary>ルール全文を表示</summary>
+              <pre class="md">
+---
 description: Core coding style — naming, comments, import order, file size, immutability
 globs: [&quot;**/*.{ts,tsx,js,jsx}&quot;]
 alwaysApply: true
@@ -95,14 +111,29 @@ import { helper } from &quot;~/features/tenants/utils/helper&quot;;
 ```
 
 - **No `export default`** outside `src/routes/**` and `*.config.ts`
-</pre></details>
-</article>
-<article class="card" data-search="development-workflow.md .claude/rules/common/development-workflow.md 開発操作はすべて vite+（vp）経由で行うことを定めたワークフロー規約。pnpm・npm・yarn の直接実行や vite/vitest からの直接インポートを禁止し、pr 提出前のチェック手順を示す。常時適用ではなく作業フローの参照用。 vite+ (vp) command conventions, forbidden alternatives, pr pre-check flow ">
-  <div class="card-head"><h3>development-workflow.md</h3></div>
-  <p class="explain"><strong>解説:</strong> 開発操作はすべて Vite+（vp）経由で行うことを定めたワークフロー規約。pnpm・npm・yarn の直接実行や vite/vitest からの直接インポートを禁止し、PR 提出前のチェック手順を示す。常時適用ではなく作業フローの参照用。</p>
-  <p class="desc">Vite+ (vp) command conventions, forbidden alternatives, PR pre-check flow</p>
-  <p class="when"><code>.claude/rules/common/development-workflow.md</code></p>
-  <details><summary>ルール全文を表示</summary><pre class="md">---
+</pre
+              >
+            </details>
+          </article>
+          <article
+            class="card"
+            data-search="development-workflow.md .claude/rules/common/development-workflow.md 開発操作はすべて vite+（vp）経由で行うことを定めたワークフロー規約。pnpm・npm・yarn の直接実行や vite/vitest からの直接インポートを禁止し、pr 提出前のチェック手順を示す。常時適用ではなく作業フローの参照用。 vite+ (vp) command conventions, forbidden alternatives, pr pre-check flow "
+          >
+            <div class="card-head"><h3>development-workflow.md</h3></div>
+            <p class="explain">
+              <strong>解説:</strong> 開発操作はすべて
+              Vite+（vp）経由で行うことを定めたワークフロー規約。pnpm・npm・yarn の直接実行や
+              vite/vitest からの直接インポートを禁止し、PR
+              提出前のチェック手順を示す。常時適用ではなく作業フローの参照用。
+            </p>
+            <p class="desc">
+              Vite+ (vp) command conventions, forbidden alternatives, PR pre-check flow
+            </p>
+            <p class="when"><code>.claude/rules/common/development-workflow.md</code></p>
+            <details>
+              <summary>ルール全文を表示</summary>
+              <pre class="md">
+---
 description: Vite+ (vp) command conventions, forbidden alternatives, PR pre-check flow
 globs: []
 alwaysApply: false
@@ -162,14 +193,29 @@ vp test           # all unit tests
 vp run fallow:dead-code  # when removing or renaming exports
 vp build          # confirms production build succeeds
 ```
-</pre></details>
-</article>
-<article class="card" data-search="security.md .claude/rules/common/security.md ts・tsx に常時適用されるセキュリティ規約。シークレットのハードコード禁止と環境変数からの読み込み、valibot による境界での入力バリデーション、dangerouslysetinnerhtml を避ける xss 対策を定める。 secret handling, input validation via valibot, xss safety **/*.{ts,tsx}">
-  <div class="card-head"><h3>security.md</h3><span class="badge">**/*.{ts,tsx}</span><span class="badge ok">alwaysApply</span></div>
-  <p class="explain"><strong>解説:</strong> ts・tsx に常時適用されるセキュリティ規約。シークレットのハードコード禁止と環境変数からの読み込み、Valibot による境界での入力バリデーション、dangerouslySetInnerHTML を避ける XSS 対策を定める。</p>
-  <p class="desc">Secret handling, input validation via Valibot, XSS safety</p>
-  <p class="when"><code>.claude/rules/common/security.md</code></p>
-  <details><summary>ルール全文を表示</summary><pre class="md">---
+</pre
+              >
+            </details>
+          </article>
+          <article
+            class="card"
+            data-search="security.md .claude/rules/common/security.md ts・tsx に常時適用されるセキュリティ規約。シークレットのハードコード禁止と環境変数からの読み込み、valibot による境界での入力バリデーション、dangerouslysetinnerhtml を避ける xss 対策を定める。 secret handling, input validation via valibot, xss safety **/*.{ts,tsx}"
+          >
+            <div class="card-head">
+              <h3>security.md</h3>
+              <span class="badge">**/*.{ts,tsx}</span><span class="badge ok">alwaysApply</span>
+            </div>
+            <p class="explain">
+              <strong>解説:</strong> ts・tsx
+              に常時適用されるセキュリティ規約。シークレットのハードコード禁止と環境変数からの読み込み、Valibot
+              による境界での入力バリデーション、dangerouslySetInnerHTML を避ける XSS 対策を定める。
+            </p>
+            <p class="desc">Secret handling, input validation via Valibot, XSS safety</p>
+            <p class="when"><code>.claude/rules/common/security.md</code></p>
+            <details>
+              <summary>ルール全文を表示</summary>
+              <pre class="md">
+---
 description: Secret handling, input validation via Valibot, XSS safety
 globs: [&quot;**/*.{ts,tsx}&quot;]
 alwaysApply: true
@@ -210,14 +256,32 @@ const product = rawApiResponse.data as Product;
 ## XSS
 
 Avoid `dangerouslySetInnerHTML`. If HTML rendering is unavoidable, sanitize the input first with a trusted library.
-</pre></details>
-</article>
-<article class="card" data-search="testing.md .claude/rules/common/testing.md テストファイルに常時適用されるテスト方針。ユーザー視点で role/text クエリを優先し data-testid を禁止、テストユーティリティは vite-plus/test から取り込み vp test で実行することを定める。 test user-visible behavior — role/text queries, no data-testid, vitest via vite-plus **/*.{test,spec}.{ts,tsx}">
-  <div class="card-head"><h3>testing.md</h3><span class="badge">**/*.{test,spec}.{ts,tsx}</span><span class="badge ok">alwaysApply</span></div>
-  <p class="explain"><strong>解説:</strong> テストファイルに常時適用されるテスト方針。ユーザー視点で role/text クエリを優先し data-testid を禁止、テストユーティリティは vite-plus/test から取り込み vp test で実行することを定める。</p>
-  <p class="desc">Test user-visible behavior — role/text queries, no data-testid, Vitest via vite-plus</p>
-  <p class="when"><code>.claude/rules/common/testing.md</code></p>
-  <details><summary>ルール全文を表示</summary><pre class="md">---
+</pre
+              >
+            </details>
+          </article>
+          <article
+            class="card"
+            data-search="testing.md .claude/rules/common/testing.md テストファイルに常時適用されるテスト方針。ユーザー視点で role/text クエリを優先し data-testid を禁止、テストユーティリティは vite-plus/test から取り込み vp test で実行することを定める。 test user-visible behavior — role/text queries, no data-testid, vitest via vite-plus **/*.{test,spec}.{ts,tsx}"
+          >
+            <div class="card-head">
+              <h3>testing.md</h3>
+              <span class="badge">**/*.{test,spec}.{ts,tsx}</span
+              ><span class="badge ok">alwaysApply</span>
+            </div>
+            <p class="explain">
+              <strong>解説:</strong> テストファイルに常時適用されるテスト方針。ユーザー視点で
+              role/text クエリを優先し data-testid を禁止、テストユーティリティは vite-plus/test
+              から取り込み vp test で実行することを定める。
+            </p>
+            <p class="desc">
+              Test user-visible behavior — role/text queries, no data-testid, Vitest via vite-plus
+            </p>
+            <p class="when"><code>.claude/rules/common/testing.md</code></p>
+            <details>
+              <summary>ルール全文を表示</summary>
+              <pre class="md">
+---
 description: Test user-visible behavior — role/text queries, no data-testid, Vitest via vite-plus
 globs: [&quot;**/*.{test,spec}.{ts,tsx}&quot;]
 alwaysApply: true
@@ -269,14 +333,33 @@ Run tests with `vp test`, not `vp run vitest`.
 ## Related skills
 
 - `webapp-testing` — testing patterns and helpers for this project
-</pre></details>
-</article>
-<article class="card" data-search="better-result.md .claude/rules/typescript/better-result.md src 配下の ts・tsx に常時適用される better-result の運用規約。期待される失敗の境界で result.try/trypromise を使い、taggederror で型付けし、result.gen で合成、シリアライズ境界では result を素のオブジェクトへ変換することを求める。 better-result best practices for typed errors, composition, and boundaries src/**/*.ts, src/**/*.tsx">
-  <div class="card-head"><h3>better-result.md</h3><span class="badge">src/**/*.ts, src/**/*.tsx</span><span class="badge ok">alwaysApply</span></div>
-  <p class="explain"><strong>解説:</strong> src 配下の ts・tsx に常時適用される better-result の運用規約。期待される失敗の境界で Result.try/tryPromise を使い、TaggedError で型付けし、Result.gen で合成、シリアライズ境界では Result を素のオブジェクトへ変換することを求める。</p>
-  <p class="desc">better-result best practices for typed errors, composition, and boundaries</p>
-  <p class="when"><code>.claude/rules/typescript/better-result.md</code></p>
-  <details><summary>ルール全文を表示</summary><pre class="md">---
+</pre
+              >
+            </details>
+          </article>
+          <article
+            class="card"
+            data-search="better-result.md .claude/rules/typescript/better-result.md src 配下の ts・tsx に常時適用される better-result の運用規約。期待される失敗の境界で result.try/trypromise を使い、taggederror で型付けし、result.gen で合成、シリアライズ境界では result を素のオブジェクトへ変換することを求める。 better-result best practices for typed errors, composition, and boundaries src/**/*.ts, src/**/*.tsx"
+          >
+            <div class="card-head">
+              <h3>better-result.md</h3>
+              <span class="badge">src/**/*.ts, src/**/*.tsx</span
+              ><span class="badge ok">alwaysApply</span>
+            </div>
+            <p class="explain">
+              <strong>解説:</strong> src 配下の ts・tsx に常時適用される better-result
+              の運用規約。期待される失敗の境界で Result.try/tryPromise を使い、TaggedError
+              で型付けし、Result.gen で合成、シリアライズ境界では Result
+              を素のオブジェクトへ変換することを求める。
+            </p>
+            <p class="desc">
+              better-result best practices for typed errors, composition, and boundaries
+            </p>
+            <p class="when"><code>.claude/rules/typescript/better-result.md</code></p>
+            <details>
+              <summary>ルール全文を表示</summary>
+              <pre class="md">
+---
 description: better-result best practices for typed errors, composition, and boundaries
 globs: [&quot;src/**/*.ts&quot;, &quot;src/**/*.tsx&quot;]
 alwaysApply: true
@@ -363,14 +446,32 @@ return { error: false as const, data: result.value };
 ## Related skills
 
 - `better-result-adopt` — use when migrating modules or reviewing Result patterns.
-</pre></details>
-</article>
-<article class="card" data-search="project-structure.md .claude/rules/typescript/project-structure.md src 配下の ts・tsx に常時適用される bulletproof react のディレクトリ構造規約。features/* の機能別レイアウト、~ エイリアス必須（相対パス禁止）、feature 間の直接依存禁止、ルートファイルの例外を定める。 bulletproof react features/* layout, ~ alias, feature inter-dependencies src/**/*.{ts,tsx}">
-  <div class="card-head"><h3>project-structure.md</h3><span class="badge">src/**/*.{ts,tsx}</span><span class="badge ok">alwaysApply</span></div>
-  <p class="explain"><strong>解説:</strong> src 配下の ts・tsx に常時適用される Bulletproof React のディレクトリ構造規約。features/* の機能別レイアウト、~ エイリアス必須（相対パス禁止）、feature 間の直接依存禁止、ルートファイルの例外を定める。</p>
-  <p class="desc">Bulletproof React features/* layout, ~ alias, feature inter-dependencies</p>
-  <p class="when"><code>.claude/rules/typescript/project-structure.md</code></p>
-  <details><summary>ルール全文を表示</summary><pre class="md">---
+</pre
+              >
+            </details>
+          </article>
+          <article
+            class="card"
+            data-search="project-structure.md .claude/rules/typescript/project-structure.md src 配下の ts・tsx に常時適用される bulletproof react のディレクトリ構造規約。features/* の機能別レイアウト、~ エイリアス必須（相対パス禁止）、feature 間の直接依存禁止、ルートファイルの例外を定める。 bulletproof react features/* layout, ~ alias, feature inter-dependencies src/**/*.{ts,tsx}"
+          >
+            <div class="card-head">
+              <h3>project-structure.md</h3>
+              <span class="badge">src/**/*.{ts,tsx}</span><span class="badge ok">alwaysApply</span>
+            </div>
+            <p class="explain">
+              <strong>解説:</strong> src 配下の ts・tsx に常時適用される Bulletproof React
+              のディレクトリ構造規約。features/* の機能別レイアウト、~
+              エイリアス必須（相対パス禁止）、feature
+              間の直接依存禁止、ルートファイルの例外を定める。
+            </p>
+            <p class="desc">
+              Bulletproof React features/* layout, ~ alias, feature inter-dependencies
+            </p>
+            <p class="when"><code>.claude/rules/typescript/project-structure.md</code></p>
+            <details>
+              <summary>ルール全文を表示</summary>
+              <pre class="md">
+---
 description: Bulletproof React features/* layout, ~ alias, feature inter-dependencies
 globs: [&quot;src/**/*.{ts,tsx}&quot;]
 alwaysApply: true
@@ -441,14 +542,34 @@ export const Route = createFileRoute(&quot;/products&quot;)({
   component: ProductsPage,
 });
 ```
-</pre></details>
-</article>
-<article class="card" data-search="react-conventions.md .claude/rules/typescript/react-conventions.md src 配下の tsx とフックに常時適用される react/typescript 規約。named export のみ、コンポーネント・フックは関数宣言で書く、props は utility 型を活用、定数は as const satisfies、react-compiler 前提で手動メモ化を避けることを定める。 named exports, function declarations, utility-type props, as const satisfies, react-compiler src/**/*.tsx, src/**/hooks/*.ts">
-  <div class="card-head"><h3>react-conventions.md</h3><span class="badge">src/**/*.tsx, src/**/hooks/*.ts</span><span class="badge ok">alwaysApply</span></div>
-  <p class="explain"><strong>解説:</strong> src 配下の tsx とフックに常時適用される React/TypeScript 規約。named export のみ、コンポーネント・フックは関数宣言で書く、props は Utility 型を活用、定数は as const satisfies、react-compiler 前提で手動メモ化を避けることを定める。</p>
-  <p class="desc">Named exports, function declarations, Utility-type props, as const satisfies, react-compiler</p>
-  <p class="when"><code>.claude/rules/typescript/react-conventions.md</code></p>
-  <details><summary>ルール全文を表示</summary><pre class="md">---
+</pre
+              >
+            </details>
+          </article>
+          <article
+            class="card"
+            data-search="react-conventions.md .claude/rules/typescript/react-conventions.md src 配下の tsx とフックに常時適用される react/typescript 規約。named export のみ、コンポーネント・フックは関数宣言で書く、props は utility 型を活用、定数は as const satisfies、react-compiler 前提で手動メモ化を避けることを定める。 named exports, function declarations, utility-type props, as const satisfies, react-compiler src/**/*.tsx, src/**/hooks/*.ts"
+          >
+            <div class="card-head">
+              <h3>react-conventions.md</h3>
+              <span class="badge">src/**/*.tsx, src/**/hooks/*.ts</span
+              ><span class="badge ok">alwaysApply</span>
+            </div>
+            <p class="explain">
+              <strong>解説:</strong> src 配下の tsx とフックに常時適用される React/TypeScript
+              規約。named export のみ、コンポーネント・フックは関数宣言で書く、props は Utility
+              型を活用、定数は as const satisfies、react-compiler
+              前提で手動メモ化を避けることを定める。
+            </p>
+            <p class="desc">
+              Named exports, function declarations, Utility-type props, as const satisfies,
+              react-compiler
+            </p>
+            <p class="when"><code>.claude/rules/typescript/react-conventions.md</code></p>
+            <details>
+              <summary>ルール全文を表示</summary>
+              <pre class="md">
+---
 description: Named exports, function declarations, Utility-type props, as const satisfies, react-compiler
 globs: [&quot;src/**/*.tsx&quot;, &quot;src/**/hooks/*.ts&quot;]
 alwaysApply: true
@@ -560,14 +681,35 @@ export const fetchTenantsServer = createServerFn().handler(async () =&gt; [...te
 
 - `react-best-practices` — patterns and architecture
 - `react-doctor` — React health checks (`vp run doctor`)
-</pre></details>
-</article>
-<article class="card" data-search="valibot-validation.md .claude/rules/typescript/valibot-validation.md スキーマファイルとフォームコンポーネントに常時適用される valibot 規約。スキーマは features/*/schemas/ に置き、inferoutput や生成型からの pick で型を派生、tanstack form アダプタと連携し、バリデーションは入力・api 応答などの境界に限ることを定める。 valibot schemas — placement under features/*/schemas/, inferoutput, tanstack form adapter src/features/**/schemas/*.ts, src/features/**/components/*-form.tsx">
-  <div class="card-head"><h3>valibot-validation.md</h3><span class="badge">src/features/**/schemas/*.ts, src/features/**/components/*-form.tsx</span><span class="badge ok">alwaysApply</span></div>
-  <p class="explain"><strong>解説:</strong> スキーマファイルとフォームコンポーネントに常時適用される Valibot 規約。スキーマは features/*/schemas/ に置き、InferOutput や生成型からの Pick で型を派生、TanStack Form アダプタと連携し、バリデーションは入力・API 応答などの境界に限ることを定める。</p>
-  <p class="desc">Valibot schemas — placement under features/*/schemas/, InferOutput, TanStack Form adapter</p>
-  <p class="when"><code>.claude/rules/typescript/valibot-validation.md</code></p>
-  <details><summary>ルール全文を表示</summary><pre class="md">---
+</pre
+              >
+            </details>
+          </article>
+          <article
+            class="card"
+            data-search="valibot-validation.md .claude/rules/typescript/valibot-validation.md スキーマファイルとフォームコンポーネントに常時適用される valibot 規約。スキーマは features/*/schemas/ に置き、inferoutput や生成型からの pick で型を派生、tanstack form アダプタと連携し、バリデーションは入力・api 応答などの境界に限ることを定める。 valibot schemas — placement under features/*/schemas/, inferoutput, tanstack form adapter src/features/**/schemas/*.ts, src/features/**/components/*-form.tsx"
+          >
+            <div class="card-head">
+              <h3>valibot-validation.md</h3>
+              <span class="badge"
+                >src/features/**/schemas/*.ts, src/features/**/components/*-form.tsx</span
+              ><span class="badge ok">alwaysApply</span>
+            </div>
+            <p class="explain">
+              <strong>解説:</strong> スキーマファイルとフォームコンポーネントに常時適用される
+              Valibot 規約。スキーマは features/*/schemas/ に置き、InferOutput や生成型からの Pick
+              で型を派生、TanStack Form アダプタと連携し、バリデーションは入力・API
+              応答などの境界に限ることを定める。
+            </p>
+            <p class="desc">
+              Valibot schemas — placement under features/*/schemas/, InferOutput, TanStack Form
+              adapter
+            </p>
+            <p class="when"><code>.claude/rules/typescript/valibot-validation.md</code></p>
+            <details>
+              <summary>ルール全文を表示</summary>
+              <pre class="md">
+---
 description: Valibot schemas — placement under features/*/schemas/, InferOutput, TanStack Form adapter
 globs: [&quot;src/features/**/schemas/*.ts&quot;, &quot;src/features/**/components/*-form.tsx&quot;]
 alwaysApply: true
@@ -653,14 +795,34 @@ Validate at system boundaries (user input, API responses). Do NOT add Valibot va
 ## Related rules
 
 - [common/security.md](../common/security.md) — why boundary validation matters
-</pre></details>
-</article>
-<article class="card" data-search="mantine-tailwind.md .claude/rules/web/mantine-tailwind.md src 配下の tsx と theme.ts に常時適用される mantine 9 と tailwind v4 の共存規約。まず mantine のコンポーネント・props を使い、tailwind はラッパー/レイアウト要素で cn() を介して用い、ハードコード値ではなく mantine のテーマトークンを優先することを定める。 mantine 9 + tailwind v4 coexistence — default to mantine, cn() for layout, theme tokens src/**/*.tsx, src/lib/theme.ts">
-  <div class="card-head"><h3>mantine-tailwind.md</h3><span class="badge">src/**/*.tsx, src/lib/theme.ts</span><span class="badge ok">alwaysApply</span></div>
-  <p class="explain"><strong>解説:</strong> src 配下の tsx と theme.ts に常時適用される Mantine 9 と Tailwind v4 の共存規約。まず Mantine のコンポーネント・props を使い、Tailwind はラッパー/レイアウト要素で cn() を介して用い、ハードコード値ではなく Mantine のテーマトークンを優先することを定める。</p>
-  <p class="desc">Mantine 9 + Tailwind v4 coexistence — default to Mantine, cn() for layout, theme tokens</p>
-  <p class="when"><code>.claude/rules/web/mantine-tailwind.md</code></p>
-  <details><summary>ルール全文を表示</summary><pre class="md">---
+</pre
+              >
+            </details>
+          </article>
+          <article
+            class="card"
+            data-search="mantine-tailwind.md .claude/rules/web/mantine-tailwind.md src 配下の tsx と theme.ts に常時適用される mantine 9 と tailwind v4 の共存規約。まず mantine のコンポーネント・props を使い、tailwind はラッパー/レイアウト要素で cn() を介して用い、ハードコード値ではなく mantine のテーマトークンを優先することを定める。 mantine 9 + tailwind v4 coexistence — default to mantine, cn() for layout, theme tokens src/**/*.tsx, src/lib/theme.ts"
+          >
+            <div class="card-head">
+              <h3>mantine-tailwind.md</h3>
+              <span class="badge">src/**/*.tsx, src/lib/theme.ts</span
+              ><span class="badge ok">alwaysApply</span>
+            </div>
+            <p class="explain">
+              <strong>解説:</strong> src 配下の tsx と theme.ts に常時適用される Mantine 9 と
+              Tailwind v4 の共存規約。まず Mantine のコンポーネント・props を使い、Tailwind
+              はラッパー/レイアウト要素で cn() を介して用い、ハードコード値ではなく Mantine
+              のテーマトークンを優先することを定める。
+            </p>
+            <p class="desc">
+              Mantine 9 + Tailwind v4 coexistence — default to Mantine, cn() for layout, theme
+              tokens
+            </p>
+            <p class="when"><code>.claude/rules/web/mantine-tailwind.md</code></p>
+            <details>
+              <summary>ルール全文を表示</summary>
+              <pre class="md">
+---
 description: Mantine 9 + Tailwind v4 coexistence — default to Mantine, cn() for layout, theme tokens
 globs: [&quot;src/**/*.tsx&quot;, &quot;src/lib/theme.ts&quot;]
 alwaysApply: true
@@ -727,14 +889,24 @@ const spacing = rem(16);
 
 - `mantine-custom-components` — building Mantine-based components
 - `frontend-design` — design patterns for this admin UI
-</pre></details>
-</article>
-</div>
-    <footer style="margin-top:48px;color:var(--muted);font-size:12px;border-top:1px solid var(--border);padding-top:16px">
-      Generated by the <code>claude-code-docs</code> workflow ・
-    </footer>
-  </main>
-</div>
-<script src="./assets/app.js"></script>
-</body>
+</pre
+              >
+            </details>
+          </article>
+        </div>
+        <footer
+          style="
+            margin-top: 48px;
+            color: var(--muted);
+            font-size: 12px;
+            border-top: 1px solid var(--border);
+            padding-top: 16px;
+          "
+        >
+          Generated by the <code>claude-code-docs</code> workflow ・
+        </footer>
+      </main>
+    </div>
+    <script src="./assets/app.js"></script>
+  </body>
 </html>

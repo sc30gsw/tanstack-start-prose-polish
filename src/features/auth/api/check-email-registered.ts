@@ -6,6 +6,7 @@ import * as v from "valibot";
 import { adminDb } from "~/db/instant-admin";
 import type { AppSchema } from "~/db/instant-schema";
 import { signUpSchema } from "~/features/auth/schemas/login-schema";
+import { AuthError } from "~/features/auth/types/auth-error";
 
 const checkEmailRegisteredFn = createServerFn({ method: "POST" })
   .inputValidator(v.pick(signUpSchema, ["email"]))
@@ -19,7 +20,11 @@ const checkEmailRegisteredFn = createServerFn({ method: "POST" })
 
 export function checkEmailRegistered(email: InstaQLEntity<AppSchema, "$users">["email"]) {
   return Result.tryPromise({
-    catch: (e) => e as Error,
+    catch: (e) =>
+      new AuthError({
+        cause: e,
+        message: e instanceof Error ? e.message : "メール確認に失敗しました",
+      }),
     try: () => checkEmailRegisteredFn({ data: { email } }),
   });
 }
