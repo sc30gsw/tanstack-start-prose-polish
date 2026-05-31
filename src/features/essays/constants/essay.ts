@@ -10,8 +10,9 @@ export const ESSAY_STATUS = [
   "reviewed",
   "correction_failed",
 ] as const satisfies readonly string[];
-//? 全文検索時にクライアント側で走査する最大件数（body は indexed 不可のため）
-export const ESSAY_SEARCH_SCAN_LIMIT = 1000;
+//? 全文検索時にクライアント側で走査する最大件数（body は indexed 不可のため）。
+//? 単一ユーザーの現実的な生涯エッセイ数を十分カバーする上限。超過分は isTruncated バナーで明示する
+export const ESSAY_SEARCH_SCAN_LIMIT = 5000;
 export const MAX_ESSAY_BODY_CHARS = 10_000;
 export const SCORE_CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"] as const satisfies readonly string[];
 export const DIFF_COMMENT_KIND = ["ai", "user"] as const satisfies readonly string[];

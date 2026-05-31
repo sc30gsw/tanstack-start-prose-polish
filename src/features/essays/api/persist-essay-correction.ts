@@ -132,10 +132,27 @@ export async function persistEssayCorrection({
 
   //? コメント処理が完了してから reviewed にする（添削結果ボタンを早く有効化しない）
   const txFinalize = db.tx.essays[essayId];
-  if (txFinalize) {
-    await Result.tryPromise(() =>
-      db.transact(txFinalize.update({ status: "reviewed", updatedAt: new Date() })),
-    );
+  if (!txFinalize) {
+    await markCorrectionFailed(essayId);
+
+    return { error: "添削結果の確定に失敗しました", ok: false as const };
+  }
+
+  const finalizeResult = await Result.tryPromise({
+    catch: (e) =>
+      new EssayPersistenceError({
+        cause: e,
+        message: e instanceof Error ? e.message : "添削結果の確定に失敗しました",
+      }),
+    try: () => db.transact(txFinalize.update({ status: "reviewed", updatedAt: new Date() })),
+  });
+
+  if (Result.isError(finalizeResult)) {
+    //? reviewed 化失敗で status が scoring のまま残ると「添削結果を確認」が永久に無効化されるため、
+    //? 復帰可能な correction_failed に倒して採点画面の再試行 UI を出す
+    await markCorrectionFailed(essayId);
+
+    return { error: finalizeResult.error.message, ok: false as const };
   }
 
   return { ok: true } as const;
