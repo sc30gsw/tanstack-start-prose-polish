@@ -41,6 +41,9 @@ export const schema = i.schema({
       scoreFeedback: i.string(),
       toeicMax: i.number(),
       toeicMin: i.number(),
+      /** テーマ適合の別軸評価。テーマあり（topic / diverse）のみ保存 */
+      topicFeedback: i.string().optional(),
+      topicRelevance: i.string().optional(),
     }),
   },
   links: {

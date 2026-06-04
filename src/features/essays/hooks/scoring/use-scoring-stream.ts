@@ -15,6 +15,7 @@ import type {
 import { scoreSchema, type Essay, type Score } from "~/features/essays/schemas/essay-schema";
 import type { ScoringState } from "~/features/essays/types/essay";
 import { EssayPersistenceError } from "~/features/essays/types/essay-error";
+import { topicPrompt } from "~/features/essays/utils/topic-prompt";
 import { isEveryNonNull } from "~/lib/every-non-null";
 
 type StartOpts = Partial<Pick<Essay, "mode" | "prompt">> & {
@@ -73,6 +74,17 @@ export function useScoringStream() {
         return;
       }
 
+      //? テーマ適合はテーマあり（topic / diverse）時のみ保存。free で LLM が誤出力しても無視する
+      const args = lastArgsRef.current;
+      const topicFields =
+        topicPrompt(args?.mode, args?.prompt) != null && finalObject.topicRelevance != null
+          ? {
+              topicFeedback: finalObject.topicFeedback ?? "",
+              topicRelevance: finalObject.topicRelevance,
+            }
+          : {};
+      const scorePayload = { cefr, score, scoreFeedback, toeicMax, toeicMin, ...topicFields };
+
       const result = await Result.tryPromise({
         catch: (e) =>
           new EssayPersistenceError({
@@ -82,10 +94,8 @@ export function useScoringStream() {
         try: () =>
           db.transact(
             existingScoreId
-              ? txScore.update({ cefr, score, scoreFeedback, toeicMax, toeicMin })
-              : txScore
-                  .update({ cefr, score, scoreFeedback, toeicMax, toeicMin })
-                  .link({ essay: essayId }),
+              ? txScore.update(scorePayload)
+              : txScore.update(scorePayload).link({ essay: essayId }),
           ),
       });
 
@@ -108,7 +118,10 @@ export function useScoringStream() {
     }
 
     //? 完了は onFinish が確定する。到着駆動では done に進めない（部分到着で先走らせない）
-    if (object.cefr != null) {
+    const args = lastArgsRef.current;
+    if (object.toeicMax != null && topicPrompt(args?.mode, args?.prompt) != null) {
+      setStage("topic");
+    } else if (object.cefr != null) {
       setStage("toeic");
     } else if (object.score != null) {
       setStage("cefr");

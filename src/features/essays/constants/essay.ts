@@ -14,8 +14,24 @@ export const ESSAY_STATUS = [
 //? 単一ユーザーの現実的な生涯エッセイ数を十分カバーする上限。超過分は isTruncated バナーで明示する
 export const ESSAY_SEARCH_SCAN_LIMIT = 5000;
 export const MAX_ESSAY_BODY_CHARS = 10_000;
+//? お題は AI 生成で 1〜3 文程度。プロンプト注入・トークン浪費を防ぐ入力上限
+export const MAX_ESSAY_PROMPT_CHARS = 500;
 export const SCORE_CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"] as const satisfies readonly string[];
 export const DIFF_COMMENT_KIND = ["ai", "user"] as const satisfies readonly string[];
+export const TOPIC_RELEVANCE = [
+  "on_topic",
+  "partial",
+  "off_topic",
+] as const satisfies readonly string[];
+
+type TopicRelevance = (typeof TOPIC_RELEVANCE)[number];
+
+//? テーマ適合は score/CEFR/TOEIC と独立した別軸評価。バッジ表示用メタ
+export const TOPIC_RELEVANCE_META = {
+  off_topic: { color: "red", label: "テーマから逸脱" },
+  on_topic: { color: "green", label: "テーマに沿っている" },
+  partial: { color: "yellow", label: "テーマから部分的に逸脱" },
+} as const satisfies Record<TopicRelevance, { color: MantineColor; label: string }>;
 
 type ScoreCefr = (typeof SCORE_CEFR)[number];
 
