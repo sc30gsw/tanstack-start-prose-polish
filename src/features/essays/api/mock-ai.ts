@@ -7,6 +7,7 @@ import type {
 } from "~/features/essays/schemas/essay-ai-input-schema";
 import type { DiffCommentInput, Score } from "~/features/essays/schemas/essay-schema";
 import { normalizeCorrectedBody } from "~/features/essays/utils/correction-comment-resolution";
+import { topicPrompt } from "~/features/essays/utils/topic-prompt";
 
 const TOPICS = [
   "Should artificial intelligence have legal rights? Discuss your perspective with specific examples.",
@@ -56,13 +57,20 @@ export function mockDiverseQuestion() {
 export function mockScore(text: string, opts?: EssayOpts): Score {
   const charCount = text.trim().length;
   const baseScore = clamp(40 + Math.floor(charCount / 200), 30, 95);
+  const topic = topicPrompt(opts?.mode, opts?.prompt);
 
   return {
     cefr: scoreToCefr(baseScore),
     score: baseScore,
-    scoreFeedback: buildScoreFeedback(baseScore, opts),
+    scoreFeedback: buildScoreFeedback(baseScore),
     toeicMax: scoreToToeicMax(baseScore),
     toeicMin: scoreToToeicMin(baseScore),
+    ...(topic != null
+      ? {
+          topicFeedback: `お題「${truncateTopic(topic, 40)}」におおむね沿った内容です。`,
+          topicRelevance: "on_topic" as const,
+        }
+      : {}),
   } satisfies Score;
 }
 
@@ -81,21 +89,21 @@ export function mockGenerateComments(
   };
 }
 
-function buildScoreFeedback(score: Score["score"], opts?: EssayOpts) {
-  const topicNote =
-    opts?.mode === "topic" && opts.prompt != null
-      ? ` お題「${opts.prompt.slice(0, 40)}${opts.prompt.length > 40 ? "…" : ""}」との内容合致度も評価に含まれています。`
-      : "";
-
+//? テーマ適合は topicFeedback の別軸評価。scoreFeedback には混入させない
+function buildScoreFeedback(score: Score["score"]) {
   if (score >= 80) {
-    return `語彙の多様性が高く、文章構造も安定しています。接続詞の使い方にやや改善の余地があります。${topicNote}`;
+    return "語彙の多様性が高く、文章構造も安定しています。接続詞の使い方にやや改善の余地があります。";
   }
 
   if (score >= 60) {
-    return `基本的な文法は押さえられています。より複雑な構文を取り入れることで表現力が向上するでしょう。${topicNote}`;
+    return "基本的な文法は押さえられています。より複雑な構文を取り入れることで表現力が向上するでしょう。";
   }
 
-  return `基礎的な文法の見直しと、段落構成の整理をお勧めします。${topicNote}`;
+  return "基礎的な文法の見直しと、段落構成の整理をお勧めします。";
+}
+
+function truncateTopic(topic: string, maxChars: number) {
+  return `${topic.slice(0, maxChars)}${topic.length > maxChars ? "…" : ""}`;
 }
 
 function scoreToCefr(score: Score["score"]) {
@@ -155,12 +163,13 @@ function generateMockComments(lines: string[], opts?: EssayOpts) {
   }
 
   const usedLines = new Set(lineNumbers);
+  const topic = topicPrompt(opts?.mode, opts?.prompt);
 
-  if (opts?.mode === "topic" && opts.prompt != null && lines.length > 0) {
+  if (topic != null && lines.length > 0) {
     const topicLine = Math.max(1, Math.floor(lines.length / 2));
     if (!usedLines.has(topicLine)) {
       comments.unshift({
-        body: `Topic relevance check: Make sure your essay directly addresses the given topic — "${opts.prompt.slice(0, 60)}${opts.prompt.length > 60 ? "…" : ""}"`,
+        body: `Topic relevance check: Make sure your essay directly addresses the given topic — "${truncateTopic(topic, 60)}"`,
         lineNumber: topicLine,
         side: "additions",
         suggestion:

@@ -11,13 +11,13 @@ import { aiCommentsSchema, aiCorrectedBodySchema } from "~/features/essays/schem
 import {
   essayBodyInputSchema,
   essayAiContextSchema,
-  type EssayAiContext,
 } from "~/features/essays/schemas/essay-ai-input-schema";
 import { EssayAiError } from "~/features/essays/types/essay-error";
 import {
   normalizeCorrectedBody,
   resolveComments,
 } from "~/features/essays/utils/correction-comment-resolution";
+import { topicPrompt } from "~/features/essays/utils/topic-prompt";
 import { AI_MODEL, isAiEnabled } from "~/lib/ai/model";
 
 const commentsInputSchema = v.object({
@@ -39,10 +39,6 @@ const COMMENTS_SYSTEM = [
   "Never invent line numbers; only copy snippets verbatim from the corrected essay.",
 ].join(" ");
 
-function topicNote(mode: EssayAiContext["mode"], prompt?: EssayAiContext["prompt"]) {
-  return mode === "topic" && prompt ? prompt : null;
-}
-
 const correctEssayBodyFn = createServerFn({ method: "POST" })
   .middleware([requireInstantAuthMiddleware])
   .inputValidator(essayBodyInputSchema)
@@ -51,7 +47,7 @@ const correctEssayBodyFn = createServerFn({ method: "POST" })
       return mockCorrectBody(data.text, { mode: data.mode, prompt: data.prompt });
     }
 
-    const prompt = topicNote(data.mode, data.prompt);
+    const prompt = topicPrompt(data.mode, data.prompt);
     const topicSuffix = prompt ? ` The essay should address this topic: "${prompt}".` : "";
 
     const { output } = await generateText({
@@ -79,9 +75,9 @@ const generateEssayCommentsFn = createServerFn({ method: "POST" })
       });
     }
 
-    const prompt = topicNote(data.mode, data.prompt);
+    const prompt = topicPrompt(data.mode, data.prompt);
     const topicSuffix = prompt
-      ? ` The essay should address this topic: "${prompt}". Add a comment if it strays off-topic.`
+      ? ` The essay should address this topic: "${prompt}". If any part strays off-topic, add a comment on the off-topic snippet explaining how it diverges and suggest how to tie it back to the topic.`
       : "";
 
     const { output } = await generateText({

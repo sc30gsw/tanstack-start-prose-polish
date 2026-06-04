@@ -6,6 +6,7 @@ import {
   ESSAY_STATUS,
   MAX_ESSAY_BODY_CHARS,
   SCORE_CEFR,
+  TOPIC_RELEVANCE,
 } from "~/features/essays/constants/essay";
 
 const essayModeSchema = v.picklist(ESSAY_MODE);
@@ -28,12 +29,15 @@ export const essayDraftSchema = v.pipe(
   ),
 );
 
+//? topicRelevance / topicFeedback はテーマあり(topic / diverse)のみ。free と既存レコードは undefined
 export const scoreSchema = v.object({
   cefr: v.picklist(SCORE_CEFR),
   score: v.pipe(v.number(), v.minValue(0), v.maxValue(100)),
   scoreFeedback: v.string(),
   toeicMax: v.number(),
   toeicMin: v.number(),
+  topicFeedback: v.optional(v.string()),
+  topicRelevance: v.optional(v.picklist(TOPIC_RELEVANCE)),
 });
 
 export const diffCommentInputSchema = v.object({

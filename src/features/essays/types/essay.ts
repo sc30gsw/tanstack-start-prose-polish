@@ -1,6 +1,7 @@
 import type { Score } from "~/features/essays/schemas/essay-schema";
 
-type ScoringStage = "idle" | "score" | "cefr" | "toeic" | "done";
+//? "topic" はテーマ適合判定中（テーマあり時のみ通過する最終ステージ）
+type ScoringStage = "idle" | "score" | "cefr" | "toeic" | "topic" | "done";
 
 export type ScoringState = {
   feedbackReady: boolean;

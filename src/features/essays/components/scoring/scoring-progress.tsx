@@ -1,11 +1,22 @@
 import { Badge, Box, Group, Progress, Stack, Text } from "@mantine/core";
 import type { ReactNode } from "react";
 
+import { TOPIC_RELEVANCE_META } from "~/features/essays/constants/essay";
 import type { ScoringState } from "~/features/essays/types/essay";
 
-const STAGE_ORDER = ["idle", "score", "cefr", "toeic", "done"] as const satisfies readonly string[];
+const STAGE_ORDER = [
+  "idle",
+  "score",
+  "cefr",
+  "toeic",
+  "topic",
+  "done",
+] as const satisfies readonly string[];
 
-export function ScoringProgress({ state }: Record<"state", ScoringState>) {
+export function ScoringProgress({
+  showTopicRelevance,
+  state,
+}: Record<"state", ScoringState> & Partial<Record<"showTopicRelevance", boolean>>) {
   const stageIndex = STAGE_ORDER.indexOf(state.stage);
   const progressValue = (stageIndex / (STAGE_ORDER.length - 1)) * 100;
 
@@ -84,6 +95,44 @@ export function ScoringProgress({ state }: Record<"state", ScoringState>) {
             </Text>
           )}
         </ScoringRow>
+        {showTopicRelevance && (
+          <ScoringRow label="テーマ適合">
+            {state.result.topicRelevance != null ? (
+              <Stack align="flex-start" gap={6}>
+                <Badge
+                  color={TOPIC_RELEVANCE_META[state.result.topicRelevance].color}
+                  size="lg"
+                  styles={{ label: { fontSize: "var(--mantine-font-size-md)", fontWeight: 700 } }}
+                  variant="light"
+                >
+                  {TOPIC_RELEVANCE_META[state.result.topicRelevance].label}
+                </Badge>
+                {state.result.topicFeedback != null && state.result.topicFeedback.length > 0 && (
+                  <Text
+                    component="p"
+                    lh={1.65}
+                    m={0}
+                    size="md"
+                    ta="start"
+                    w="100%"
+                    className="wrap-break-words min-w-0"
+                  >
+                    {state.result.topicFeedback}
+                  </Text>
+                )}
+              </Stack>
+            ) : state.stage === "done" ? (
+              //? 旧スコア（テーマ適合の保存なし）を hydrate した場合は判定なしを明示
+              <Text c="dimmed" size="md" ta="start">
+                —
+              </Text>
+            ) : (
+              <Text c="dimmed" size="md" ta="start">
+                判定中...
+              </Text>
+            )}
+          </ScoringRow>
+        )}
       </Stack>
     </Stack>
   );

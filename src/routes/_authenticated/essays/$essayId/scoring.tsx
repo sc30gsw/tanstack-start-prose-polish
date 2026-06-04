@@ -11,6 +11,7 @@ import { ScoringProgress } from "~/features/essays/components/scoring/scoring-pr
 import { useScoringStream } from "~/features/essays/hooks/scoring/use-scoring-stream";
 import { useEssayDetail } from "~/features/essays/hooks/use-essay-detail";
 import type { EssayMode, Score } from "~/features/essays/schemas/essay-schema";
+import { topicPrompt } from "~/features/essays/utils/topic-prompt";
 
 export const Route = createFileRoute("/_authenticated/essays/$essayId/scoring")({
   component: ScoringPage,
@@ -95,6 +96,8 @@ function ScoringPage() {
         scoreFeedback: scoring.scoreFeedback,
         toeicMax: scoring.toeicMax,
         toeicMin: scoring.toeicMin,
+        topicFeedback: scoring.topicFeedback,
+        topicRelevance: scoring.topicRelevance as Score["topicRelevance"],
       });
 
       return;
@@ -159,7 +162,10 @@ function ScoringPage() {
             title="採点に失敗しました"
           />
         )}
-        <ScoringProgress state={state} />
+        <ScoringProgress
+          showTopicRelevance={topicPrompt(essay.mode as EssayMode, essay.prompt) != null}
+          state={state}
+        />
         <Button
           aria-label="添削結果を確認"
           disabled={!state.feedbackReady || isPending}

@@ -1,13 +1,13 @@
 import * as v from "valibot";
 
-import { MAX_ESSAY_BODY_CHARS } from "~/features/essays/constants/essay";
+import { MAX_ESSAY_BODY_CHARS, MAX_ESSAY_PROMPT_CHARS } from "~/features/essays/constants/essay";
 import { scoreSchema } from "~/features/essays/schemas/essay-schema";
 
 const essayModeInputSchema = v.optional(v.picklist(["free", "topic", "diverse"] as const));
 
 export const essayAiContextSchema = v.object({
   mode: essayModeInputSchema,
-  prompt: v.optional(v.string()),
+  prompt: v.optional(v.pipe(v.string(), v.maxLength(MAX_ESSAY_PROMPT_CHARS))),
 });
 
 export const essayBodyInputSchema = v.object({

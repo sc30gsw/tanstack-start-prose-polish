@@ -11,6 +11,7 @@ import { valibotValidator } from "@tanstack/valibot-adapter";
 
 import { PageHeader } from "~/components/page-header";
 import { DiffView } from "~/features/essays/components/diff/diff-view";
+import { RegenerateCorrectionButton } from "~/features/essays/components/diff/regenerate-correction-button";
 import { DIFF_VIEW_MODE_OPTIONS } from "~/features/essays/constants/diff-view-ui";
 import { useResolvedDiffView } from "~/features/essays/hooks/diff/use-resolved-diff-view";
 import { useEssayDetail } from "~/features/essays/hooks/use-essay-detail";
@@ -40,15 +41,18 @@ function DiffPage() {
         }
         title="添削結果"
       >
-        <Button
-          size="sm"
-          variant="filled"
-          renderRoot={(props) => (
-            <Link to="/essays/$essayId/result" params={{ essayId }} {...props} />
-          )}
-        >
-          添削後を読む <IconArrowRight size={16} />
-        </Button>
+        <Group gap="sm" wrap="wrap">
+          <RegenerateCorrectionButton essayId={essayId} />
+          <Button
+            size="sm"
+            variant="filled"
+            renderRoot={(props) => (
+              <Link to="/essays/$essayId/result" params={{ essayId }} {...props} />
+            )}
+          >
+            添削後を読む <IconArrowRight size={16} />
+          </Button>
+        </Group>
       </PageHeader>
       <Stack gap="lg">
         <Group justify="center" w="100%" wrap="nowrap">

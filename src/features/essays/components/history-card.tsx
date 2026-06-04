@@ -18,6 +18,7 @@ import { useTransition } from "react";
 import { MODE_LABELS } from "~/constants";
 import { db } from "~/db/instant";
 import type { AppSchema } from "~/db/instant-schema";
+import { TOPIC_RELEVANCE_META } from "~/features/essays/constants/essay";
 import { derivePreview, deriveTitle } from "~/features/essays/utils/histories";
 
 const MODE_COLORS = {
@@ -48,6 +49,12 @@ export function HistoryCard({
   const modeColor = MODE_COLORS[essay.mode as keyof typeof MODE_COLORS] ?? "gray";
   const statusLabel = STATUS_LABELS[essay.status as keyof typeof STATUS_LABELS] ?? essay.status;
   const statusColor = STATUS_COLORS[essay.status as keyof typeof STATUS_COLORS] ?? "gray";
+
+  //? 旧レコード・free モードは topicRelevance なし → バッジ非表示
+  const topicRelevanceMeta =
+    essay.scoring?.topicRelevance != null
+      ? TOPIC_RELEVANCE_META[essay.scoring.topicRelevance as keyof typeof TOPIC_RELEVANCE_META]
+      : undefined;
 
   const title = deriveTitle({
     mode: essay.mode,
@@ -110,6 +117,11 @@ export function HistoryCard({
             {essay.scoring?.toeicMin && essay.scoring?.toeicMax && (
               <Badge autoContrast color="grape" size="md" variant="outline">
                 TOEIC {essay.scoring.toeicMin}〜{essay.scoring.toeicMax}
+              </Badge>
+            )}
+            {topicRelevanceMeta && (
+              <Badge autoContrast color={topicRelevanceMeta.color} size="md" variant="outline">
+                {topicRelevanceMeta.label}
               </Badge>
             )}
           </Group>

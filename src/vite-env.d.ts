@@ -6,12 +6,13 @@ interface ViteTypeOptions {
 
 interface ImportMetaEnv {
   readonly VITE_INSTANT_APP_ID: string;
-  readonly VITE_INSTANT_APP_ADMIN_TOKEN: string;
   // その他の環境変数...
 }
 
 type ServerProcessEnv = {
   readonly AI_GATEWAY_API_KEY?: string;
+  //! admin token はサーバ専用秘密情報。VITE_ プレフィックスでクライアントに露出させない
+  readonly INSTANT_APP_ADMIN_TOKEN?: string;
 };
 
 declare const process: {
